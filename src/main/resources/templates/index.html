@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+    <head>
+        <meta charset="UTF-8"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+        <meta name="description" content="" />
+        <meta name="author" content="" />
+
+
+        <link href="/bootstrap-4.0.0/css/bootstrap.min.css" rel="stylesheet" />
+        <link href="/bootstrap-table-1.12.1/bootstrap-table.min.css" rel="stylesheet" />
+
+        <script type="text/javascript" src="/jquery-3.3.1/jquery.min.js"></script>
+        <script type="text/javascript" src="/popper.js-1.14.2/popper.min.js"></script>
+        <script type="text/javascript" src="/bootstrap-4.0.0/js/bootstrap.min.js"></script>
+        <script type="text/javascript" src="/bootstrap-table-1.12.1/bootstrap-table.min.js"></script>
+        <script type="text/javascript" src="/bootstrap-table-1.12.1/locale/bootstrap-table-zh-CN.js"></script>
+
+        <link href="/main/css/main.css" rel="stylesheet" />
+
+        <title>index</title>
+    </head>
+    <body>
+        <!-- 一级导航栏开始 -->
+        <nav class="navbar navbar-expand-md fixed-top navbar-dark">
+            <a class="navbar-brand" href="#">软件的名称</a>
+            <button class="navbar-toggler p-0 border-0" type="button" data-toggle="offcanvas">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="navbar-collapse offcanvas-collapse" id="navbarsExampleDefault">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item active">
+                        <a class="nav-link" href="#">首页 <span class="sr-only">(current)</span></a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">模块001</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">模块002</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">模块003</a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="javascript:void(0);" id="dropdown01" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">模块004</a>
+                        <div class="dropdown-menu" aria-labelledby="dropdown01">
+                            <a class="dropdown-item" href="#">模块004-1</a>
+                            <a class="dropdown-item" href="#">模块004-2</a>
+                            <a class="dropdown-item" href="#">模块004-3</a>
+                        </div>
+                    </li>
+                </ul>
+                <form class="form-inline my-2 my-lg-0">
+                    <button style="font-size: 14px;" class="btn btn-outline-light my-2 my-sm-0" type="submit">退出</button>
+                </form>
+            </div>
+        </nav>
+        <!-- 一级导航栏结束 -->
+
+        <!-- 二级级导航栏开始 -->
+        <div class="nav-scroller bg-white box-shadow">
+            <nav class="nav nav-underline container">
+                <a class="nav-link active" href="#">子功能1</a>
+                <a class="nav-link" href="#">
+                    子功能2
+                    <span class="badge badge-pill bg-light align-text-bottom">27</span>
+                </a>
+                <a class="nav-link" href="#">子功能3</a>
+                <a class="nav-link" href="#">子功能4</a>
+                <a class="nav-link" href="#">子功能5</a>
+                <a class="nav-link" href="#">子功能6</a>
+            </nav>
+        </div>
+        <!-- 二级级导航栏结束 -->
+
+        <main class=" container">
+            <div class="my-3 p-3 bg-white rounded box-shadow">
+                <!-- 页面内容在此处填充 -->
+
+                <table id="table"></table>
+
+
+            </div>
+        </main>
+    </body>
+
+    <script type="text/javascript">
+        $(function(){
+            $('#table').bootstrapTable({
+                classes: 'table table-no-bordered',
+                pagination: true,
+                columns: [{
+                    checkbox: true
+                },{
+                    field: 'id',
+                    title: 'Item ID'
+                }, {
+                    field: 'name',
+                    title: 'Item Name'
+                }, {
+                    field: 'price',
+                    title: 'Item Price'
+                }],
+                data: [
+                    { id: 1, name: 'Item 1', price: '$1' },{ id: 1, name: 'Item 1', price: '$1' },{ id: 1, name: 'Item 1', price: '$1' },{ id: 1, name: 'Item 1', price: '$1' },
+                    { id: 1, name: 'Item 1', price: '$1' },{ id: 1, name: 'Item 1', price: '$1' },{ id: 1, name: 'Item 1', price: '$1' },{ id: 1, name: 'Item 1', price: '$1' },
+                    { id: 1, name: 'Item 1', price: '$1' },{ id: 1, name: 'Item 1', price: '$1' },{ id: 1, name: 'Item 1', price: '$1' },{ id: 1, name: 'Item 1', price: '$1' },
+                    { id: 1, name: 'Item 1', price: '$1' },{ id: 1, name: 'Item 1', price: '$1' },{ id: 1, name: 'Item 1', price: '$1' },{ id: 1, name: 'Item 1', price: '$1' },
+                    { id: 1, name: 'Item 1', price: '$1' },{ id: 1, name: 'Item 1', price: '$1' },{ id: 1, name: 'Item 1', price: '$1' },{ id: 1, name: 'Item 1', price: '$1' },
+                    { id: 1, name: 'Item 1', price: '$1' },{ id: 1, name: 'Item 1', price: '$1' },{ id: 1, name: 'Item 1', price: '$1' },{ id: 1, name: 'Item 1', price: '$1' },
+                    { id: 1, name: 'Item 1', price: '$1' },{ id: 1, name: 'Item 1', price: '$1' },{ id: 1, name: 'Item 1', price: '$1' },{ id: 1, name: 'Item 1', price: '$1' },
+                    {
+                    id: 2,
+                    name: 'Item 2',
+                    price: '$2'
+                }]
+            });
+        })
+    </script>
+</html>

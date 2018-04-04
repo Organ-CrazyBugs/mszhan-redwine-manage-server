@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+    <head>
+        <meta charset="UTF-8"/>
+        <title>Error!</title>
+    </head>
+    <body>
+        <h1>Error Page</h1>
+        <p th:text="${'status: ' + status}"></p>
+        <p th:text="${'error: ' + error}"></p>
+        <p th:text="${'message: ' + message}"></p>
+        <p th:text="${'timestamp: ' + timestamp}"></p>
+        <p th:text="${'trace: ' + trace}"></p>
+    </body>
+</html>
