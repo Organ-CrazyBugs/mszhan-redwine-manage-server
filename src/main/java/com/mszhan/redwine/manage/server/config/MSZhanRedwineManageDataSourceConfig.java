@@ -27,14 +27,14 @@ import java.util.Properties;
  * @Date: 22:24 2017/12/24
  */
 @Configuration
-@MapperScan(basePackages = SumptuousManageDataSourceConfig.SCAN_PACKAGE, sqlSessionFactoryRef = SumptuousManageDataSourceConfig.BEAN_SQL_SESSION_FACTORY_NAME)
-public class SumptuousManageDataSourceConfig {
+@MapperScan(basePackages = MSZhanRedwineManageDataSourceConfig.SCAN_PACKAGE, sqlSessionFactoryRef = MSZhanRedwineManageDataSourceConfig.BEAN_SQL_SESSION_FACTORY_NAME)
+public class MSZhanRedwineManageDataSourceConfig {
 
     /* 多数据原配置 - 修改开始 */
-    static final String SCAN_PACKAGE = "com.mszhan.redwine.manage.server.dao.sumptuousmanage";
+    static final String SCAN_PACKAGE = "com.mszhan.redwine.manage.server.dao.mszhanRedwineManage";
     static final String MAPPER_LOCATION = "classpath*:mapper/sumptuousManage/*.xml";
-    static final String DATA_SOURCE_PROPERTIES_PREFIX = "spring.datasource.sumptuousManage";
-    static final String BEAN_NAME_PREFIX = "sumptuousManage";
+    static final String DATA_SOURCE_PROPERTIES_PREFIX = "spring.datasource.mszhanRedwineManage";
+    static final String BEAN_NAME_PREFIX = "mszhanRedwineManage";
     /* 多数据原配置 - 修改结束 */
 
     public static final String BEAN_SQL_SESSION_FACTORY_NAME = BEAN_NAME_PREFIX + "SqlSessionFactory";

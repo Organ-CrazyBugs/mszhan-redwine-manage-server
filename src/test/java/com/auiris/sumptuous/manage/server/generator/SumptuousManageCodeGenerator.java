@@ -18,11 +18,11 @@ import java.util.*;
  */
 public class SumptuousManageCodeGenerator {
     //JDBC配置，请修改为你项目的实际配置
-    private static final String JDBC_URL = "jdbc:mysql://localhost:3306/sumptuous_manage";
+    private static final String JDBC_URL = "jdbc:mysql://localhost:3306/mszhan_redwine_manage";
     private static final String JDBC_USERNAME = "root";
-    private static final String JDBC_PASSWORD = "root";
-    private static final String PROJECT_PATH = "C:\\auiris\\mszhan-redwine-manage-server";
-    private static final String DATASOURCE_NAME = "sumptuousmanage";
+    private static final String JDBC_PASSWORD = "123456";
+    private static final String PROJECT_PATH = "E:\\workspace\\mszhan-redwine-manage-server";
+    private static final String DATASOURCE_NAME = "mszhanRedwineManage";
 
     private static final String BASE_PACKAGE = "com.mszhan.redwine.manage.server";
     private static final String JDBC_DIVER_CLASS_NAME = "com.mysql.jdbc.Driver";
@@ -41,55 +41,15 @@ public class SumptuousManageCodeGenerator {
     private static final String DATE = new SimpleDateFormat("HH:mm yyyy/MM/dd").format(new Date());//@date
 
     public static void main(String[] args) {
-        genCode(
-                /*"party_attribute",
-                "party_classification",
-                "party_classification_group",
-                "party_classification_type",
-                "party_group",
-
-                "party_relationship",
-                "party_relationship_type",
-                "party_role",
-                "party_type",
-                "party_type_attr",
-
-                "person",
-                "priority_type",
-                "role_type",
-                "role_type_attr",
-                "security_group",
-
-                "security_group_permission",
-                "security_permission",
-                "status_item",
-                "status_type",
-                "uom",
-
-                "uom_conversion",
-                "uom_conversion_dated",
-                "uom_group",
-                "uom_type",
-                "user_login",
-
-                "user_login_security_group",
-                "enumeration_type",
-                "enumeration",
-                "data_source_type",
-                "data_source",
-
-                "custom_method_type",
-                "custom_method",*/
-                "party"
-        );
-
+//        System.out.println(System.getProperty("user.dir"));
+        genCode("user_login");
     }
 
     public static void genCode(String... tableNames) {
         for (String tableName : tableNames) {
             //根据需求生成，不需要的注掉，模板有问题的话可以自己修改。
             genModelAndMapper(tableName);
-            genService(tableName);
+//            genService(tableName);
             //genController(tableName);
         }
     }
