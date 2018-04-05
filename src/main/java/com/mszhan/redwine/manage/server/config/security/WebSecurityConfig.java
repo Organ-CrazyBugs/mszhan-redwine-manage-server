@@ -52,8 +52,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf().disable()
                 .addFilterAfter(userLoginFilter, FilterSecurityInterceptor.class)
-                .authorizeRequests()/*.antMatchers("/", "/page/index").permitAll()
-                .antMatchers("/page/admin").hasRole("ADMIN")*/
+                .authorizeRequests().antMatchers("/ui-lib/**", "/page/login").permitAll()
+                /*.antMatchers("/page/admin").hasRole("ADMIN")*/
                 .anyRequest().fullyAuthenticated()
 
                 .and()
