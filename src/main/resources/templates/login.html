@@ -25,8 +25,8 @@
             <div class="card" style="padding: 25px 20px;">
                 <div class="mb-4">
                     <h1 class="h3 mb-3 font-weight-normal">用户登陆</h1>
-                    <div th:if="${param.error}">
-                        <code>用户名或者密码错误.</code>
+                    <div class="alert alert-danger" role="alert" th:if="${param.error}" style="margin-bottom: 0;">
+                        用户名或者密码错误.
                     </div>
                 </div>
 
