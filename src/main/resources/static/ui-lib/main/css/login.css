@@ -85,3 +85,13 @@ body {
     font-size: 12px;
     color: #777;
 }
+
+
+.btn-primary {
+    background-color: var(--purple);
+    border-color: var(--purple);
+}
+.btn-primary:hover,.btn-primary:active,.btn-primary:focus{
+    background-color: var(--purple);
+    border-color: var(--purple);
+}

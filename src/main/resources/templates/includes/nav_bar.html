@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+
+    <div th:fragment="payload(activeNav)">
+        <nav class="navbar navbar-expand-md fixed-top navbar-dark">
+            <a class="navbar-brand" th:href="@{/}">软件的名称</a>
+            <button class="navbar-toggler p-0 border-0" type="button" data-toggle="offcanvas">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="navbar-collapse offcanvas-collapse" id="navbarsExampleDefault">
+                <ul class="navbar-nav mr-auto">
+                    <li th:classappend="${activeNav eq 'HOME'} ? 'active'" class="nav-item">
+                        <a class="nav-link" th:href="@{/page/index}">首页</a>
+                    </li>
+                    <li th:classappend="${activeNav eq 'WAREHOUSE'} ? 'active'" class="nav-item">
+                        <a class="nav-link" th:href="@{/page/warehouse/index}">库存管理</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="javascript:void(0);">模块002</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="javascript:void(0);">模块003</a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="javascript:void(0);" id="dropdown01" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">模块004</a>
+                        <div class="dropdown-menu" aria-labelledby="dropdown01">
+                            <a class="dropdown-item" href="#">模块004-1</a>
+                            <a class="dropdown-item" href="#">模块004-2</a>
+                            <a class="dropdown-item" href="#">模块004-3</a>
+                        </div>
+                    </li>
+                </ul>
+                <form class="form-inline my-2 my-lg-0" th:action="@{'/api/logout'}">
+                    <button style="font-size: 14px;" class="btn btn-outline-light my-2 my-sm-0" type="submit">退出</button>
+                </form>
+            </div>
+        </nav>
+    </div>
+
+</html>

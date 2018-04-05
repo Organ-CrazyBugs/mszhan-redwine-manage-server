@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+
+    <!--/*-->
+        参数：
+            moduleCode： 用于显示那个模块的二级菜单
+            activeNav： 激活哪个二级菜单
+    <!--*/-->
+    <div th:fragment="payload(moduleCode, activeNav)">
+
+        <!--/*  首页模块二级导航栏  */-->
+        <div th:if="${moduleCode} eq 'HOME'" class="nav-scroller bg-white box-shadow">
+            <nav class="nav nav-underline container">
+                <a th:classappend="${activeNav eq 'DASHBOARD'} ? 'active'" class="nav-link" href="#">Dashboard</a>
+                <a th:classappend="${activeNav eq 'xxxx1'} ? 'active'" class="nav-link" href="#">
+                    子功能2
+                    <span class="badge badge-pill bg-light align-text-bottom">27</span>
+                </a>
+                <a th:classappend="${activeNav eq 'xxxx2'} ? 'active'" class="nav-link" href="#">子功能3</a>
+                <a th:classappend="${activeNav eq 'xxxx3'} ? 'active'" class="nav-link" href="#">子功能4</a>
+                <a th:classappend="${activeNav eq 'xxxx4'} ? 'active'" class="nav-link" href="#">子功能5</a>
+                <a th:classappend="${activeNav eq 'xxxx5'} ? 'active'" class="nav-link" href="#">子功能6</a>
+            </nav>
+        </div>
+
+        <!--/*  仓库模块二级导航栏  */-->
+        <div th:if="${moduleCode} eq 'WAREHOUSE'" class="nav-scroller bg-white box-shadow">
+            <nav class="nav nav-underline container">
+                <a th:classappend="${activeNav eq 'WAREHOUSE_INDEX'} ? 'active'" class="nav-link" th:href="@{/page/warehouse/index}">库存列表</a>
+                <!--<a th:classappend="${activeNav eq 'xxxx1'} ? 'active'" class="nav-link" href="#">
+                    子功能2
+                    <span class="badge badge-pill bg-light align-text-bottom">27</span>
+                </a>-->
+            </nav>
+        </div>
+
+        <!--/*  其他模块二级导航栏 在此处追加  */-->
+
+    </div>
+
+</html>

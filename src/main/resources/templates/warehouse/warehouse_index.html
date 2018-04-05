@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+
+<head th:include="/includes/ui_libs::payload('仓库模块')"></head>
+
+<body>
+    <!-- 一级导航菜单 -->
+    <div th:include="/includes/nav_bar::payload('WAREHOUSE')"></div>
+    <!-- 二级导航菜单 -->
+    <div th:include="/includes/nav_bar_level2::payload('WAREHOUSE', 'WAREHOUSE_INDEX')"></div>
+
+
+    <main class="container">
+        <div class="my-3 p-3 bg-white rounded box-shadow">
+            <!-- 页面内容在此处填充 -->
+            <table id="table"></table>
+        </div>
+    </main>
+</body>
+
+<script type="text/javascript">
+    $(function(){
+        $('#table').bootstrapTable({
+            classes: 'table table-no-bordered',
+            pagination: true,
+            columns: [{
+                checkbox: true
+            },{
+                field: 'id',
+                title: 'Item ID'
+            }, {
+                field: 'name',
+                title: 'Item Name'
+            }, {
+                field: 'price',
+                title: 'Item Price'
+            }],
+            data: [
+                { id: 1, name: 'Item 1', price: '$1' },{ id: 1, name: 'Item 1', price: '$1' },{ id: 1, name: 'Item 1', price: '$1' },{ id: 1, name: 'Item 1', price: '$1' },
+                { id: 1, name: 'Item 1', price: '$1' },{ id: 1, name: 'Item 1', price: '$1' },{ id: 1, name: 'Item 1', price: '$1' },{ id: 1, name: 'Item 1', price: '$1' },
+                { id: 1, name: 'Item 1', price: '$1' },{ id: 1, name: 'Item 1', price: '$1' },{ id: 1, name: 'Item 1', price: '$1' },{ id: 1, name: 'Item 1', price: '$1' },
+                { id: 1, name: 'Item 1', price: '$1' },{ id: 1, name: 'Item 1', price: '$1' },{ id: 1, name: 'Item 1', price: '$1' },{ id: 1, name: 'Item 1', price: '$1' },
+                { id: 1, name: 'Item 1', price: '$1' },{ id: 1, name: 'Item 1', price: '$1' },{ id: 1, name: 'Item 1', price: '$1' },{ id: 1, name: 'Item 1', price: '$1' },
+                { id: 1, name: 'Item 1', price: '$1' },{ id: 1, name: 'Item 1', price: '$1' },{ id: 1, name: 'Item 1', price: '$1' },{ id: 1, name: 'Item 1', price: '$1' },
+                { id: 1, name: 'Item 1', price: '$1' },{ id: 1, name: 'Item 1', price: '$1' },{ id: 1, name: 'Item 1', price: '$1' },{ id: 1, name: 'Item 1', price: '$1' },
+                {
+                    id: 2,
+                    name: 'Item 2',
+                    price: '$2'
+                }]
+        });
+    })
+</script>
+</html>
