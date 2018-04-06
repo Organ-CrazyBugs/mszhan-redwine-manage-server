@@ -11,11 +11,80 @@
     <!-- 二级导航菜单 -->
     <div th:include="/includes/nav_bar_level2::payload('WAREHOUSE', 'WAREHOUSE_INDEX')"></div>
 
-
     <main class="container">
         <div class="my-3 p-3 bg-white rounded box-shadow">
             <!-- 页面内容在此处填充 -->
-            <table id="table"></table>
+            <form class="table-query-form">
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <div class="input-group-text query-form-label">条件件件</div>
+                            </div>
+                            <input type="text" class="form-control" placeholder="条件件件" />
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <div class="input-group-text query-form-label">条件2</div>
+                            </div>
+                            <input type="text" class="form-control" placeholder="条件2" />
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <div class="input-group-text query-form-label">条件3</div>
+                            </div>
+                            <input type="text" class="form-control" placeholder="条件3" />
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <div class="input-group-text query-form-label">条件4</div>
+                            </div>
+                            <input type="text" class="form-control" placeholder="条件4" />
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <div class="input-group-text query-form-label">条件5</div>
+                            </div>
+                            <input type="text" class="form-control" placeholder="条件5" />
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <div class="input-group-text query-form-label">条件6</div>
+                            </div>
+                            <input type="text" class="form-control" placeholder="条件6" />
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="btn-group mr-2">
+                            <button type="button" class="btn btn-outline-primary">&nbsp;入库&nbsp;</button>
+                            <button type="button" class="btn btn-outline-primary">&nbsp;出库&nbsp;</button>
+                        </div>
+                    </div>
+                    <div class="col-md-6 text-right">
+                        <button type="button" class="btn btn-outline-primary">&nbsp;查&nbsp;询&nbsp;</button>
+                    </div>
+                </div>
+            </form>
+            <div class="row">
+                <div class="col-md-12">
+                    <table id="table"></table>
+                </div>
+            </div>
         </div>
     </main>
 </body>
@@ -23,6 +92,7 @@
 <script type="text/javascript">
     $(function(){
         $('#table').bootstrapTable({
+            buttonsClass: 'outline-primary',
             classes: 'table table-no-bordered',
             pagination: true,
             columns: [{
