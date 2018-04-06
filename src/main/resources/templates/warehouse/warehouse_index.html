@@ -3,13 +3,16 @@
       xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
 
-<head th:include="/includes/ui_libs::payload('仓库模块')"></head>
+    <head th:include="/includes/ui_libs::payload('仓库模块')"></head>
 
+    <script type="text/javascript" src="/ui-lib/main/js/warehouse/warehouse_index.js"></script>
 <body>
     <!-- 一级导航菜单 -->
     <div th:include="/includes/nav_bar::payload('WAREHOUSE')"></div>
     <!-- 二级导航菜单 -->
     <div th:include="/includes/nav_bar_level2::payload('WAREHOUSE', 'WAREHOUSE_INDEX')"></div>
+
+    <div th:include="/warehouse/warehouse_input_popup::payload('商品入库', 'warehouseInputPopupModal')"></div>
 
     <main class="container">
         <div class="my-3 p-3 bg-white rounded box-shadow">
@@ -71,7 +74,7 @@
                 <div class="row">
                     <div class="col-md-6">
                         <div class="btn-group mr-2">
-                            <button type="button" class="btn btn-outline-primary">&nbsp;入库&nbsp;</button>
+                            <button type="button" class="btn btn-outline-primary" data-toggle="modal" data-target="#warehouseInputPopupModal">&nbsp;入库&nbsp;</button>
                             <button type="button" class="btn btn-outline-primary">&nbsp;出库&nbsp;</button>
                         </div>
                     </div>
