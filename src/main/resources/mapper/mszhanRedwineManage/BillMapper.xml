@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mszhan.redwine.manage.server.dao.mszhanRedwineManage.BillMapper">
+  <resultMap id="BaseResultMap" type="com.mszhan.redwine.manage.server.model.mszhanRedwineManage.Bill">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="order_id" jdbcType="VARCHAR" property="orderId" />
+    <result column="price" jdbcType="DECIMAL" property="price" />
+    <result column="creator" jdbcType="INTEGER" property="creator" />
+    <result column="create_date" jdbcType="TIMESTAMP" property="createDate" />
+  </resultMap>
+</mapper>

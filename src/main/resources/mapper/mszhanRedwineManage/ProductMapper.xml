@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mszhan.redwine.manage.server.dao.mszhanRedwineManage.ProductMapper">
+  <resultMap id="BaseResultMap" type="com.mszhan.redwine.manage.server.model.mszhanRedwineManage.Product">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="product_name" jdbcType="VARCHAR" property="productName" />
+    <result column="cost" jdbcType="DECIMAL" property="cost" />
+    <result column="general_gent_ price" jdbcType="DECIMAL" property="generalGentPrice" />
+    <result column="gent_price" jdbcType="DECIMAL" property="gentPrice" />
+    <result column="wholesale_price" jdbcType="DECIMAL" property="wholesalePrice" />
+    <result column="retail_price" jdbcType="DECIMAL" property="retailPrice" />
+    <result column="unit" jdbcType="VARCHAR" property="unit" />
+    <result column="specification" jdbcType="VARCHAR" property="specification" />
+    <result column="level" jdbcType="VARCHAR" property="level" />
+    <result column="production_area" jdbcType="VARCHAR" property="productionArea" />
+    <result column="product_url" jdbcType="VARCHAR" property="productUrl" />
+    <result column="sku" jdbcType="VARCHAR" property="sku" />
+    <result column="creator" jdbcType="INTEGER" property="creator" />
+    <result column="create_date" jdbcType="TIMESTAMP" property="createDate" />
+    <result column="update_date" jdbcType="TIMESTAMP" property="updateDate" />
+    <result column="updator" jdbcType="INTEGER" property="updator" />
+    <result column="back_remark" jdbcType="VARCHAR" property="backRemark" />
+    <result column="brand_name" jdbcType="VARCHAR" property="brandName" />
+    <result column="alcohol_content" jdbcType="DECIMAL" property="alcoholContent" />
+  </resultMap>
+</mapper>
