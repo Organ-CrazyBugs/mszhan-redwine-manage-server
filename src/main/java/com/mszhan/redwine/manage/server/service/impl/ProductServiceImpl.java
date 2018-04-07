@@ -13,6 +13,7 @@ import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.CollectionUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
@@ -38,12 +39,6 @@ public class ProductServiceImpl extends AbstractService<Product> implements Prod
 
     @Value("${productPath}")
     private String picturePath;
-
-    @Override
-    public Integer queryCount(ProductQuery query) {
-
-        return productMapper.queryCount(query);
-    }
 
     @Override
     public ResponseUtils.ResponseVO queryForPage(ProductQuery query) {
@@ -90,6 +85,12 @@ public class ProductServiceImpl extends AbstractService<Product> implements Prod
             return ResponseUtils.newResponse().failed(500, "零售价格不能为空");
         }
         trimToNullValue(product);
+
+        List<Product> checkProList = productMapper.queryProductBySku(product.getSku());
+        if (!CollectionUtils.isEmpty(checkProList)){
+            return ResponseUtils.newResponse().failed(500, "已经存在相同的SKU，不能重复添加");
+        }
+
         ResponseUtils.ResponseVO res = uploadLoadProPe(file);
         if (!res.isSuccess()){
             return res;
@@ -224,6 +225,7 @@ public class ProductServiceImpl extends AbstractService<Product> implements Prod
         if (product == null){
             return ResponseUtils.newResponse().failed(500, "没有找到对应产品信息");
         }
+
         productMapper.updatePic(id, path);
         return ResponseUtils.newResponse().succeed();
     }

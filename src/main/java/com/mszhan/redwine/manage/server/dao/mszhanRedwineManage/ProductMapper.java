@@ -16,4 +16,8 @@ public interface ProductMapper extends Mapper<Product> {
     void updatePic(@Param("id") Integer id, @Param("url") String url);
 
     void removePicById(@Param("id") Integer id);
+
+    List<Product> queryProductBySku(@Param("sku") String sku);
+
+
 }

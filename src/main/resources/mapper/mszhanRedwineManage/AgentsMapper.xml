@@ -16,4 +16,45 @@
     <result column="updator" jdbcType="INTEGER" property="updator" />
     <result column="address" jdbcType="VARCHAR" property="address" />
   </resultMap>
+
+
+  <select id="queryForPage" resultMap="BaseResultMap"  parameterType="com.mszhan.redwine.manage.server.model.mszhanRedwineManage.query.AgentQuery">
+    SELECT * FROM agents
+    <where>
+      <if test = "nameList != null and nameList.size > 0">
+        and  name in
+        <foreach collection="nameList" index="index" item="item" open="("
+                 separator="," close=")">
+          #{item}
+        </foreach>
+      </if>
+    </where>
+    ORDER BY update_date DESC
+    <if test='offset != null and limit != null '>
+      limit #{offset},#{limit}
+    </if>
+  </select>
+
+
+  <select id="queryCount"  parameterType="com.mszhan.redwine.manage.server.model.mszhanRedwineManage.query.AgentQuery"  resultType="Integer">
+    SELECT COUNT(1) FROM agents
+    <where>
+      <if test = "nameList != null and nameList.size > 0">
+        and  name in
+        <foreach collection="nameList" index="index" item="item" open="("
+                 separator="," close=")">
+          #{item}
+        </foreach>
+      </if>
+    </where>
+  </select>
+
+  <delete id="deleteById">
+    delete from agents where id = #{id}
+  </delete>
+
+  <update id="updateBalance">
+    update agtents set balance = #{balance} where id = #{id}
+  </update>
+
 </mapper>

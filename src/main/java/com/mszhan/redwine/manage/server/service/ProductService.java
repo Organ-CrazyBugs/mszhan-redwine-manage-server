@@ -17,8 +17,6 @@ import java.util.List;
  */
 public interface ProductService extends Service<Product> {
 
-    Integer queryCount(ProductQuery query);
-
     ResponseUtils.ResponseVO queryForPage(ProductQuery query);
 
     ResponseUtils.ResponseVO addProduct(Product product, MultipartFile file);

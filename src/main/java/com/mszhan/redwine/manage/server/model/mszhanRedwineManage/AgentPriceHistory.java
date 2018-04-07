@@ -17,10 +17,34 @@ public class AgentPriceHistory {
 
     private Integer creator;
 
+
+    @Column(name = "agent_id")
+    private Integer agentId;
+
     /**
      * (RECHARGE充值，SPEND花费)
      */
     private String type;
+
+    @Column(name = "payment_type")
+    private String paymentType;
+
+
+    public Integer getAgentId() {
+        return agentId;
+    }
+
+    public void setAgentId(Integer agentId) {
+        this.agentId = agentId;
+    }
+
+    public String getPaymentType() {
+        return paymentType;
+    }
+
+    public void setPaymentType(String paymentType) {
+        this.paymentType = paymentType;
+    }
 
     /**
      * @return id

@@ -59,8 +59,8 @@
 
     </where>
     ORDER BY update_date DESC
-    <if test='page != null and limit != null '>
-      limit #{page},#{limit}
+    <if test='offset != null and limit != null '>
+      limit #{offset},#{limit}
     </if>
   </select>
 
@@ -97,10 +97,15 @@
     </where>
   </select>
 
+  <select id="queryProductBySku" resultMap="BaseResultMap">
+    select * from product where sku = #{sku}
+    and remove = 'N'
+  </select>
   <update id="updatePic" >
     update product set product_url = #{url} where id = #{id}
   </update>
   <update id="removeById" >
     update product set remove = 'Y' where id = #{id}
   </update>
+
 </mapper>
