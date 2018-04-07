@@ -25,5 +25,82 @@
     <result column="back_remark" jdbcType="VARCHAR" property="backRemark" />
     <result column="brand_name" jdbcType="VARCHAR" property="brandName" />
     <result column="alcohol_content" jdbcType="DECIMAL" property="alcoholContent" />
+    <result column="remove" jdbcType="VARCHAR" property="remove" />
+
   </resultMap>
+  <select id="queryForPage" resultMap="BaseResultMap"  parameterType="com.mszhan.redwine.manage.server.model.mszhanRedwineManage.query.ProductQuery">
+    SELECT * FROM product
+    <where>
+      and remove = 'N'
+      <if test = "alcoholContent != null and alcoholContent != ''">
+        and  alcohol_content = #{alcoholContent}
+      </if>
+      <if test = "skuList != null and skuList.size > 0">
+        and  sku in
+        <foreach collection="skuList" index="index" item="item" open="("
+                 separator="," close=")">
+          #{item}
+        </foreach>
+      </if>
+      <if test = "productNameList != null and productNameList.size > 0">
+        and  product_name in
+        <foreach collection="productNameList" index="index" item="item" open="("
+                 separator="," close=")">
+          #{item}
+        </foreach>
+      </if>
+      <if test = "brandNameList != null and brandNameList.size > 0">
+        and  brand_name in
+        <foreach collection="brandNameList" index="index" item="item" open="("
+                 separator="," close=")">
+          #{item}
+        </foreach>
+      </if>
+
+    </where>
+    ORDER BY update_date DESC
+    <if test='page != null and limit != null '>
+      limit #{page},#{limit}
+    </if>
+  </select>
+
+
+  <select id="queryCount"  parameterType="com.mszhan.redwine.manage.server.model.mszhanRedwineManage.query.ProductQuery"  resultType="Integer">
+    SELECT COUNT(1) FROM product
+    <where>
+      and remove = 'N'
+      <if test = "alcoholContent != null and alcoholContent != ''">
+        and  alcohol_content = #{alcoholContent}
+      </if>
+      <if test = "skuList != null and skuList.size > 0">
+        and  sku in
+        <foreach collection="skuList" index="index" item="item" open="("
+                 separator="," close=")">
+          #{item}
+        </foreach>
+      </if>
+      <if test = "productNameList != null and productNameList.size > 0">
+        and  product_name in
+        <foreach collection="productNameList" index="index" item="item" open="("
+                 separator="," close=")">
+          #{item}
+        </foreach>
+      </if>
+      <if test = "brandNameList != null and brandNameList.size > 0">
+        and  brand_name in
+        <foreach collection="brandNameList" index="index" item="item" open="("
+                 separator="," close=")">
+          #{item}
+        </foreach>
+      </if>
+
+    </where>
+  </select>
+
+  <update id="updatePic" >
+    update product set product_url = #{url} where id = #{id}
+  </update>
+  <update id="removeById" >
+    update product set remove = 'Y' where id = #{id}
+  </update>
 </mapper>
