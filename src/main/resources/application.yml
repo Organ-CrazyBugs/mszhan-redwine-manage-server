@@ -36,3 +36,5 @@ server:
   error:
     include-stacktrace: always
     path: /page/error
+
+productPath: /productPicture/basic
