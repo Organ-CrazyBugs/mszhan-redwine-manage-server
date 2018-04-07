@@ -18,6 +18,10 @@ public class PaginateResult<T> {
         this.rows = rows;
     }
 
+    public static <T> PaginateResult<T> newInstance(long total, List<T> rows){
+        return new PaginateResult<>(total, rows);
+    }
+
     public Long getTotal() {
         return total;
     }

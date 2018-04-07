@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+
+    <head th:include="/includes/ui_libs::payload('仓库管理')"></head>
+    <script type="text/javascript" src="/ui-lib/main/js/warehouse/warehouse_manage.js"></script>
+
+    <body>
+        <!-- 一级导航菜单 -->
+        <div th:include="/includes/nav_bar::payload('WAREHOUSE')"></div>
+        <!-- 二级导航菜单 -->
+        <div th:include="/includes/nav_bar_level2::payload('WAREHOUSE', 'WAREHOUSE_MANAGE')"></div>
+
+        <main class="container">
+            <div class="my-3 p-3 bg-white rounded box-shadow">
+                <!-- 页面内容在此处填充 -->
+                <form id="table-query-form" class="table-query-form" action="#">
+                    <div class="row">
+                        <div class="col-md-3">
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <div class="input-group-text query-form-label">仓库名称</div>
+                                </div>
+                                <input type="text" class="form-control" name="warehouseName" placeholder="仓库名称" />
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <div class="input-group-text query-form-label">仓库状态</div>
+                                </div>
+                                <select name="status" class="custom-select">
+                                    <option selected="selected" value="">全部</option>
+                                    <option value="ENABLED">启用</option>
+                                    <option value="DISABLED">禁用</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="btn-group mr-2">
+                                <button type="button" class="btn btn-outline-primary" data-toggle="modal" data-target="#warehouseInputPopupModal">&nbsp;新建&nbsp;</button>
+                                <button type="button" class="btn btn-outline-primary" data-toggle="modal" data-target="#warehouseInputPopupModal">&nbsp;修改&nbsp;</button>
+                                <button type="button" class="btn btn-outline-primary">&nbsp;启用&nbsp;</button>
+                                <button type="button" class="btn btn-outline-primary">&nbsp;禁用&nbsp;</button>
+                            </div>
+                        </div>
+                        <div class="col-md-6 text-right">
+                            <button id="table-query-submit-btn" type="button" class="btn btn-outline-primary">&nbsp;查&nbsp;询&nbsp;</button>
+                        </div>
+                    </div>
+                </form>
+                <div class="row">
+                    <div class="col-md-12">
+                        <table id="table"></table>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </body>
+</html>

@@ -56,6 +56,19 @@ public class Warehouse {
     private String phone;
 
     /**
+     * 状态, ENABLED, DISABLED
+     */
+    private String status;
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    /**
      * @return id
      */
     public Integer getId() {

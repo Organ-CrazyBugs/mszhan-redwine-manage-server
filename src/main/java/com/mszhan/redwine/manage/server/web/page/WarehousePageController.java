@@ -13,4 +13,10 @@ public class WarehousePageController {
         return view;
     }
 
+    @RequestMapping("/page/warehouse/warehouse_manage")
+    public ModelAndView warehouseManage(){
+        ModelAndView view = new ModelAndView("warehouse/warehouse_manage");
+        return view;
+    }
+
 }

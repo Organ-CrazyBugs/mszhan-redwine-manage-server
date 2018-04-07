@@ -37,11 +37,11 @@
 			<artifactId>spring-boot-starter-thymeleaf</artifactId>
 		</dependency>
 
-		<dependency>
+<!--		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-devtools</artifactId>
 			<scope>runtime</scope>
-		</dependency>
+		</dependency>-->
 
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -75,13 +75,14 @@
 		</dependency>
 		<!--
 			Mybatis 分页插件
-			https://mvnrepository.com/artifact/com.github.pagehelper/pagehelper-spring-boot-starter
+			https://mvnrepository.com/artifact/com.github.pagehelper/pagehelper
 		-->
 		<dependency>
 			<groupId>com.github.pagehelper</groupId>
-			<artifactId>pagehelper-spring-boot-starter</artifactId>
-			<version>1.2.3</version>
+			<artifactId>pagehelper</artifactId>
+			<version>5.1.2</version>
 		</dependency>
+
 		<!--
 			Alibaba DataSource druid
 			https://mvnrepository.com/artifact/com.alibaba/druid-spring-boot-starter
