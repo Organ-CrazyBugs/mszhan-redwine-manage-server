@@ -77,3 +77,56 @@ if ($.fn.bootstrapTable.defaults) {
         queryParamsType : "limit"
     });
 }
+
+/**
+ * 扩展JQuery 消息弹出框
+ */
+$.extend({
+    alertInfo: function (title, text) {
+        return new PNotify({
+            title: title,
+            text: text,
+            type: 'info',
+            animate: {
+                animate: true,
+                in_class: 'bounceIn',
+                out_class: 'bounceOut'
+            }
+        });
+    },
+    alertSuccess: function (title, text) {
+        return new PNotify({
+            title: title,
+            text: text,
+            type: 'success',
+            animate: {
+                animate: true,
+                in_class: 'bounceIn',
+                out_class: 'bounceOut'
+            }
+        });
+    },
+    alertError: function (title, text) {
+        return new PNotify({
+            title: title,
+            text: text,
+            type: 'error',
+            animate: {
+                animate: true,
+                in_class: 'bounceIn',
+                out_class: 'bounceOut'
+            }
+        });
+    },
+    alertWarning: function (title, text) {
+        return new PNotify({
+            title: title,
+            text: text,
+            animate: {
+                animate: true,
+                in_class: 'bounceIn',
+                out_class: 'bounceOut'
+            }
+        });
+    }
+});
