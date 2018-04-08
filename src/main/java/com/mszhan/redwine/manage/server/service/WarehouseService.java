@@ -10,4 +10,10 @@ import com.mszhan.redwine.manage.server.core.Service;
  */
 public interface WarehouseService extends Service<Warehouse> {
 
+    enum WarehouseStatus {
+        ENABLED,DISABLED;
+    }
+
+    Warehouse createWarehouse(Integer userId, Warehouse warehouse);
+
 }

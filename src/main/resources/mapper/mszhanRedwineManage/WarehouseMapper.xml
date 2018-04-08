@@ -16,5 +16,6 @@
     <result column="tel" jdbcType="VARCHAR" property="tel" />
     <result column="phone" jdbcType="VARCHAR" property="phone" />
     <result column="status" jdbcType="CHAR" property="status" />
+    <result column="remark" jdbcType="VARCHAR" property="remark" />
   </resultMap>
 </mapper>

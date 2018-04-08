@@ -10,28 +10,47 @@ $.ajax = function (options) {
 
     var fn = {
         error: function (jqXHR, textStatus, errorThrown){
-            console.log('执行了 error');
+            console.log('执行了['+options.url+'] error');
 
             if (originError){
                 originError(jqXHR, textStatus, errorThrown);
             }
         },
         success: function (data, textStatus, jqXHR) {
-            console.log('执行了 success');
+            console.log('执行了['+options.url+'] success');
+            if (!$.ajaxIsSuccess(data)) {
+                let error = $.ajaxGetError(data);
+                let errorMsg = '未知错误, 请联系管理员!';
+                if (error && error.message) {
+                    errorMsg = error.message;
+                }
+                $.alertError('错误', errorMsg);
+
+                if (error) {
+                    console.warn(error.trace);
+                }
+            }
 
             if (originSuccess){
                 originSuccess(data, textStatus, jqXHR);
             }
         },
         complete: function ( jqXHR, textStatus ){
-            console.log('执行了 complete');
+            console.log('执行了['+options.url+'] complete');
+            if (options.targetBtn) {
+                options.targetBtn.removeAttr('disabled').text(options.targetBtnText)
+            }
 
             if (originComplete) {
                 originComplete(jqXHR, textStatus);
             }
         },
         beforeSend: function (jqXHR, settings ) {
-            console.log('执行了 beforeSend');
+            console.log('执行了['+options.url+'] beforeSend');
+            if (options.targetBtn) {
+                options.targetBtnText = options.targetBtn.attr('disabled', true).text();
+                options.targetBtn.text('处理中...')
+            }
 
             if (originBeforeSend) {
                 originBeforeSend(jqXHR, settings);
@@ -128,5 +147,59 @@ $.extend({
                 out_class: 'bounceOut'
             }
         });
+    }
+});
+
+/**
+ * 扩展JQuery
+ */
+$.extend({
+    // 字符串操作函数
+    isBlank: function (str) {
+        let type = typeof str;
+        if (type === 'boolean' || type === 'number') {
+            return false;
+        }
+        return !str;
+    },
+    ajaxIsSuccess: function (data) {
+        return data && data.success;
+    },
+    ajaxIsFailure: function (data) {
+        return !$.ajaxIsSuccess(data);
+    },
+    ajaxGetError: function (data) {
+        if (data && data.error) {
+            return data.error;
+        }
+        return null;
+    },
+    ajaxGetData: function (data) {
+        if (data && data.data) {
+            return data.data;
+        }
+        return null;
+    }
+});
+
+/**
+ * 扩展JQuery serialize函数
+ */
+$.fn.extend({
+    serializeObject: function () {
+        let result = {};
+        let entrys = this.serializeArray();
+        entrys.forEach((item) => {
+            if (item['name']) {
+                result[item['name']] = item['value'];
+            }
+        });
+        return result;
+    },
+    reset: function () {
+        this.find('input,select,textarea').not(':button, :submit, :reset, :hidden')
+            .val('')
+            .removeAttr('checked')
+            .removeAttr('selected');
     }
 });

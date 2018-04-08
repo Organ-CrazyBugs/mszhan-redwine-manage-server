@@ -278,6 +278,7 @@ CREATE TABLE `warehouse` (
 
 
 ALTER TABLE `warehouse` ADD COLUMN `status` char(10) NOT NULL DEFAULT 'ENABLED' COMMENT '状态, ENABLED, DISABLED';
+ALTER TABLE `warehouse` ADD COLUMN `remark` varchar(500) NULL COMMENT '备注' AFTER `status`;
 
 INSERT INTO `warehouse`(`id`, `name`, `address`, `principal`, `create_date`, `creator`, `update_date`, `updator`, `tel`, `phone`, `status`) VALUES (1, '深圳测试仓库', '广东省深圳市龙岗区山窝窝', '小名', '2018-04-07 11:49:27', NULL, '2018-04-07 11:49:35', NULL, '85512344321', '13544445555', 'ENABLED');
 INSERT INTO `warehouse`(`id`, `name`, `address`, `principal`, `create_date`, `creator`, `update_date`, `updator`, `tel`, `phone`, `status`) VALUES (2, '香港测试仓库', '香港山窝窝', '小名', '2018-04-07 11:49:27', NULL, '2018-04-07 11:49:35', NULL, '85512344321', '13544445555', 'ENABLED');

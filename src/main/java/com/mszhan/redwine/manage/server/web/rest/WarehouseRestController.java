@@ -2,19 +2,25 @@ package com.mszhan.redwine.manage.server.web.rest;
 
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
+import com.mszhan.redwine.manage.server.core.BasicException;
 import com.mszhan.redwine.manage.server.core.Requests;
 import com.mszhan.redwine.manage.server.core.Responses;
 import com.mszhan.redwine.manage.server.dao.mszhanRedwineManage.WarehouseMapper;
 import com.mszhan.redwine.manage.server.model.mszhanRedwineManage.Warehouse;
 import com.mszhan.redwine.manage.server.model.mszhanRedwineManage.base.PaginateResult;
+import com.mszhan.redwine.manage.server.model.mszhanRedwineManage.vo.WarehouseCreateVO;
+import com.mszhan.redwine.manage.server.service.WarehouseService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import tk.mybatis.mapper.entity.Condition;
 import tk.mybatis.mapper.entity.Example;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Date;
 
 /**
  * @Description:
@@ -26,6 +32,8 @@ public class WarehouseRestController {
 
     @Autowired
     private WarehouseMapper warehouseMapper;
+    @Autowired
+    private WarehouseService warehouseService;
 
     @GetMapping(value = "/api/warehouse/manage/list")
     public Object list(HttpServletRequest request) {
@@ -48,6 +56,24 @@ public class WarehouseRestController {
         Page<Warehouse> page = PageHelper.offsetPage(offset, limit).doSelectPage(() -> this.warehouseMapper.selectByCondition(searchCon));
 
         return Responses.newInstance().succeed(PaginateResult.newInstance(page.getTotal(), page));
+    }
+
+    @PostMapping(value = "/api/warehouse/manage/create")
+    public Object createWarehouse(@RequestBody WarehouseCreateVO createVO){
+        Warehouse warehouse = new Warehouse();
+        warehouse.setName(createVO.getName());
+        warehouse.setAddress(createVO.getAddress());
+        warehouse.setPhone(createVO.getPhone());
+        warehouse.setPrincipal(createVO.getPrincipal());
+        warehouse.setTel(createVO.getTel());
+        warehouse.setRemark(createVO.getRemark());
+        warehouse.setStatus(WarehouseService.WarehouseStatus.ENABLED.toString());
+
+        Integer userId = 0; //TODO: 从Session中获取用户ID
+
+        this.warehouseService.createWarehouse(userId, warehouse);
+
+        return Responses.newInstance().succeed();
     }
 
 }

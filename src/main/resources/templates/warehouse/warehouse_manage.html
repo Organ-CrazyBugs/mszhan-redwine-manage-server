@@ -12,6 +12,8 @@
         <!-- 二级导航菜单 -->
         <div th:include="/includes/nav_bar_level2::payload('WAREHOUSE', 'WAREHOUSE_MANAGE')"></div>
 
+        <div th:include="/warehouse/warehouse_manage_create_popup::payload('新建仓库', 'warehouse-create-modal')"></div>
+
         <main class="container">
             <div class="my-3 p-3 bg-white rounded box-shadow">
                 <!-- 页面内容在此处填充 -->
@@ -41,7 +43,7 @@
                     <div class="row">
                         <div class="col-md-6">
                             <div class="btn-group mr-2">
-                                <button type="button" class="btn btn-outline-primary" data-toggle="modal" data-target="#warehouseInputPopupModal">&nbsp;新建&nbsp;</button>
+                                <button type="button" class="btn btn-outline-primary" data-toggle="modal" data-target="#warehouse-create-modal">&nbsp;新建&nbsp;</button>
                                 <button type="button" class="btn btn-outline-primary" data-toggle="modal" data-target="#warehouseInputPopupModal">&nbsp;修改&nbsp;</button>
                                 <button type="button" class="btn btn-outline-primary">&nbsp;启用&nbsp;</button>
                                 <button type="button" class="btn btn-outline-primary">&nbsp;禁用&nbsp;</button>
