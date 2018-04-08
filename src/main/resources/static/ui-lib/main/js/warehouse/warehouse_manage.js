@@ -4,6 +4,8 @@ $(function () {
     let $warehouseCreateSubmitBtn = $('#warehouse-create-submit-btn');
     let $warehouseCreateForm = $('#warehouse-create-form');
     let $warehouseCreateModal = $('#warehouse-create-modal');
+    let $enabledWarehouseBtn = $('#enabled-warehouse-btn');
+    let $disabledWarehouseBtn = $('#disabled-warehouse-btn');
 
     $table.bootstrapTable({
         url: '/api/warehouse/manage/list',
@@ -11,7 +13,6 @@ $(function () {
         columns: [
             {checkbox: true},
             {field: 'name', title: '仓库名称'},
-            {field: 'address', title: '仓库地址'},
             {field: 'principal', title: '仓库负责人'},
             {field: 'phone', title: '联系方式'},
             {field: 'tel', title: '电话'},
@@ -22,6 +23,7 @@ $(function () {
                     return '<span class="badge badge-danger">禁用</span>'
                 }
             }},
+            {field: 'address', title: '仓库地址'},
             {field: 'createDate', title: '创建时间'},
             {field: 'remark', title: '备注'}
         ]
@@ -60,11 +62,49 @@ $(function () {
                 }
                 $.alertSuccess('提示', '仓库创建成功!');
 
-                $table.bootstrapTable('refresh');       // 刷新列表
+                $table.bootstrapTable('refresh');                       // 刷新列表
                 $warehouseCreateModal.modal('hide');    // 关闭模态框
                 $warehouseCreateForm.reset();       // 清空模态框内表单数据
             }
         });
     });
 
+    // 禁用/启用 仓库
+    function changeWarehouseStatusEvent(status){
+        let statusName = status === 'ENABLED' ? '启用' : '禁用';
+        return function () {
+            let rows = $table.bootstrapTable('getSelections');
+            if (rows.length <= 0) {
+                $.alertWarning('提示', '请选择需要操作的记录项');
+                return;
+            }
+            let ids = [];
+            rows.forEach(item => ids.push(item.id));
+            let warehouseIds = ids.join(',');
+
+            let text = $.formatString('确认{1}已选择的{2}个仓库吗？', statusName, rows.length);
+            $.confirm('请确认您的操作', text, function (){
+
+                $.ajax({
+                    url: '/api/warehouse/manage/change_status',
+                    method: 'PUT',
+                    // contentType: 'application/json',
+                    dataType: 'json',
+                    data: { warehouseIds, status },
+                    targetBtn: status === 'ENABLED' ? $enabledWarehouseBtn : $disabledWarehouseBtn,   // 指定发送ajax请求后在请求过程中禁用的按钮对象
+                    success: function (data) {
+                        if ($.ajaxIsFailure(data)) {
+                            return;
+                        }
+                        $.alertSuccess('提示', '仓库状态修改成功!');
+
+                        $table.bootstrapTable('refresh');                       // 刷新列表
+                    }
+                });
+            });
+        }
+    };
+
+    $enabledWarehouseBtn.on('click', changeWarehouseStatusEvent('ENABLED'));
+    $disabledWarehouseBtn.on('click', changeWarehouseStatusEvent('DISABLED'));
 });

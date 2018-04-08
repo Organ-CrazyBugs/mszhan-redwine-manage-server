@@ -12,15 +12,14 @@ import com.mszhan.redwine.manage.server.model.mszhanRedwineManage.vo.WarehouseCr
 import com.mszhan.redwine.manage.server.service.WarehouseService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import tk.mybatis.mapper.entity.Condition;
 import tk.mybatis.mapper.entity.Example;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 /**
  * @Description:
@@ -76,4 +75,16 @@ public class WarehouseRestController {
         return Responses.newInstance().succeed();
     }
 
+    @PutMapping(value = "/api/warehouse/manage/change_status")
+    public Object changeStatus(HttpServletRequest request){
+        Requests requests = Requests.newInstance(request);
+        List<Integer> warehouseIds = requests.getIntegerArray("warehouseIds", ",", new ArrayList<>());
+        WarehouseService.WarehouseStatus status = requests.getEnum("status", WarehouseService.WarehouseStatus.class, null);
+
+        Integer userId = 0; //TODO: 从Session中获取用户ID
+
+        this.warehouseService.changeStatus(userId, warehouseIds, status);
+
+        return Responses.newInstance().succeed();
+    }
 }

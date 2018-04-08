@@ -3,6 +3,8 @@ package com.mszhan.redwine.manage.server.service;
 import com.mszhan.redwine.manage.server.model.mszhanRedwineManage.Warehouse;
 import com.mszhan.redwine.manage.server.core.Service;
 
+import java.util.List;
+
 /**
  * @Description:
  * @Author: iblilife@163.com
@@ -15,5 +17,7 @@ public interface WarehouseService extends Service<Warehouse> {
     }
 
     Warehouse createWarehouse(Integer userId, Warehouse warehouse);
+
+    void changeStatus(Integer userId, List<Integer> warehouseIds, WarehouseStatus status);
 
 }

@@ -8,10 +8,12 @@ import com.mszhan.redwine.manage.server.core.AbstractService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.CollectionUtils;
 import tk.mybatis.mapper.entity.Condition;
 
 import javax.annotation.Resource;
 import java.util.Date;
+import java.util.List;
 
 
 /**
@@ -49,9 +51,34 @@ public class WarehouseServiceImpl extends AbstractService<Warehouse> implements 
             throw BasicException.newInstance().error("该仓库名称已经存在", 500);
         }
 
+        warehouse.setCreator(userId);
+        warehouse.setUpdator(userId);
         warehouse.setCreateDate(new Date());
         warehouse.setUpdateDate(new Date());
         this.warehouseMapper.insert(warehouse);
         return warehouse;
+    }
+
+    @Override
+    public void changeStatus(Integer userId, List<Integer> warehouseIds, WarehouseStatus status) {
+        if (userId == null) {
+            throw BasicException.newInstance().error("仓库状态修改人不能为空", 500);
+        }
+        if (CollectionUtils.isEmpty(warehouseIds)) {
+            throw BasicException.newInstance().error("仓库状态修改项不能为空", 500);
+        }
+        if (status == null) {
+            throw BasicException.newInstance().error("仓库状态参数不能为空", 500);
+        }
+
+        Warehouse record = new Warehouse();
+        record.setStatus(status.toString());
+        record.setUpdator(userId);
+        record.setUpdateDate(new Date());
+
+        Condition con = new Condition(Warehouse.class);
+        con.createCriteria().andIn("id", warehouseIds)
+                .andNotEqualTo("status", status.toString());
+        this.warehouseMapper.updateByConditionSelective(record, con);
     }
 }

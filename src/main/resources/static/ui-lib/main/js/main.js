@@ -26,7 +26,7 @@ $.ajax = function (options) {
                 }
                 $.alertError('错误', errorMsg);
 
-                if (error) {
+                if (error && error.trace) {
                     console.warn(error.trace);
                 }
             }
@@ -147,6 +147,34 @@ $.extend({
                 out_class: 'bounceOut'
             }
         });
+    },
+    confirm: function (title, text, confirmEvent, cancelEvent) {
+        (new PNotify({
+            title: title,
+            text: text,
+            icon: 'glyphicon glyphicon-question-sign',
+            hide: false,
+            addclass: 'stack-modal',
+            stack: {'dir1': 'down', 'dir2': 'right', 'modal': true},
+            confirm: {
+                confirm: true
+            },
+            buttons: {
+                closer: false,
+                sticker: false
+            },
+            history: {
+                history: false
+            }
+        })).get().on('pnotify.confirm', function() {
+            if (confirmEvent) {
+                confirmEvent();
+            }
+        }).on('pnotify.cancel', function() {
+            if (cancelEvent) {
+                cancelEvent();
+            }
+        });
     }
 });
 
@@ -161,6 +189,11 @@ $.extend({
             return false;
         }
         return !str;
+    },
+    formatString: function () {
+        var args = [].slice.call(arguments);
+        var pattern = new RegExp('{([1-' + args.length + '])}','g');
+        return String(args[0]).replace(pattern, function(match, index) { return args[index]; });
     },
     ajaxIsSuccess: function (data) {
         return data && data.success;
