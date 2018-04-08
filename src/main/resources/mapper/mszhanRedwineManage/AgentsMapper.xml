@@ -54,7 +54,12 @@
   </delete>
 
   <update id="updateBalance">
-    update agtents set balance = #{balance} where id = #{id}
+    update agents set balance = #{balance} where id = #{id}
+  </update>
+
+  <update id="updateAgents">
+    update agents set  name = #{name}, tel = #{tel}, phone = #{phone}, update_date = #{updateDate},updator = #{updator},address = #{address}
+    where id = #{id}
   </update>
 
 </mapper>

@@ -14,6 +14,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.CollectionUtils;
 
 import javax.annotation.Resource;
 import java.math.BigDecimal;
@@ -54,8 +55,31 @@ public class AgentsServiceImpl extends AbstractService<Agents> implements Agents
 
     @Override
     public ResponseUtils.ResponseVO updateAgent(Agents agents) {
-
-        return null;
+        if (agents.getId() == null){
+            return ResponseUtils.newResponse().failed(500, "id不能为空");
+        }
+        if (StringUtils.isBlank(agents.getAddress())){
+            return ResponseUtils.newResponse().failed(500, "地址不能为空");
+        }
+        if (StringUtils.isBlank(agents.getName())){
+            return ResponseUtils.newResponse().failed(500, "名字不能为空");
+        }
+        if (StringUtils.isBlank(agents.getPhone())){
+            return ResponseUtils.newResponse().failed(500, "电话号码不能为空");
+        }
+        if (StringUtils.isBlank(agents.getTel())){
+            return ResponseUtils.newResponse().failed(500, "手机号码不能为空");
+        }
+        agentTrimToNull(agents);
+        List<Agents> agentsList = agentsMapper.queryByTelAndNotInId(agents.getTel(), agents.getId());
+        if (!CollectionUtils.isEmpty(agentsList)){
+            return ResponseUtils.newResponse().failed(500, "已经存在改电话号码，不可重复添加");
+        }
+        Date nowDate = new Date();
+        agents.setUpdateDate(nowDate);
+        agents.setCreator(1);
+        agentsMapper.updateAgents(agents);
+        return ResponseUtils.newResponse().succeed();
     }
 
     private void agentTrimToNull(Agents agents) {
@@ -130,6 +154,10 @@ public class AgentsServiceImpl extends AbstractService<Agents> implements Agents
 
     @Override
     public ResponseUtils.ResponseVO delAgent(Integer id) {
-        return null;
+        if (id == null){
+            return ResponseUtils.newResponse().failed(500, "id不能为空");
+        }
+        agentsMapper.deleteByPrimaryKey(id);
+        return ResponseUtils.newResponse().succeed();
     }
 }

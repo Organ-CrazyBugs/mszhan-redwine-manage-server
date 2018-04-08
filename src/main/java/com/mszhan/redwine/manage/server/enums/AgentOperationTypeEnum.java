@@ -7,9 +7,22 @@ import java.text.DecimalFormat;
  * Created by xb on 2017/11/1.
  */
 public enum AgentOperationTypeEnum {
-	RECHARGE,
-	OTHER,
-	ORDER_DEDUCTION,
-	BALANCE;
+	RECHARGE("充值"),
+	OTHER("其他"),
+	ORDER_DEDUCTION("订单花费"),
+	BALANCE("结余");
 
+	private String value;
+
+	private AgentOperationTypeEnum(String value){
+		this.value = value;
+	}
+
+	public String getValue() {
+		return value;
+	}
+
+	public void setValue(String value) {
+		this.value = value;
+	}
 }

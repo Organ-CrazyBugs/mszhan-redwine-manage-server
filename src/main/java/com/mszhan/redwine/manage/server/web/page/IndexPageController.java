@@ -24,10 +24,5 @@ public class IndexPageController {
         return view;
     }
 
-    @GetMapping(value = "/product/index")
-    public ModelAndView productIndex() {
-        ModelAndView view = new ModelAndView("product");
-        return view;
-    }
 
 }
