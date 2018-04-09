@@ -7,6 +7,7 @@
     -->
     <id column="id" jdbcType="INTEGER" property="id" />
     <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="type" jdbcType="VARCHAR" property="type" />
     <result column="tel" jdbcType="VARCHAR" property="tel" />
     <result column="phone" jdbcType="VARCHAR" property="phone" />
     <result column="balance" jdbcType="DECIMAL" property="balance" />
@@ -15,6 +16,8 @@
     <result column="update_date" jdbcType="TIMESTAMP" property="updateDate" />
     <result column="updator" jdbcType="INTEGER" property="updator" />
     <result column="address" jdbcType="VARCHAR" property="address" />
+    <result column="creator_name" jdbcType="VARCHAR" property="creatorName" />
+    <result column="updator_name" jdbcType="VARCHAR" property="updatorName" />
   </resultMap>
 
 

@@ -61,6 +61,9 @@ public class AgentsServiceImpl extends AbstractService<Agents> implements Agents
         if (StringUtils.isBlank(agents.getAddress())){
             return ResponseUtils.newResponse().failed(500, "地址不能为空");
         }
+        if (StringUtils.isBlank(agents.getType())){
+            return ResponseUtils.newResponse().failed(500, "代理类型不能为空");
+        }
         if (StringUtils.isBlank(agents.getName())){
             return ResponseUtils.newResponse().failed(500, "名字不能为空");
         }
@@ -77,7 +80,8 @@ public class AgentsServiceImpl extends AbstractService<Agents> implements Agents
         }
         Date nowDate = new Date();
         agents.setUpdateDate(nowDate);
-        agents.setCreator(1);
+        agents.setUpdatorName("1");
+        agents.setUpdator(1);
         agentsMapper.updateAgents(agents);
         return ResponseUtils.newResponse().succeed();
     }
@@ -147,7 +151,17 @@ public class AgentsServiceImpl extends AbstractService<Agents> implements Agents
         if (agents.getBalance() == null){
             return ResponseUtils.newResponse().failed(500, "余额不能为空");
         }
+        if (StringUtils.isBlank(agents.getType())){
+            return ResponseUtils.newResponse().failed(500, "代理类型不能为空");
+        }
+        Date nowDate = new Date();
         agentTrimToNull(agents);
+        agents.setCreateDate(nowDate);
+        agents.setUpdateDate(nowDate);
+        agents.setCreator(1);
+        agents.setCreatorName("1");
+        agents.setUpdator(1);
+        agents.setUpdatorName("1");
         agentsMapper.insert(agents);
         return ResponseUtils.newResponse().succeed();
     }

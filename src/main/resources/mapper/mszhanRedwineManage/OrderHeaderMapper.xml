@@ -19,4 +19,106 @@
     <result column="payment_status" jdbcType="VARCHAR" property="paymentStatus" />
     <result column="remark" jdbcType="VARCHAR" property="remark" />
   </resultMap>
+
+  <select id="queryForPage" resultMap="BaseResultMap"  parameterType="com.mszhan.redwine.manage.server.model.mszhanRedwineManage.query.OrderQuery">
+    SELECT h.* FROM order_header h
+    join order_item i on i.order_id = h.order_id
+    <where>
+      <if test = "alcoholContent != null and alcoholContent != ''">
+        and  alcohol_content = #{alcoholContent}
+      </if>
+      <if test = "orderIdList != null and orderIdList.size > 0">
+      and  h.order_id in
+      <foreach collection="orderIdList" index="index" item="item" open="("
+               separator="," close=")">
+        #{item}
+      </foreach>
+    </if>
+      <if test = "clientNameList != null and clientNameList.size > 0">
+        and  h.client_name in
+        <foreach collection="clientNameList" index="index" item="item" open="("
+                 separator="," close=")">
+          #{item}
+        </foreach>
+      </if>
+      <if test = "skuList != null and skuList.size > 0">
+        and  i.sku in
+        <foreach collection="skuList" index="index" item="item" open="("
+                 separator="," close=")">
+          #{item}
+        </foreach>
+      </if>
+      <if test = "agentNameList != null and agentNameList.size > 0">
+        and  h.agent_name in
+        <foreach collection="agentNameList" index="index" item="item" open="("
+                 separator="," close=")">
+          #{item}
+        </foreach>
+      </if>
+      <if test = "deliveryPersonNameList != null and deliveryPersonNameList.size > 0">
+        and  i.delivery_person_name in
+        <foreach collection="deliveryPersonNameList" index="index" item="item" open="("
+                 separator="," close=")">
+          #{item}
+        </foreach>
+      </if>
+    </where>
+    group by h.order_id
+    ORDER BY h.id DESC
+    <if test='offset != null and limit != null '>
+      limit #{offset},#{limit}
+    </if>
+  </select>
+
+
+  <select id="queryCount"  parameterType="com.mszhan.redwine.manage.server.model.mszhanRedwineManage.query.OrderQuery"  resultType="Integer">
+    SELECT COUNT(1) FROM (
+    SELECT h.id FROM order_header h
+    join order_item i on i.order_id = h.order_id
+    <where>
+      <if test = "alcoholContent != null and alcoholContent != ''">
+        and  alcohol_content = #{alcoholContent}
+      </if>
+      <if test = "orderIdList != null and orderIdList.size > 0">
+        and  h.order_id in
+        <foreach collection="orderIdList" index="index" item="item" open="("
+                 separator="," close=")">
+          #{item}
+        </foreach>
+      </if>
+      <if test = "clientNameList != null and clientNameList.size > 0">
+        and  h.client_name in
+        <foreach collection="clientNameList" index="index" item="item" open="("
+                 separator="," close=")">
+          #{item}
+        </foreach>
+      </if>
+      <if test = "skuList != null and skuList.size > 0">
+        and  i.sku in
+        <foreach collection="skuList" index="index" item="item" open="("
+                 separator="," close=")">
+          #{item}
+        </foreach>
+      </if>
+      <if test = "agentNameList != null and agentNameList.size > 0">
+        and  h.agent_name in
+        <foreach collection="agentNameList" index="index" item="item" open="("
+                 separator="," close=")">
+          #{item}
+        </foreach>
+      </if>
+      <if test = "deliveryPersonNameList != null and deliveryPersonNameList.size > 0">
+        and  i.delivery_person_name in
+        <foreach collection="deliveryPersonNameList" index="index" item="item" open="("
+                 separator="," close=")">
+          #{item}
+        </foreach>
+      </if>
+    </where>
+      group by h.id
+
+    ) g
+
+
+  </select>
 </mapper>

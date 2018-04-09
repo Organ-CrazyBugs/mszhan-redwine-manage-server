@@ -16,11 +16,6 @@ public class OrderItem {
     @Column(name = "order_id")
     private String orderId;
 
-    /**
-     * 产品id
-     */
-    @Column(name = "product_id")
-    private Integer productId;
 
     /**
      * sku
@@ -83,6 +78,50 @@ public class OrderItem {
      */
     private String type;
 
+    @Column(name = "delivery_person_id")
+    private Integer deliveryPersonId;
+
+    @Column(name = "delivery_person_name")
+    private String deliveryPersonName;
+
+    @Column(name = "warehouse_id")
+    private Integer warehouseId;
+
+    @Column(name = "warehouse_name")
+    private String warehouseName;
+
+    public String getWarehouseName() {
+        return warehouseName;
+    }
+
+    public void setWarehouseName(String warehouseName) {
+        this.warehouseName = warehouseName;
+    }
+
+    public Integer getDeliveryPersonId() {
+        return deliveryPersonId;
+    }
+
+    public void setDeliveryPersonId(Integer deliveryPersonId) {
+        this.deliveryPersonId = deliveryPersonId;
+    }
+
+    public String getDeliveryPersonName() {
+        return deliveryPersonName;
+    }
+
+    public void setDeliveryPersonName(String deliveryPersonName) {
+        this.deliveryPersonName = deliveryPersonName;
+    }
+
+    public Integer getWarehouseId() {
+        return warehouseId;
+    }
+
+    public void setWarehouseId(Integer warehouseId) {
+        this.warehouseId = warehouseId;
+    }
+
     /**
      * @return id
      */
@@ -115,23 +154,6 @@ public class OrderItem {
         this.orderId = orderId;
     }
 
-    /**
-     * 获取产品id
-     *
-     * @return product_id - 产品id
-     */
-    public Integer getProductId() {
-        return productId;
-    }
-
-    /**
-     * 设置产品id
-     *
-     * @param productId 产品id
-     */
-    public void setProductId(Integer productId) {
-        this.productId = productId;
-    }
 
     /**
      * 获取sku

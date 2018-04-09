@@ -49,9 +49,11 @@ public class OrderHeader {
     /**
      * 代理id
      */
-    @Column(name = "agtent_id")
-    private Integer agtentId;
+    @Column(name = "agent_id")
+    private Integer agentId;
 
+    @Column(name = "agent_name")
+    private String agentName;
     /**
      * 客户地址
      */
@@ -205,22 +207,20 @@ public class OrderHeader {
         this.clientName = clientName;
     }
 
-    /**
-     * 获取代理id
-     *
-     * @return agtent_id - 代理id
-     */
-    public Integer getAgtentId() {
-        return agtentId;
+    public Integer getAgentId() {
+        return agentId;
     }
 
-    /**
-     * 设置代理id
-     *
-     * @param agtentId 代理id
-     */
-    public void setAgtentId(Integer agtentId) {
-        this.agtentId = agtentId;
+    public void setAgentId(Integer agentId) {
+        this.agentId = agentId;
+    }
+
+    public String getAgentName() {
+        return agentName;
+    }
+
+    public void setAgentName(String agentName) {
+        this.agentName = agentName;
     }
 
     /**

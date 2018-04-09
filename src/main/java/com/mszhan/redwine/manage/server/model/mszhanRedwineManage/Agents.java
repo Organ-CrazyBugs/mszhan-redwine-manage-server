@@ -13,6 +13,8 @@ public class Agents {
 
     private String tel;
 
+    private String type;
+
     private String phone;
 
     private BigDecimal balance;
@@ -27,7 +29,36 @@ public class Agents {
 
     private Integer updator;
 
+    private String creatorName;
+
+    private String updatorName;
+
     private String address;
+
+
+    public String getCreatorName() {
+        return creatorName;
+    }
+
+    public void setCreatorName(String creatorName) {
+        this.creatorName = creatorName;
+    }
+
+    public String getUpdatorName() {
+        return updatorName;
+    }
+
+    public void setUpdatorName(String updatorName) {
+        this.updatorName = updatorName;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
 
     /**
      * @return id
