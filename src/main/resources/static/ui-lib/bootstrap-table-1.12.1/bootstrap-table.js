@@ -625,6 +625,23 @@
         this.initBody();
         this.initSearchText();
         this.initServer();
+
+        this.initQueryForm();
+    };
+
+    BootstrapTable.prototype.initQueryForm = function () {
+        if (this.options.tableQueryForm) {
+            let queryForm = $(this.options.tableQueryForm);
+            if (queryForm.length === 0) {
+                return;
+            }
+            let _this = this;
+            queryForm.on('submit', function (event) {
+                event.preventDefault();
+                $(_this.$el).bootstrapTable('refresh');
+                return false;
+            });
+        }
     };
 
     BootstrapTable.prototype.initLocale = function () {

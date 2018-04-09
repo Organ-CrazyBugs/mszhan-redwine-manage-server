@@ -2,13 +2,12 @@ package com.mszhan.redwine.manage.server.web.rest;
 
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
-import com.mszhan.redwine.manage.server.core.BasicException;
 import com.mszhan.redwine.manage.server.core.Requests;
 import com.mszhan.redwine.manage.server.core.Responses;
 import com.mszhan.redwine.manage.server.dao.mszhanRedwineManage.WarehouseMapper;
 import com.mszhan.redwine.manage.server.model.mszhanRedwineManage.Warehouse;
 import com.mszhan.redwine.manage.server.model.mszhanRedwineManage.base.PaginateResult;
-import com.mszhan.redwine.manage.server.model.mszhanRedwineManage.vo.WarehouseCreateVO;
+import com.mszhan.redwine.manage.server.model.mszhanRedwineManage.vo.WarehouseEditVO;
 import com.mszhan.redwine.manage.server.service.WarehouseService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +17,6 @@ import tk.mybatis.mapper.entity.Example;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -58,7 +56,7 @@ public class WarehouseRestController {
     }
 
     @PostMapping(value = "/api/warehouse/manage/create")
-    public Object createWarehouse(@RequestBody WarehouseCreateVO createVO){
+    public Object createWarehouse(@RequestBody WarehouseEditVO createVO){
         Warehouse warehouse = new Warehouse();
         warehouse.setName(createVO.getName());
         warehouse.setAddress(createVO.getAddress());
@@ -84,6 +82,24 @@ public class WarehouseRestController {
         Integer userId = 0; //TODO: 从Session中获取用户ID
 
         this.warehouseService.changeStatus(userId, warehouseIds, status);
+
+        return Responses.newInstance().succeed();
+    }
+
+    @PutMapping(value = "/api/warehouse/manage/update")
+    public Object update(@RequestBody WarehouseEditVO editVO){
+        Warehouse warehouse = new Warehouse();
+        warehouse.setId(editVO.getId());
+        warehouse.setName(editVO.getName());
+        warehouse.setAddress(editVO.getAddress());
+        warehouse.setPhone(editVO.getPhone());
+        warehouse.setPrincipal(editVO.getPrincipal());
+        warehouse.setTel(editVO.getTel());
+        warehouse.setRemark(editVO.getRemark());
+
+        Integer userId = 0; //TODO: 从Session中获取用户ID
+
+        this.warehouseService.updateWarehouse(userId, warehouse);
 
         return Responses.newInstance().succeed();
     }

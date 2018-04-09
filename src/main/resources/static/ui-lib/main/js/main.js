@@ -13,7 +13,11 @@ $.ajax = function (options) {
             console.log('执行了['+options.url+'] error');
 
             if (originError){
-                originError(jqXHR, textStatus, errorThrown);
+                try {
+                    originError(jqXHR, textStatus, errorThrown);
+                } catch (err) {
+                    console.error(err);
+                }
             }
         },
         success: function (data, textStatus, jqXHR) {
@@ -32,7 +36,11 @@ $.ajax = function (options) {
             }
 
             if (originSuccess){
-                originSuccess(data, textStatus, jqXHR);
+                try {
+                    originSuccess(data, textStatus, jqXHR);
+                } catch (err) {
+                    console.error(err);
+                }
             }
         },
         complete: function ( jqXHR, textStatus ){
@@ -43,7 +51,11 @@ $.ajax = function (options) {
             }
 
             if (originComplete) {
-                originComplete(jqXHR, textStatus);
+                try {
+                    originComplete(jqXHR, textStatus);
+                } catch (err) {
+                    console.error(err);
+                }
             }
         },
         beforeSend: function (jqXHR, settings ) {
@@ -55,7 +67,11 @@ $.ajax = function (options) {
             }
 
             if (originBeforeSend) {
-                originBeforeSend(jqXHR, settings);
+                try {
+                    originBeforeSend(jqXHR, settings);
+                } catch (err) {
+                    console.error(err);
+                }
             }
         }
     };
@@ -66,7 +82,7 @@ $.ajax = function (options) {
 /**
  * 设置Bootstrap 默认行为
  */
-if ($.fn.bootstrapTable.defaults) {
+if ($.fn.bootstrapTable) {
     $.extend($.fn.bootstrapTable.defaults, {
         responseHandler: function (res) {
             if (res.success && res.data.rows) {
@@ -236,5 +252,17 @@ $.fn.extend({
             .val('')
             .removeAttr('checked')
             .removeAttr('selected');
+    },
+    bindData: function (data, fields) {
+        if (!data || !fields || fields.length == 0) {
+            return;
+        }
+        let _this = this;
+        fields.forEach(val => {
+            if (data[val] !== undefined && data[val] !== null){
+                let selector = $.formatString('input[name="{1}"],textarea[name="{1}"],select[name="{1}"]', val);
+                _this.find(selector).val(data[val]);
+            }
+        });
     }
 });

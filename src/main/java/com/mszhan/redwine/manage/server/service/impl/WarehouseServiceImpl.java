@@ -60,6 +60,38 @@ public class WarehouseServiceImpl extends AbstractService<Warehouse> implements 
     }
 
     @Override
+    public void updateWarehouse(Integer userId, Warehouse warehouse){
+        if (userId == null) {
+            throw BasicException.newInstance().error("仓库状态修改人不能为空", 500);
+        }
+        if (warehouse == null) {
+            throw BasicException.newInstance().error("缺少仓库信息参数", 500);
+        }
+        if (StringUtils.isBlank(warehouse.getName())) {
+            throw BasicException.newInstance().error("仓库名称不能为空", 500);
+        }
+        if (StringUtils.isBlank(warehouse.getPrincipal())) {
+            throw BasicException.newInstance().error("仓库负责人不能为空", 500);
+        }
+        if (StringUtils.isBlank(warehouse.getPhone())) {
+            throw BasicException.newInstance().error("联系方式不能为空", 500);
+        }
+
+        Condition con = new Condition(Warehouse.class);
+        con.createCriteria().andEqualTo("name", warehouse.getName())
+                .andNotEqualTo("id", warehouse.getId());
+        int count = this.warehouseMapper.selectCountByCondition(con);
+        if (count > 0) {
+            throw BasicException.newInstance().error("该仓库名称已经存在", 500);
+        }
+
+        warehouse.setUpdateDate(new Date());
+        warehouse.setUpdator(userId);
+
+        this.warehouseMapper.updateByPrimaryKeySelective(warehouse);
+    }
+
+    @Override
     public void changeStatus(Integer userId, List<Integer> warehouseIds, WarehouseStatus status) {
         if (userId == null) {
             throw BasicException.newInstance().error("仓库状态修改人不能为空", 500);

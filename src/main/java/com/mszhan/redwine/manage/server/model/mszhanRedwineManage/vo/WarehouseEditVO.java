@@ -5,13 +5,22 @@ package com.mszhan.redwine.manage.server.model.mszhanRedwineManage.vo;
  * @Author: iblilife@163.com
  * @Date: 16:44 2018/4/8
  */
-public class WarehouseCreateVO {
+public class WarehouseEditVO {
+    private Integer id;
     private String address;
     private String name;
     private String phone;
     private String principal;
     private String remark;
     private String tel;
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
     public String getAddress() {
         return address;

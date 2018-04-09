@@ -18,6 +18,8 @@ public interface WarehouseService extends Service<Warehouse> {
 
     Warehouse createWarehouse(Integer userId, Warehouse warehouse);
 
+    void updateWarehouse(Integer userId, Warehouse warehouse);
+
     void changeStatus(Integer userId, List<Integer> warehouseIds, WarehouseStatus status);
 
 }

@@ -1,11 +1,18 @@
 $(function () {
     let $table = $('#table');
     let $tableQuerySubmitBtn = $('#table-query-submit-btn');
+
     let $warehouseCreateSubmitBtn = $('#warehouse-create-submit-btn');
     let $warehouseCreateForm = $('#warehouse-create-form');
     let $warehouseCreateModal = $('#warehouse-create-modal');
+
     let $enabledWarehouseBtn = $('#enabled-warehouse-btn');
     let $disabledWarehouseBtn = $('#disabled-warehouse-btn');
+
+    let $showEditWarehouseBtn = $('#show-edit-warehouse-btn');
+    let $warehouseEditModal = $('#warehouse-edit-modal');
+    let $warehouseEditForm = $('#warehouse-edit-form');
+    let $warehouseEditSubmitBtn = $('#warehouse-edit-submit-btn');
 
     $table.bootstrapTable({
         url: '/api/warehouse/manage/list',
@@ -27,6 +34,14 @@ $(function () {
             {field: 'createDate', title: '创建时间'},
             {field: 'remark', title: '备注'}
         ]
+    });
+
+    // 绑定创建仓库Modal隐藏事件， 隐藏时候清空表单内容
+    $warehouseCreateModal.on('hide.bs.modal', function (e) {
+        $warehouseCreateForm.reset();       // 清空模态框内表单数据
+    });
+    $warehouseEditModal.on('hide.bs.modal', function (e) {
+        $warehouseEditForm.reset();       // 清空模态框内表单数据
     });
 
     // 查询按钮点击事件
@@ -64,7 +79,55 @@ $(function () {
 
                 $table.bootstrapTable('refresh');                       // 刷新列表
                 $warehouseCreateModal.modal('hide');    // 关闭模态框
-                $warehouseCreateForm.reset();       // 清空模态框内表单数据
+            }
+        });
+    });
+
+    // 修改仓库信息 按钮单击事件
+    $showEditWarehouseBtn.on('click', function(event) {
+        let rows = $table.bootstrapTable('getSelections');
+        if (rows.length <= 0) {
+            $.alertWarning('提示', '请选择需要修改的记录项');
+            return;
+        }
+        // 绑定表单数据
+        $warehouseEditForm.bindData(rows[0], ["id", "name", "principal", "phone", "tel", "address", "remark"])
+
+        $warehouseEditModal.modal('show');
+    });
+
+    // 修改仓库信息 提交按钮单击事件
+    $warehouseEditSubmitBtn.on('click', function(event) {
+        event.preventDefault();
+        let params = $warehouseEditForm.serializeObject();
+        if ($.isBlank($.trim(params['name']))) {
+            $.alertError('缺少参数', '仓库名称为必填项');
+            return;
+        }
+        if ($.isBlank($.trim(params['principal']))) {
+            $.alertError('缺少参数', '仓库负责人为必填项');
+            return;
+        }
+        if ($.isBlank($.trim(params['phone']))) {
+            $.alertError('缺少参数', '联系电话为必填项');
+            return;
+        }
+
+        $.ajax({
+            url: '/api/warehouse/manage/update',
+            method: 'PUT',
+            contentType: 'application/json',
+            dataType: 'json',
+            data: JSON.stringify(params),
+            targetBtn: $warehouseEditSubmitBtn,   // 指定发送ajax请求后在请求过程中禁用的按钮对象
+            success: function (data) {
+                if ($.ajaxIsFailure(data)) {
+                    return;
+                }
+                $.alertSuccess('提示', '仓库更新成功!');
+
+                $table.bootstrapTable('refresh');       // 刷新列表
+                $warehouseEditModal.modal('hide');    // 关闭模态框
             }
         });
     });
