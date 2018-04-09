@@ -1,6 +1,5 @@
 $(function () {
     let $table = $('#table');
-    let $tableQuerySubmitBtn = $('#table-query-submit-btn');
 
     let $warehouseCreateSubmitBtn = $('#warehouse-create-submit-btn');
     let $warehouseCreateForm = $('#warehouse-create-form');
@@ -43,9 +42,6 @@ $(function () {
     $warehouseEditModal.on('hide.bs.modal', function (e) {
         $warehouseEditForm.reset();       // 清空模态框内表单数据
     });
-
-    // 查询按钮点击事件
-    $tableQuerySubmitBtn.on('click', () => $table.bootstrapTable('refresh'));
 
     // 点击创建仓库按钮事件
     $warehouseCreateSubmitBtn.on('click', function(event){

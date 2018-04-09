@@ -6,125 +6,74 @@
     <head th:include="/includes/ui_libs::payload('库存管理')"></head>
 
     <script type="text/javascript" src="/ui-lib/main/js/warehouse/warehouse_index.js"></script>
-<body>
-    <!-- 一级导航菜单 -->
-    <div th:include="/includes/nav_bar::payload('WAREHOUSE')"></div>
-    <!-- 二级导航菜单 -->
-    <div th:include="/includes/nav_bar_level2::payload('WAREHOUSE', 'WAREHOUSE_INDEX')"></div>
+    <body>
+        <!-- 一级导航菜单 -->
+        <div th:include="/includes/nav_bar::payload('WAREHOUSE')"></div>
+        <!-- 二级导航菜单 -->
+        <div th:include="/includes/nav_bar_level2::payload('WAREHOUSE', 'WAREHOUSE_INDEX')"></div>
 
-    <div th:include="/warehouse/warehouse_input_popup::payload('商品入库', 'warehouseInputPopupModal')"></div>
+        <div th:include="/warehouse/warehouse_input_popup::payload('商品入库', 'warehouse-input-popup-modal')"></div>
 
-    <main class="container">
-        <div class="my-3 p-3 bg-white rounded box-shadow">
-            <!-- 页面内容在此处填充 -->
-            <form class="table-query-form">
-                <div class="row">
-                    <div class="col-md-3">
-                        <div class="input-group">
-                            <div class="input-group-prepend">
-                                <div class="input-group-text query-form-label">条件件件</div>
+        <main class="container">
+            <div class="my-3 p-3 bg-white rounded box-shadow">
+                <!-- 页面内容在此处填充 -->
+                <form id="table-query-form" class="table-query-form" action="#">
+                    <div class="row">
+                        <div class="col-md-3">
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <div class="input-group-text query-form-label">所属仓库</div>
+                                </div>
+                                <select name="warehouseId" class="custom-select">
+                                    <option selected="selected" value="">全部</option>
+                                    <option th:each="warehouse,record:${warehouses}" th:value="${warehouse.get('id')}" th:text="${warehouse.get('name')}"></option>
+                                </select>
                             </div>
-                            <input type="text" class="form-control" placeholder="条件件件" />
+                        </div>
+                        <div class="col-md-3">
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <div class="input-group-text query-form-label">产品条码</div>
+                                </div>
+                                <input name="sku" type="text" class="form-control" placeholder="产品条码" />
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <div class="input-group-text query-form-label">产品名称</div>
+                                </div>
+                                <input name="productName" type="text" class="form-control" placeholder="产品名称" />
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <div class="input-group-text query-form-label">产品品牌</div>
+                                </div>
+                                <input name="brandName" type="text" class="form-control" placeholder="产品品牌" />
+                            </div>
                         </div>
                     </div>
-                    <div class="col-md-3">
-                        <div class="input-group">
-                            <div class="input-group-prepend">
-                                <div class="input-group-text query-form-label">条件2</div>
-                            </div>
-                            <input type="text" class="form-control" placeholder="条件2" />
-                        </div>
-                    </div>
-                    <div class="col-md-3">
-                        <div class="input-group">
-                            <div class="input-group-prepend">
-                                <div class="input-group-text query-form-label">条件3</div>
-                            </div>
-                            <input type="text" class="form-control" placeholder="条件3" />
-                        </div>
-                    </div>
-                    <div class="col-md-3">
-                        <div class="input-group">
-                            <div class="input-group-prepend">
-                                <div class="input-group-text query-form-label">条件4</div>
-                            </div>
-                            <input type="text" class="form-control" placeholder="条件4" />
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-3">
-                        <div class="input-group">
-                            <div class="input-group-prepend">
-                                <div class="input-group-text query-form-label">条件5</div>
-                            </div>
-                            <input type="text" class="form-control" placeholder="条件5" />
-                        </div>
-                    </div>
-                    <div class="col-md-3">
-                        <div class="input-group">
-                            <div class="input-group-prepend">
-                                <div class="input-group-text query-form-label">条件6</div>
-                            </div>
-                            <input type="text" class="form-control" placeholder="条件6" />
-                        </div>
-                    </div>
-                </div>
 
-                <div class="row">
-                    <div class="col-md-6">
-                        <div class="btn-group mr-2">
-                            <button type="button" class="btn btn-outline-primary" data-toggle="modal" data-target="#warehouseInputPopupModal">&nbsp;入库&nbsp;</button>
-                            <button type="button" class="btn btn-outline-primary">&nbsp;出库&nbsp;</button>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="btn-group mr-2">
+                                <button type="button" class="btn btn-outline-primary" data-toggle="modal" data-target="#warehouse-input-popup-modal">&nbsp;入库&nbsp;</button>
+                                <button type="button" class="btn btn-outline-primary">&nbsp;出库&nbsp;</button>
+                            </div>
+                        </div>
+                        <div class="col-md-6 text-right">
+                            <button type="submit" class="btn btn-outline-primary">&nbsp;查&nbsp;询&nbsp;</button>
                         </div>
                     </div>
-                    <div class="col-md-6 text-right">
-                        <button type="button" class="btn btn-outline-primary">&nbsp;查&nbsp;询&nbsp;</button>
+                </form>
+                <div class="row">
+                    <div class="col-md-12">
+                        <table id="table"></table>
                     </div>
-                </div>
-            </form>
-            <div class="row">
-                <div class="col-md-12">
-                    <table id="table"></table>
                 </div>
             </div>
-        </div>
-    </main>
-</body>
-
-<script type="text/javascript">
-    $(function(){
-        $('#table').bootstrapTable({
-            buttonsClass: 'outline-primary',
-            striped: true,
-            classes: 'table table-no-bordered',
-            pagination: true,
-            columns: [{
-                checkbox: true
-            },{
-                field: 'id',
-                title: 'Item ID'
-            }, {
-                field: 'name',
-                title: 'Item Name'
-            }, {
-                field: 'price',
-                title: 'Item Price'
-            }],
-            data: [
-                { id: 1, name: 'Item 1', price: '$1' },{ id: 1, name: 'Item 1', price: '$1' },{ id: 1, name: 'Item 1', price: '$1' },{ id: 1, name: 'Item 1', price: '$1' },
-                { id: 1, name: 'Item 1', price: '$1' },{ id: 1, name: 'Item 1', price: '$1' },{ id: 1, name: 'Item 1', price: '$1' },{ id: 1, name: 'Item 1', price: '$1' },
-                { id: 1, name: 'Item 1', price: '$1' },{ id: 1, name: 'Item 1', price: '$1' },{ id: 1, name: 'Item 1', price: '$1' },{ id: 1, name: 'Item 1', price: '$1' },
-                { id: 1, name: 'Item 1', price: '$1' },{ id: 1, name: 'Item 1', price: '$1' },{ id: 1, name: 'Item 1', price: '$1' },{ id: 1, name: 'Item 1', price: '$1' },
-                { id: 1, name: 'Item 1', price: '$1' },{ id: 1, name: 'Item 1', price: '$1' },{ id: 1, name: 'Item 1', price: '$1' },{ id: 1, name: 'Item 1', price: '$1' },
-                { id: 1, name: 'Item 1', price: '$1' },{ id: 1, name: 'Item 1', price: '$1' },{ id: 1, name: 'Item 1', price: '$1' },{ id: 1, name: 'Item 1', price: '$1' },
-                { id: 1, name: 'Item 1', price: '$1' },{ id: 1, name: 'Item 1', price: '$1' },{ id: 1, name: 'Item 1', price: '$1' },{ id: 1, name: 'Item 1', price: '$1' },
-                {
-                    id: 2,
-                    name: 'Item 2',
-                    price: '$2'
-                }]
-        });
-    })
-</script>
+        </main>
+    </body>
 </html>

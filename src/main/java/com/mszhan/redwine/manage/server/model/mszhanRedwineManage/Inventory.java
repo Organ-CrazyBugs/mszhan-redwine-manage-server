@@ -15,12 +15,6 @@ public class Inventory {
     private Integer wareHouseId;
 
     /**
-     * 产品id
-     */
-    @Column(name = "product_id")
-    private Integer productId;
-
-    /**
      * sku
      */
     private String sku;
@@ -82,24 +76,6 @@ public class Inventory {
      */
     public void setWareHouseId(Integer wareHouseId) {
         this.wareHouseId = wareHouseId;
-    }
-
-    /**
-     * 获取产品id
-     *
-     * @return product_id - 产品id
-     */
-    public Integer getProductId() {
-        return productId;
-    }
-
-    /**
-     * 设置产品id
-     *
-     * @param productId 产品id
-     */
-    public void setProductId(Integer productId) {
-        this.productId = productId;
     }
 
     /**

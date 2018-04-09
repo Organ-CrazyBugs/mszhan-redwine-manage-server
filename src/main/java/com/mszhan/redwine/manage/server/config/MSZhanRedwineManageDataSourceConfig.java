@@ -32,7 +32,7 @@ public class MSZhanRedwineManageDataSourceConfig {
 
     /* 多数据原配置 - 修改开始 */
     static final String SCAN_PACKAGE = "com.mszhan.redwine.manage.server.dao.mszhanRedwineManage";
-    static final String MAPPER_LOCATION = "classpath*:mapper/sumptuousManage/*.xml";
+    static final String MAPPER_LOCATION = "classpath*:mapper/mszhanRedwineManage/*.xml";
     static final String DATA_SOURCE_PROPERTIES_PREFIX = "spring.datasource.mszhanRedwineManage";
     static final String BEAN_NAME_PREFIX = "mszhanRedwineManage";
     /* 多数据原配置 - 修改结束 */

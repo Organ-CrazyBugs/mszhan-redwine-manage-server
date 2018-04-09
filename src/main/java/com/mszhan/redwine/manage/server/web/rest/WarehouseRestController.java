@@ -103,4 +103,5 @@ public class WarehouseRestController {
 
         return Responses.newInstance().succeed();
     }
+
 }

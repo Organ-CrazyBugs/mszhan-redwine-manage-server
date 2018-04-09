@@ -7,7 +7,6 @@
     -->
     <id column="id" jdbcType="INTEGER" property="id" />
     <result column="ware_house_id" jdbcType="INTEGER" property="wareHouseId" />
-    <result column="product_id" jdbcType="INTEGER" property="productId" />
     <result column="sku" jdbcType="VARCHAR" property="sku" />
     <result column="quantity" jdbcType="INTEGER" property="quantity" />
     <result column="create_date" jdbcType="TIMESTAMP" property="createDate" />
@@ -15,4 +14,39 @@
     <result column="update_date" jdbcType="TIMESTAMP" property="updateDate" />
     <result column="updator" jdbcType="INTEGER" property="updator" />
   </resultMap>
+
+  <resultMap id="fetchInventoryResultMap" type="com.mszhan.redwine.manage.server.model.mszhanRedwineManage.vo.FetchInventoryVO">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="sku" jdbcType="VARCHAR" property="sku" />
+    <result column="warehouse_name" jdbcType="VARCHAR" property="warehouseName" />
+    <result column="product_name" jdbcType="VARCHAR" property="productName" />
+    <result column="brand_name" jdbcType="VARCHAR" property="brandName" />
+    <result column="update_date" jdbcType="TIMESTAMP" property="updateDate" />
+    <result column="quantity" jdbcType="INTEGER" property="quantity" />
+  </resultMap>
+
+  <select id="fetchInventory" resultMap="fetchInventoryResultMap">
+    SELECT
+      inv.*,
+      ware.name AS warehouse_name,
+      pro.product_name AS product_name,
+      pro.brand_name AS brand_name
+    FROM inventory inv LEFT JOIN warehouse ware ON (inv.ware_house_id = ware.id)
+    LEFT JOIN product pro ON (pro.sku = inv.sku)
+    <where>
+      <if test="warehouseId != null">
+        AND inv.ware_house_id = #{warehouseId}
+      </if>
+      <if test="sku != null and sku != ''">
+        AND inv.sku LIKE #{sku}
+      </if>
+      <if test="productName != null and productName != ''">
+        AND pro.product_name LIKE #{productName}
+      </if>
+      <if test="brandName != null and brandName != ''">
+        AND pro.brand_name LIKE #{brandName}
+      </if>
+    </where>
+  </select>
+
 </mapper>
