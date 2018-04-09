@@ -38,7 +38,8 @@ $.ajax = function (options) {
         complete: function ( jqXHR, textStatus ){
             console.log('执行了['+options.url+'] complete');
             if (options.targetBtn) {
-                options.targetBtn.removeAttr('disabled').text(options.targetBtnText)
+                options.targetLoadingIcon.remove();
+                options.targetBtn.removeAttr('disabled').text(options.targetBtnText);
             }
 
             if (originComplete) {
@@ -48,8 +49,9 @@ $.ajax = function (options) {
         beforeSend: function (jqXHR, settings ) {
             console.log('执行了['+options.url+'] beforeSend');
             if (options.targetBtn) {
-                options.targetBtnText = options.targetBtn.attr('disabled', true).text();
-                options.targetBtn.text('处理中...')
+                options.targetLoadingIcon = $('<span><li class="fa fa-spinner fa-spin"></li>&nbsp;处理中...</span>');
+                options.targetBtnText = options.targetBtn.text();
+                options.targetBtn.attr('disabled', true).text('').prepend(options.targetLoadingIcon);
             }
 
             if (originBeforeSend) {
@@ -152,7 +154,7 @@ $.extend({
         (new PNotify({
             title: title,
             text: text,
-            icon: 'glyphicon glyphicon-question-sign',
+            icon: 'fa fa-question-circle fa-2x',
             hide: false,
             addclass: 'stack-modal',
             stack: {'dir1': 'down', 'dir2': 'right', 'modal': true},
