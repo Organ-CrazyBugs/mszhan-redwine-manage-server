@@ -104,8 +104,8 @@ main.container{
 
 .btn-primary:hover {
   color: #fff;
-  background-color: var(--purple);
-  border-color: var(--purple);
+  background-color: var(--indigo);
+  border-color: var(--indigo);
 }
 
 .btn-primary:focus, .btn-primary.focus {
@@ -167,3 +167,36 @@ main.container{
   box-shadow: 0 0 0 0.2rem rgba(111, 66, 193, 0.5);
 }
 
+
+
+
+.confirm-bg-white .ui-pnotify-container {
+  background-color: #FFF;
+  color: var(--dark);
+}
+.confirm-bg-white .confirm-ok-btn.ui-pnotify-action-button {
+  cursor: pointer;
+  color: var(--purple);
+  border: solid 1px var(--purple);
+  border-radius: 2px;
+  padding: 4px 12px;
+}
+
+.confirm-bg-white .confirm-cancel-btn.ui-pnotify-action-button {
+  cursor: pointer;
+  color: var(--secondary);
+  border: solid 1px var(--secondary);
+  border-radius: 2px;
+  padding: 4px 12px;
+  margin-left: 6px;
+}
+
+.confirm-bg-white .confirm-ok-btn.ui-pnotify-action-button:hover {
+  color: #FFF;
+  background-color: var(--purple);
+}
+
+.confirm-bg-white .confirm-cancel-btn.ui-pnotify-action-button:hover {
+  color: #FFF;
+  background-color: var(--secondary);
+}

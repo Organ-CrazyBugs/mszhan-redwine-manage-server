@@ -172,10 +172,31 @@ $.extend({
             text: text,
             icon: 'fa fa-question-circle fa-2x',
             hide: false,
-            addclass: 'stack-modal',
+            addclass: 'stack-modal confirm-bg-white',
             stack: {'dir1': 'down', 'dir2': 'right', 'modal': true},
             confirm: {
-                confirm: true
+                confirm: true,
+                buttons: [{
+                    text: '确认',
+                    addClass: 'confirm-ok-btn',
+                    click: function(notice) {
+                        notice.remove();
+
+                        if (confirmEvent) {
+                            confirmEvent();
+                        }
+                    }
+                }, {
+                    text: '取消',
+                    addClass: 'confirm-cancel-btn',
+                    click: function(notice) {
+                        notice.remove();
+
+                        if (cancelEvent) {
+                            cancelEvent();
+                        }
+                    }
+                }]
             },
             buttons: {
                 closer: false,
@@ -184,7 +205,7 @@ $.extend({
             history: {
                 history: false
             }
-        })).get().on('pnotify.confirm', function() {
+        }));/*.get().on('pnotify.confirm', function() {
             if (confirmEvent) {
                 confirmEvent();
             }
@@ -192,7 +213,7 @@ $.extend({
             if (cancelEvent) {
                 cancelEvent();
             }
-        });
+        });*/
     }
 });
 
