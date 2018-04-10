@@ -43,6 +43,13 @@
             </nav>
         </div>
 
+        <!--/*  系统设置模块二级导航栏  */-->
+        <div th:if="${moduleCode} eq 'SYS_SETTING'" class="nav-scroller bg-white box-shadow">
+            <nav class="nav nav-underline container">
+                <a th:classappend="${activeNav eq 'SYS_SETTING_LOGIN_ACCOUNT_LIST'} ? 'active'" class="nav-link" th:href="@{/page/sys_setting/login_account_list}">系统账号</a>
+            </nav>
+        </div>
+
         <!--/*  其他模块二级导航栏 在此处追加  */-->
 
     </div>

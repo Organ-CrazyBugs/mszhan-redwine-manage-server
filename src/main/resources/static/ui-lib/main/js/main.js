@@ -279,11 +279,13 @@ $.fn.extend({
             return;
         }
         let _this = this;
-        fields.forEach(val => {
-            if (data[val] !== undefined && data[val] !== null){
-                let selector = $.formatString('input[name="{1}"],textarea[name="{1}"],select[name="{1}"]', val);
-                _this.find(selector).val(data[val]);
+        fields.forEach(key => {
+            let val = '';
+            if (data[key] !== undefined && data[key] !== null) {
+                val = data[key];
             }
+            let selector = $.formatString('input[name="{1}"],textarea[name="{1}"],select[name="{1}"]', key);
+            _this.find(selector).val(val);
         });
     }
 });

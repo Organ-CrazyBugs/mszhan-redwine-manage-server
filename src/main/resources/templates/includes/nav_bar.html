@@ -26,8 +26,8 @@
                     <li class="nav-item">
                         <a class="nav-link" href="javascript:void(0);">模块002</a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="javascript:void(0);">模块003</a>
+                    <li th:classappend="${activeNav eq 'SYS_SETTING'} ? 'active'" class="nav-item">
+                        <a class="nav-link" th:href="@{/page/sys_setting/login_account_list}">系统设置</a>
                     </li>
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="javascript:void(0);" id="dropdown01" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">模块004</a>

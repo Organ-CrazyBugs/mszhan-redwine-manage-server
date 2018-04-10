@@ -1,5 +1,7 @@
 package com.mszhan.redwine.manage.server.web.page;
 
+import com.mszhan.redwine.manage.server.config.security.User;
+import com.mszhan.redwine.manage.server.core.SecurityUtils;
 import com.mszhan.redwine.manage.server.dao.mszhanRedwineManage.WarehouseMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;

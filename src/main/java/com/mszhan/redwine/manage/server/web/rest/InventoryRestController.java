@@ -10,6 +10,7 @@ import com.mszhan.redwine.manage.server.model.mszhanRedwineManage.vo.FetchInvent
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
@@ -40,6 +41,14 @@ public class InventoryRestController {
                 .doSelectPage(() -> this.inventoryMapper.fetchInventory(warehouseId, skuLike, productNameLike, brandNameLike));
 
         return Responses.newInstance().succeed(PaginateResult.newInstance(page.getTotal(), page));
+    }
+
+    @PostMapping("/api/inventory/input")
+    public Object inventoryInput(HttpServletRequest request) {
+        //TODO: 入库操作
+
+
+        return Responses.newInstance().succeed();
     }
 
 }
