@@ -15,7 +15,9 @@ public interface AgentsMapper extends Mapper<Agents> {
 
     List<Agents> queryForPage(AgentQuery query);
 
-    List<Agents> queryByTelAndNotInId(@Param("tel") String tel, @Param("id") Integer id);
+    List<Agents> queryByPhone(@Param("phone") String phone);
+
+    List<Agents> queryByPhoneAndNotInId(@Param("phone") String phone, @Param("id") Integer id);
 
     void updateBalance(@Param("id") Integer id, @Param("balance") BigDecimal balance);
 

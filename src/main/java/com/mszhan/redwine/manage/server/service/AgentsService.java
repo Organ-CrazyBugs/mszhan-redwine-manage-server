@@ -17,6 +17,8 @@ public interface AgentsService extends Service<Agents> {
 
     ResponseUtils.ResponseVO updateAgent(Agents agents);
 
+    ResponseUtils.ResponseVO queryById(Integer id);
+
     ResponseUtils.ResponseVO updateBalance(AgentsUpdatePojo agentsUpdatePojo);
 
     ResponseUtils.ResponseVO addAgent(Agents agents);

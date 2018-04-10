@@ -22,6 +22,11 @@ public class AgentsController {
         ModelAndView view = new ModelAndView("agent/agent");
         return view;
     }
+    @GetMapping(value = "/query_by_id")
+    public ResponseUtils.ResponseVO search(Integer id) {
+        return agentsService.queryById(id);
+    }
+
 
     @GetMapping(value = "/search")
     public ResponseUtils.ResponseVO search(AgentQuery query) {
