@@ -2,6 +2,7 @@ $(function(){
     let $table = $('#table');
     let $warehouseInputSubmitBtn = $('#warehouse-input-submit-btn');
     let $warehouseInputForm = $('#warehouse-input-form');
+    let $warehouseInputPopupModal = $('#warehouse-input-popup-modal');
 
     $table.bootstrapTable({
         url: '/api/inventory/list',
@@ -15,6 +16,11 @@ $(function(){
             {field: 'sku', title: '产品条码'},
             {field: 'updateDate', title: '最近更新时间'}
         ]
+    });
+
+    // 绑定创建仓库Modal隐藏事件， 隐藏时候清空表单内容
+    $warehouseInputPopupModal.on('hide.bs.modal', function (e) {
+        $warehouseInputForm.reset();       // 清空模态框内表单数据
     });
 
     // 点击入库按钮事件
@@ -52,9 +58,27 @@ $(function(){
             return;
         }
 
-        let confirmMsg = $.formatString('产品SKU：<b>{1}</b> 箱数量：<b>{2}</b> 支数量：<b>{3}</b> 确认入库吗？', data['sku'], boxQty, bottleQty);
+        let confirmMsg = $.formatString('产品SKU：<b>{1}</b> 箱数量：<b>{2}</b> 支数量：<b>{3}</b> 确认入库吗？',
+            data['sku'], isNaN(boxQty) ? 0 : boxQty, isNaN(bottleQty) ? 0 : bottleQty);
+
         $.confirm('确认您的操作', confirmMsg, function () {
-           alert('调用后端处理');
+           $.ajax({
+               url: '/api/inventory/input',
+               method: 'POST',
+               contentType: 'application/json',
+               dataType: 'json',
+               data: JSON.stringify(data),
+               targetBtn: $warehouseInputSubmitBtn,
+               success: function (data) {
+                   if ($.ajaxIsFailure(data)) {
+                       return;
+                   }
+                   $.alertSuccess('提示', '仓库创建成功!');
+
+                   $table.bootstrapTable('refresh');
+                   $warehouseInputPopupModal.modal('hide');
+               }
+           });
         });
 
     });
