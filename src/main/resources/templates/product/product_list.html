@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+
+<head th:include="/includes/ui_libs::payload('产品列表')"></head>
+
+<script type="text/javascript" src="/ui-lib/main/js/product/product_list.js"></script>
+<body>
+<!-- 一级导航菜单 -->
+<div th:include="/includes/nav_bar::payload('PRODUCT')"></div>
+<!-- 二级导航菜单 -->
+<div th:include="/includes/nav_bar_level2::payload('PRODUCT', 'PRODUCT_LIST')"></div>
+
+<div th:include="/product/product_create_popup::payload('新增产品', 'product-create-popup-modal')"></div>
+
+<main class="container">
+    <div class="my-3 p-3 bg-white rounded box-shadow">
+        <!-- 页面内容在此处填充 -->
+        <form id="table-query-form" class="table-query-form" action="#">
+            <div class="row">
+                <div class="col-md-3">
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <div class="input-group-text query-form-label">所属仓库</div>
+                        </div>
+                        <select name="warehouseId" class="custom-select">
+                            <option selected="selected" value="">全部</option>
+
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <div class="input-group-text query-form-label">产品条码</div>
+                        </div>
+                        <input name="sku" type="text" class="form-control" placeholder="产品条码" />
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <div class="input-group-text query-form-label">产品名称</div>
+                        </div>
+                        <input name="productName" type="text" class="form-control" placeholder="产品名称" />
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <div class="input-group-text query-form-label">产品品牌</div>
+                        </div>
+                        <input name="brandName" type="text" class="form-control" placeholder="产品品牌" />
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="btn-group mr-2">
+                        <button type="button" class="btn btn-outline-primary" data-toggle="modal" data-target="#product-create-popup-modal">&nbsp;新建&nbsp;</button>
+                        <button type="button" class="btn btn-outline-primary">&nbsp;修改&nbsp;</button>
+                    </div>
+                </div>
+                <div class="col-md-6 text-right">
+                    <button type="submit" class="btn btn-outline-primary">&nbsp;<i class="fa fa-search"></i>&nbsp;查&nbsp;询&nbsp;</button>
+                </div>
+            </div>
+        </form>
+        <div class="row">
+            <div class="col-md-12">
+                <table id="table"></table>
+            </div>
+        </div>
+    </div>
+</main>
+</body>
+</html>

@@ -36,6 +36,13 @@
             </nav>
         </div>
 
+        <!--/*  产品模块二级导航栏  */-->
+        <div th:if="${moduleCode} eq 'PRODUCT'" class="nav-scroller bg-white box-shadow">
+            <nav class="nav nav-underline container">
+                <a th:classappend="${activeNav eq 'PRODUCT_LIST'} ? 'active'" class="nav-link" th:href="@{/page/product/index}">产品列表</a>
+            </nav>
+        </div>
+
         <!--/*  其他模块二级导航栏 在此处追加  */-->
 
     </div>

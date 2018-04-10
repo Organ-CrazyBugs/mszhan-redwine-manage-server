@@ -20,6 +20,9 @@
                     <li th:classappend="${activeNav eq 'WAREHOUSE'} ? 'active'" class="nav-item">
                         <a class="nav-link" th:href="@{/page/warehouse/index}">仓储管理</a>
                     </li>
+                    <li th:classappend="${activeNav eq 'PRODUCT'} ? 'active'" class="nav-item">
+                        <a class="nav-link" th:href="@{/page/product/index}">产品管理</a>
+                    </li>
                     <li class="nav-item">
                         <a class="nav-link" href="javascript:void(0);">模块002</a>
                     </li>
