@@ -1,8 +1,12 @@
 package com.mszhan.redwine.manage.server.service.impl;
 
+import com.mszhan.redwine.manage.server.config.security.User;
 import com.mszhan.redwine.manage.server.core.BasicException;
+import com.mszhan.redwine.manage.server.core.SecurityUtils;
 import com.mszhan.redwine.manage.server.dao.mszhanRedwineManage.AgentPriceHistoryMapper;
 import com.mszhan.redwine.manage.server.dao.mszhanRedwineManage.AgentsMapper;
+import com.mszhan.redwine.manage.server.enums.AgentOperationTypeEnum;
+import com.mszhan.redwine.manage.server.enums.PaymentTypeEnum;
 import com.mszhan.redwine.manage.server.model.mszhanRedwineManage.AgentPriceHistory;
 import com.mszhan.redwine.manage.server.model.mszhanRedwineManage.Agents;
 import com.mszhan.redwine.manage.server.model.mszhanRedwineManage.base.PaginateResult;
@@ -73,6 +77,10 @@ public class AgentsServiceImpl extends AbstractService<Agents> implements Agents
         if (!CollectionUtils.isEmpty(agentsList)){
             throw BasicException.newInstance().error("已经存在该电话号码，不可重复添加", 500);
         }
+        User user = SecurityUtils.getAuthenticationUser();
+        if (user == null){
+            throw BasicException.newInstance().error("请先登录", 500);
+        }
         Agents queryAgent = agentsMapper.selectByPrimaryKey(agents.getId());
         Date nowDate = new Date();
         queryAgent.setTel(agents.getTel());
@@ -80,8 +88,8 @@ public class AgentsServiceImpl extends AbstractService<Agents> implements Agents
         queryAgent.setAddress(agents.getAddress());
         queryAgent.setType(agents.getType());
         queryAgent.setUpdateDate(nowDate);
-        queryAgent.setUpdatorName("1");
-        queryAgent.setUpdator(1);
+        queryAgent.setUpdatorName(user.getUsername());
+        queryAgent.setUpdator(user.getUserLoginId());
         agentsMapper.updateAgents(queryAgent);
     }
 
@@ -113,29 +121,55 @@ public class AgentsServiceImpl extends AbstractService<Agents> implements Agents
         if (StringUtils.isBlank(agentsUpdatePojo.getOperationType())){
             throw BasicException.newInstance().error("操作类型不能为空", 500);
         }
+        User user = SecurityUtils.getAuthenticationUser();
+        if (user == null){
+            throw BasicException.newInstance().error("请先登录", 500);
+        }
         Date nowDate = new Date();
         AgentPriceHistory history = new AgentPriceHistory();
         history.setType(agentsUpdatePojo.getOperationType());
         history.setPaymentType(agentsUpdatePojo.getPaymentType());
         history.setPrice(agentsUpdatePojo.getBalance());
         history.setCreateDate(nowDate);
-        history.setCreator(1);
+        history.setRemark(agentsUpdatePojo.getRemark());
+        history.setCreatorName(user.getUsername());
+        history.setCreator(user.getUserLoginId());
         history.setAgentId(agentsUpdatePojo.getId());
         Agents agents = agentsMapper.selectByPrimaryKey(agentsUpdatePojo.getId());
         if (agents == null){
             throw BasicException.newInstance().error("没有找到对应代理人", 500);
         }
-        BigDecimal balance = agents.getBalance();
-        if (agentsUpdatePojo.getOperationType().equals("add")){
-            balance = balance.add(agentsUpdatePojo.getBalance());
-        } else {
-            if (balance.compareTo(agentsUpdatePojo.getBalance()) < 0){
-                throw BasicException.newInstance().error("余额小于要扣金额，不可操作", 500);
-            }
-            balance = balance.subtract(agentsUpdatePojo.getBalance());
-        }
+        BigDecimal balance = operateBalance(agentsUpdatePojo.getOperationType(), agents.getBalance(), agentsUpdatePojo.getBalance());
         agentsMapper.updateBalance(agentsUpdatePojo.getId(), balance);
         agentPriceHistoryMapper.insert(history);
+    }
+
+    private BigDecimal operateBalance(String type, BigDecimal agentBalance, BigDecimal pojoBalance){
+        switch(AgentOperationTypeEnum.valueOf(type)){
+            case BALANCE: {
+                if (agentBalance.compareTo(pojoBalance) < 0){
+                    throw BasicException.newInstance().error("余额小于要扣金额，不可操作", 500);
+                }
+                agentBalance = agentBalance.subtract(pojoBalance);
+                break;
+            }
+            case OTHER_ADD : {
+                agentBalance = agentBalance.add(pojoBalance);
+                break;
+            }
+            case OTHER_SUBTRACT : {
+                if (agentBalance.compareTo(pojoBalance) < 0){
+                    throw BasicException.newInstance().error("余额小于要扣金额，不可操作", 500);
+                }
+                agentBalance = agentBalance.subtract(pojoBalance);
+                break;
+            }
+            case RECHARGE : {
+                agentBalance = agentBalance.add(pojoBalance);
+                break;
+            }
+        }
+        return agentBalance;
     }
 
     @Override
@@ -159,14 +193,18 @@ public class AgentsServiceImpl extends AbstractService<Agents> implements Agents
         if (!CollectionUtils.isEmpty(checkAgentList)){
             throw BasicException.newInstance().error("已经存在该手机号码,不可添加该代理", 500);
         }
+        User user = SecurityUtils.getAuthenticationUser();
+        if (user == null){
+            throw BasicException.newInstance().error("请先登录", 500);
+        }
         Date nowDate = new Date();
         agentTrimToNull(agents);
         agents.setCreateDate(nowDate);
         agents.setUpdateDate(nowDate);
-        agents.setCreator(1);
-        agents.setCreatorName("1");
-        agents.setUpdator(1);
-        agents.setUpdatorName("1");
+        agents.setCreator(user.getUserLoginId());
+        agents.setCreatorName(user.getUsername());
+        agents.setUpdator(user.getUserLoginId());
+        agents.setUpdatorName(user.getUsername());
         agents.setBalance(BigDecimal.ZERO);
         agentsMapper.insert(agents);
     }

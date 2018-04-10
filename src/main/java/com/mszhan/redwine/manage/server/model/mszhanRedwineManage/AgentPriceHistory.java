@@ -29,6 +29,27 @@ public class AgentPriceHistory {
     @Column(name = "payment_type")
     private String paymentType;
 
+    private String remark;
+
+    @Column(name = "creator_name")
+    private String creatorName;
+
+
+    public String getCreatorName() {
+        return creatorName;
+    }
+
+    public void setCreatorName(String creatorName) {
+        this.creatorName = creatorName;
+    }
+
+    public String getRemark() {
+        return remark;
+    }
+
+    public void setRemark(String remark) {
+        this.remark = remark;
+    }
 
     public Integer getAgentId() {
         return agentId;

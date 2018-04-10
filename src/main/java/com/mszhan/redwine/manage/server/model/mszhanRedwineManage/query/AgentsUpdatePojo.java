@@ -15,6 +15,16 @@ public class AgentsUpdatePojo {
 
     private String paymentType;
 
+    private String remark;
+
+    public String getRemark() {
+        return remark;
+    }
+
+    public void setRemark(String remark) {
+        this.remark = remark;
+    }
+
     public String getPaymentType() {
         return paymentType;
     }

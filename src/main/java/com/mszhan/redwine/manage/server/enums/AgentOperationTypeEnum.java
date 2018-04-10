@@ -8,7 +8,8 @@ import java.text.DecimalFormat;
  */
 public enum AgentOperationTypeEnum {
 	RECHARGE("充值"),
-	OTHER("其他"),
+	OTHER_ADD("其他加"),
+	OTHER_SUBTRACT("其他减"),
 	ORDER_DEDUCTION("订单花费"),
 	BALANCE("结余");
 

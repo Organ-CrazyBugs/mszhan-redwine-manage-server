@@ -16,11 +16,8 @@ public class AgentsController {
 
     @Autowired
     private AgentsService agentsService;
-    @GetMapping(value = "/index")
-    public ModelAndView productIndex() {
-        ModelAndView view = new ModelAndView("agent/agent");
-        return view;
-    }
+
+
     @GetMapping(value = "/query_by_id")
     public Object search(Integer id) {
         return Responses.newInstance().succeed(agentsService.queryById(id));

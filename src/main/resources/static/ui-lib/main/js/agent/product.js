@@ -18,7 +18,7 @@ $(function () {
     let $editSubmitBtn = $('#edit-submit-btn');
 
     $table.bootstrapTable({
-        url: '/agent/search',
+        url: '/product/search',
         tableQueryForm: '#table-query-form',
         columns: [
             {checkbox: true},
