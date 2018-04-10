@@ -4,7 +4,7 @@
       xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
 
     <head th:include="/includes/ui_libs::payload('产品管理')"></head>
-    <script type="text/javascript" src="/ui-lib/main/js/agent/product.js"></script>
+    <script type="text/javascript" src="/ui-lib/main/js/product/product_list.js"></script>
 
     <body>
         <!-- 一级导航菜单 -->
@@ -12,9 +12,7 @@
         <!-- 二级导航菜单 --></div>
 
 
-        <div th:include="/agent/agent_create_popup::payload('新建代理', 'create-modal')"></div>
-        <div th:include="/agent/agent_edit_popup::payload('修改代理', 'edit-modal')"></div>
-        <div th:include="/agent/agent_edit_balance_popup::payload('修改余额', 'edit-balance-modal')"></div>
+        <div th:include="/product/product_create_popup::payload('新建产品', 'create-modal')"></div>
         <main class="container">
             <div class="my-3 p-3 bg-white rounded box-shadow">
                 <!-- 页面内容在此处填充 -->

@@ -1,4 +1,4 @@
-$(function () {
+product.js$(function () {
     let $table = $('#table');
 
     let $createSubmitBtn = $('#create-submit-btn');
