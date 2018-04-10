@@ -3,14 +3,16 @@
       xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
 
-<head th:include="/includes/ui_libs::payload('库存管理')"></head>
+<head th:include="/includes/ui_libs::payload('系统账号')"></head>
 
-<script type="text/javascript" src="/ui-lib/main/js/warehouse/warehouse_index.js"></script>
+<script type="text/javascript" src="/ui-lib/main/js/sys_setting/login_account_list.js"></script>
 <body>
 <!-- 一级导航菜单 -->
 <div th:include="/includes/nav_bar::payload('SYS_SETTING')"></div>
 <!-- 二级导航菜单 -->
 <div th:include="/includes/nav_bar_level2::payload('SYS_SETTING', 'SYS_SETTING_LOGIN_ACCOUNT_LIST')"></div>
+
+<div th:include="/sys_setting/login_account_create_popup::payload('创建系统账号', 'login-account-create-modal')"></div>
 
 <main class="container">
     <div class="my-3 p-3 bg-white rounded box-shadow">
@@ -20,35 +22,40 @@
                 <div class="col-md-3">
                     <div class="input-group">
                         <div class="input-group-prepend">
-                            <div class="input-group-text query-form-label">所属仓库</div>
+                            <div class="input-group-text query-form-label">所属代理</div>
                         </div>
-                        <select name="warehouseId" class="custom-select">
+                        <select name="agentId" class="custom-select">
                             <option selected="selected" value="">全部</option>
+                            <option th:each="agent,record:${agents}" th:value="${agent.get('id')}" th:text="${agent.get('name') + '(' + agent.get('phone') + ')'}"></option>
                         </select>
                     </div>
                 </div>
                 <div class="col-md-3">
                     <div class="input-group">
                         <div class="input-group-prepend">
-                            <div class="input-group-text query-form-label">产品条码</div>
+                            <div class="input-group-text query-form-label">账号状态</div>
                         </div>
-                        <input name="sku" type="text" class="form-control" placeholder="产品条码" />
+                        <select name="status" class="custom-select">
+                            <option selected="selected" value="">全部</option>
+                            <option value="ENABLED">启用</option>
+                            <option value="DISABLED">禁用</option>
+                        </select>
                     </div>
                 </div>
                 <div class="col-md-3">
                     <div class="input-group">
                         <div class="input-group-prepend">
-                            <div class="input-group-text query-form-label">产品名称</div>
+                            <div class="input-group-text query-form-label">用户名称</div>
                         </div>
-                        <input name="productName" type="text" class="form-control" placeholder="产品名称" />
+                        <input name="personName" type="text" class="form-control" placeholder="用户名称" />
                     </div>
                 </div>
                 <div class="col-md-3">
                     <div class="input-group">
                         <div class="input-group-prepend">
-                            <div class="input-group-text query-form-label">产品品牌</div>
+                            <div class="input-group-text query-form-label">登陆账号</div>
                         </div>
-                        <input name="brandName" type="text" class="form-control" placeholder="产品品牌" />
+                        <input name="userName" type="text" class="form-control" placeholder="登陆账号" />
                     </div>
                 </div>
             </div>
@@ -56,8 +63,10 @@
             <div class="row">
                 <div class="col-md-6">
                     <div class="btn-group mr-2">
-                        <button type="button" class="btn btn-outline-primary" data-toggle="modal" data-target="#warehouse-input-popup-modal">&nbsp;入库&nbsp;</button>
-                        <button type="button" class="btn btn-outline-primary">&nbsp;出库&nbsp;</button>
+                        <button type="button" class="btn btn-outline-primary" data-toggle="modal" data-target="#login-account-create-modal">&nbsp;新建&nbsp;</button>
+                        <button type="button" class="btn btn-outline-primary">&nbsp;启用&nbsp;</button>
+                        <button type="button" class="btn btn-outline-primary">&nbsp;禁用&nbsp;</button>
+                        <button type="button" class="btn btn-outline-primary">&nbsp;修改密码&nbsp;</button>
                     </div>
                 </div>
                 <div class="col-md-6 text-right">

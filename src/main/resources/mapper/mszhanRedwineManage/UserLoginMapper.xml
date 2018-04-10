@@ -8,5 +8,33 @@
     <id column="id" jdbcType="INTEGER" property="id" />
     <result column="user_name" jdbcType="VARCHAR" property="userName" />
     <result column="password" jdbcType="VARCHAR" property="password" />
+    <result column="agent_id" jdbcType="INTEGER" property="agentId" />
+    <result column="status" jdbcType="CHAR" property="status" />
+    <result column="remark" jdbcType="VARCHAR" property="remark" />
+    <result column="person_name" jdbcType="VARCHAR" property="personName" />
+    <result column="create_date" jdbcType="TIMESTAMP" property="createDate" />
+    <result column="sys_user" jdbcType="CHAR" property="sysUser" />
   </resultMap>
+
+  <resultMap id="fetchAllUserLoginResultMap" extends="BaseResultMap" type="com.mszhan.redwine.manage.server.model.mszhanRedwineManage.vo.FetchAllUserLoginVO">
+    <result column="agentName" jdbcType="VARCHAR" property="agentName" />
+  </resultMap>
+
+  <select id="fetchAllUserLogin" resultMap="fetchAllUserLoginResultMap">
+    SELECT ul.*, ag.name as agentName FROM user_login ul LEFT JOIN agents ag ON (ul.agent_id = ag.id)
+    <where>
+      <if test="agentId != null">
+        AND agent_id = #{agentId}
+      </if>
+      <if test="status != null and status !=''">
+        AND status = #{status}
+      </if>
+      <if test="personName != null and personName !=''">
+        AND person_name = #{personName}
+      </if>
+      <if test="userName != null and userName !=''">
+        AND user_name = #{userName}
+      </if>
+    </where>
+  </select>
 </mapper>
