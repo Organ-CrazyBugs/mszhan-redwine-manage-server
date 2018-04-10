@@ -63,10 +63,10 @@ public class AgentsServiceImpl extends AbstractService<Agents> implements Agents
             throw BasicException.newInstance().error("名字不能为空", 500);
         }
         if (StringUtils.isBlank(agents.getPhone())){
-            throw BasicException.newInstance().error("电话号码不能为空", 500);
+            throw BasicException.newInstance().error("手机号码不能为空", 500);
         }
         if (StringUtils.isBlank(agents.getTel())){
-            throw BasicException.newInstance().error("手机号码不能为空", 500);
+            throw BasicException.newInstance().error("座机号码不能为空", 500);
         }
         agentTrimToNull(agents);
         List<Agents> agentsList = agentsMapper.queryByPhoneAndNotInId(agents.getPhone(), agents.getId());
@@ -82,7 +82,7 @@ public class AgentsServiceImpl extends AbstractService<Agents> implements Agents
         queryAgent.setUpdateDate(nowDate);
         queryAgent.setUpdatorName("1");
         queryAgent.setUpdator(1);
-        agentsMapper.updateAgents(agents);
+        agentsMapper.updateAgents(queryAgent);
     }
 
     @Override
@@ -172,10 +172,15 @@ public class AgentsServiceImpl extends AbstractService<Agents> implements Agents
     }
 
     @Override
-    public void delAgent(Integer id) {
-        if (id == null){
+    public void delAgent(String ids) {
+        if (StringUtils.isBlank(ids)){
             throw BasicException.newInstance().error("id不能为空", 500);
         }
-        agentsMapper.deleteByPrimaryKey(id);
+        String[] str = ids.split(",");
+        List<Integer> idList = new ArrayList<>();
+        for (String id : str){
+            idList.add(Integer.parseInt(id));
+        }
+        agentsMapper.deleteAgents(idList);
     }
 }

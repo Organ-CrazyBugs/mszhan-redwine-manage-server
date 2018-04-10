@@ -10,5 +10,6 @@
     <result column="price" jdbcType="DECIMAL" property="price" />
     <result column="creator" jdbcType="INTEGER" property="creator" />
     <result column="type" jdbcType="VARCHAR" property="type" />
+    <result column="payment_type" jdbcType="VARCHAR" property="paymentType" />
   </resultMap>
 </mapper>

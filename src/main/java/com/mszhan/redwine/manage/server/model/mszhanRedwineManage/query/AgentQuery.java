@@ -13,7 +13,37 @@ public class AgentQuery extends PageQuery {
 
     private String names;
 
+    private String type;
+
+    private String phones;
+
     private List<String> nameList;
+
+    private List<String> phoneList;
+
+    public List<String> getPhoneList() {
+        return fetchObjList(phones, phoneList);
+    }
+
+    public void setPhoneList(List<String> phoneList) {
+        this.phoneList = phoneList;
+    }
+
+    public String getType() {
+        return StringUtils.trimToNull(type);
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public String getPhones() {
+        return phones;
+    }
+
+    public void setPhones(String phones) {
+        this.phones = phones;
+    }
 
     public String getNames() {
         return names;

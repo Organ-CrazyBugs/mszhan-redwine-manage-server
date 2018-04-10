@@ -19,6 +19,8 @@ public interface AgentsMapper extends Mapper<Agents> {
 
     List<Agents> queryByPhoneAndNotInId(@Param("phone") String phone, @Param("id") Integer id);
 
+    void deleteAgents(List<Integer> idList);
+
     void updateBalance(@Param("id") Integer id, @Param("balance") BigDecimal balance);
 
     void updateAgents(Agents agents);

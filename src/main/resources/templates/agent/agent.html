@@ -13,8 +13,8 @@
 
 
         <div th:include="/agent/agent_create_popup::payload('新建代理', 'create-modal')"></div>
-        <!--<div th:include="/warehouse/warehouse_manage_edit_popup::payload('修改仓库', 'warehouse-edit-modal')"></div>-->
-
+        <div th:include="/agent/agent_edit_popup::payload('修改代理', 'edit-modal')"></div>
+        <div th:include="/agent/agent_edit_balance_popup::payload('修改余额', 'edit-balance-modal')"></div>
         <main class="container">
             <div class="my-3 p-3 bg-white rounded box-shadow">
                 <!-- 页面内容在此处填充 -->
@@ -23,20 +23,29 @@
                         <div class="col-md-3">
                             <div class="input-group">
                                 <div class="input-group-prepend">
-                                    <div class="input-group-text query-form-label">仓库名称</div>
+                                    <div class="input-group-text query-form-label">代理名称</div>
                                 </div>
-                                <input type="text" class="form-control" name="warehouseName" placeholder="仓库名称" />
+                                <input type="text" class="form-control" name="names" placeholder="代理名称" />
                             </div>
                         </div>
                         <div class="col-md-3">
                             <div class="input-group">
                                 <div class="input-group-prepend">
-                                    <div class="input-group-text query-form-label">仓库状态</div>
+                                    <div class="input-group-text query-form-label">电话号码</div>
                                 </div>
-                                <select name="status" class="custom-select">
-                                    <option selected="selected" value="">全部</option>
-                                    <option value="ENABLED">启用</option>
-                                    <option value="DISABLED">禁用</option>
+                                <input type="text" class="form-control" name="phones" placeholder="电话号码" />
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <div class="input-group-text query-form-label">代理类型</div>
+                                </div>
+                                <select name="type" class="custom-select">
+                                    <option selected="selected" value=""></option>
+                                    <option value="ADMIN">管理员</option>
+                                    <option value="GENERAL_AGENT">总代理</option>
+                                    <option value="AGENT">代理</option>
                                 </select>
                             </div>
                         </div>
@@ -46,12 +55,12 @@
                             <div class="btn-group mr-2">
                                 <button type="button" class="btn btn-outline-primary" data-toggle="modal" data-target="#create-modal">&nbsp;新建&nbsp;</button>
                                 <button id="show-edit-btn" type="button" class="btn btn-outline-primary">&nbsp;修改&nbsp;</button>
-                                <button id="enabled-btn" type="button" class="btn btn-outline-primary">&nbsp;启用&nbsp;</button>
-                                <button id="disabled-btn" type="button" class="btn btn-outline-primary">&nbsp;禁用&nbsp;</button>
+                                <button id="show-editBalance-btn" type="button" class="btn btn-outline-primary">&nbsp;修改余额&nbsp;</button>
+                                <button id="delete-btn" type="button" class="btn btn-outline-primary">&nbsp;删除&nbsp;</button>
                             </div>
                         </div>
                         <div class="col-md-6 text-right">
-                            <button id="table-query-submit-btn" type="button" class="btn btn-outline-primary">&nbsp;查&nbsp;询&nbsp;</button>
+                            <button type="submit" class="btn btn-outline-primary">&nbsp;查&nbsp;询&nbsp;</button>
                         </div>
                     </div>
                 </form>

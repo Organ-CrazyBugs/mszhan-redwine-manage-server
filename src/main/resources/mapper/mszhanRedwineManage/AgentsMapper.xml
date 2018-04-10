@@ -31,8 +31,18 @@
           #{item}
         </foreach>
       </if>
+      <if test = "phoneList != null and phoneList.size > 0">
+        and  phone in
+        <foreach collection="phoneList" index="index" item="item" open="("
+                 separator="," close=")">
+          #{item}
+        </foreach>
+      </if>
+      <if test = "type != null and type.size > 0">
+        and type = #{type}
+      </if>
     </where>
-    ORDER BY update_date DESC
+    ORDER BY id DESC
     <if test='offset != null and limit != null '>
       limit #{offset},#{limit}
     </if>
@@ -48,6 +58,16 @@
                  separator="," close=")">
           #{item}
         </foreach>
+      </if>
+      <if test = "phoneList != null and phoneList.size > 0">
+        and  phone in
+        <foreach collection="phoneList" index="index" item="item" open="("
+                 separator="," close=")">
+          #{item}
+        </foreach>
+      </if>
+      <if test = "type != null and type.size > 0">
+        and type = #{type}
       </if>
     </where>
   </select>
@@ -71,5 +91,12 @@
   <select id="queryByPhoneAndNotInId" resultMap="BaseResultMap">
     select * from agents where phone = #{phone} and id not in (#{id})
   </select>
+  <delete id="deleteAgents">
+    delete from agents where id in
+    <foreach collection="list" index="index" item="item" open="("
+             separator="," close=")">
+      #{item}
+    </foreach>
+  </delete>
 
 </mapper>

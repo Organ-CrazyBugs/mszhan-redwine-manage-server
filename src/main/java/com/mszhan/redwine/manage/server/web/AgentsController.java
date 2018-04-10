@@ -50,9 +50,9 @@ public class AgentsController {
         return Responses.newInstance().succeed();
     }
 
-    @DeleteMapping(value = "/delete_by_id/{id}")
-    public Object deleteById(@PathVariable("id") Integer id) {
-        agentsService.delAgent(id);
+    @DeleteMapping(value = "/delete_by_ids/{ids}")
+    public Object deleteById(@PathVariable("ids") String ids) {
+        agentsService.delAgent(ids);
         return Responses.newInstance().succeed();
     }
 

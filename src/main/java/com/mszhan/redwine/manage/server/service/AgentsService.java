@@ -23,6 +23,6 @@ public interface AgentsService extends Service<Agents> {
 
     void addAgent(Agents agents);
 
-    void delAgent(Integer id);
+    void delAgent(String ids);
 
 }
