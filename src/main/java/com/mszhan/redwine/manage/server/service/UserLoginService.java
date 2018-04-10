@@ -10,4 +10,10 @@ import com.mszhan.redwine.manage.server.core.Service;
  */
 public interface UserLoginService extends Service<UserLogin> {
 
+    enum UserLoginStatus {
+        ENABLED,DISABLED;
+    }
+
+    UserLogin createUserLogin(UserLogin userLogin);
+
 }

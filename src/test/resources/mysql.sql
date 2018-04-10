@@ -246,13 +246,20 @@ CREATE TABLE `user_login` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `user_name` varchar(60) NOT NULL,
   `password` varchar(60) NOT NULL,
+  `agent_id` int(11) DEFAULT NULL,
+  `status` char(10) NOT NULL DEFAULT 'ENABLED',
+  `remark` varchar(255) DEFAULT NULL,
+  `person_name` varchar(60) DEFAULT NULL COMMENT '使用人员名称',
+  `create_date` datetime DEFAULT NULL,
+  `sys_user` char(1) NOT NULL DEFAULT 'N' COMMENT '是否为系统管理员',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- ----------------------------
 -- Records of user_login
 -- ----------------------------
-INSERT INTO `user_login` VALUES ('1', 'admin', 'ceb4f32325eda6142bd65215f4c0f371');
+INSERT INTO `mszhan_redwine_manage`.`user_login`(`id`, `user_name`, `password`, `agent_id`, `status`, `remark`, `person_name`, `create_date`, `sys_user`) VALUES (1, 'admin', 'ceb4f32325eda6142bd65215f4c0f371', NULL, 'ENABLED', NULL, '超级管理员', '2018-04-10 23:36:57', 'Y');
+
 
 -- ----------------------------
 -- Table structure for `warehouse`

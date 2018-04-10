@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+
+<div th:fragment="payload(title, modalId)">
+    <div class="modal fade" th:id="${modalId}" tabindex="-1" role="dialog">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" th:text="${title}"></h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form id="user-login-create-form" action="#">
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label>所属代理</label>
+                            <select class="form-control" name="agentId" >
+                                <option selected="selected" value="">请选择所属代理</option>
+                                <option th:each="agent,record:${agents}" th:value="${agent.get('id')}" th:text="${agent.get('name') + '(' + agent.get('phone') + ')'}"></option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>人员名称</label>
+                            <input type="text" class="form-control" name="personName" placeholder="人员名称" />
+                        </div>
+                        <div class="form-group">
+                            <label>登陆账号</label>
+                            <input type="text" class="form-control" name="userName" placeholder="登陆账号" />
+                        </div>
+                        <div class="form-group">
+                            <label>登陆密码</label>
+                            <input type="text" class="form-control" name="password" placeholder="登陆密码" />
+                        </div>
+                        <div class="form-group">
+                            <label>备注</label>
+                            <textarea class="form-control" name="remark" rows="3"></textarea>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
+                        <button id="user-login-create-submit-btn" type="submit" class="btn btn-primary"><i class="fa fa-save"></i>&nbsp;创建</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+</html>
