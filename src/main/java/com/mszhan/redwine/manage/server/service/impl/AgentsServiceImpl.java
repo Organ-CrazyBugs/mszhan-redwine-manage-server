@@ -2,6 +2,7 @@ package com.mszhan.redwine.manage.server.service.impl;
 
 import com.mszhan.redwine.manage.server.dao.mszhanRedwineManage.AgentPriceHistoryMapper;
 import com.mszhan.redwine.manage.server.dao.mszhanRedwineManage.AgentsMapper;
+import com.mszhan.redwine.manage.server.enums.PaymentTypeEnum;
 import com.mszhan.redwine.manage.server.model.mszhanRedwineManage.AgentPriceHistory;
 import com.mszhan.redwine.manage.server.model.mszhanRedwineManage.Agents;
 import com.mszhan.redwine.manage.server.model.mszhanRedwineManage.base.PaginateResult;
@@ -74,16 +75,28 @@ public class AgentsServiceImpl extends AbstractService<Agents> implements Agents
             return ResponseUtils.newResponse().failed(500, "手机号码不能为空");
         }
         agentTrimToNull(agents);
-        List<Agents> agentsList = agentsMapper.queryByTelAndNotInId(agents.getTel(), agents.getId());
+        List<Agents> agentsList = agentsMapper.queryByPhoneAndNotInId(agents.getPhone(), agents.getId());
         if (!CollectionUtils.isEmpty(agentsList)){
-            return ResponseUtils.newResponse().failed(500, "已经存在改电话号码，不可重复添加");
+            return ResponseUtils.newResponse().failed(500, "已经存在该电话号码，不可重复添加");
         }
+        Agents queryAgent = agentsMapper.selectByPrimaryKey(agents.getId());
         Date nowDate = new Date();
-        agents.setUpdateDate(nowDate);
-        agents.setUpdatorName("1");
-        agents.setUpdator(1);
+        queryAgent.setTel(agents.getTel());
+        queryAgent.setName(agents.getName());
+        queryAgent.setAddress(agents.getAddress());
+        queryAgent.setType(agents.getType());
+        queryAgent.setUpdateDate(nowDate);
+        queryAgent.setUpdatorName("1");
+        queryAgent.setUpdator(1);
         agentsMapper.updateAgents(agents);
         return ResponseUtils.newResponse().succeed();
+    }
+
+    @Override
+    public ResponseUtils.ResponseVO queryById(Integer id) {
+        ResponseUtils.ResponseVO vo = ResponseUtils.newResponse();
+        vo.setData(agentsMapper.selectByPrimaryKey(id));
+        return vo.succeed();
     }
 
     private void agentTrimToNull(Agents agents) {
@@ -143,16 +156,17 @@ public class AgentsServiceImpl extends AbstractService<Agents> implements Agents
             return ResponseUtils.newResponse().failed(500, "名字不能为空");
         }
         if (StringUtils.isBlank(agents.getPhone())){
-            return ResponseUtils.newResponse().failed(500, "电话号码不能为空");
-        }
-        if (StringUtils.isBlank(agents.getTel())){
             return ResponseUtils.newResponse().failed(500, "手机号码不能为空");
         }
-        if (agents.getBalance() == null){
-            return ResponseUtils.newResponse().failed(500, "余额不能为空");
+        if (StringUtils.isBlank(agents.getTel())){
+            return ResponseUtils.newResponse().failed(500, "座机号码不能为空");
         }
         if (StringUtils.isBlank(agents.getType())){
             return ResponseUtils.newResponse().failed(500, "代理类型不能为空");
+        }
+        List<Agents> checkAgentList = agentsMapper.queryByPhone(agents.getPhone());
+        if (!CollectionUtils.isEmpty(checkAgentList)){
+            return ResponseUtils.newResponse().failed(500, "已经存在该手机号码,不可添加该代理");
         }
         Date nowDate = new Date();
         agentTrimToNull(agents);
@@ -162,6 +176,7 @@ public class AgentsServiceImpl extends AbstractService<Agents> implements Agents
         agents.setCreatorName("1");
         agents.setUpdator(1);
         agents.setUpdatorName("1");
+        agents.setBalance(BigDecimal.ZERO);
         agentsMapper.insert(agents);
         return ResponseUtils.newResponse().succeed();
     }

@@ -12,7 +12,8 @@
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
-                    <form id="create-form" action="#">
+                    <form id="edit-form" action="#">
+                        <input type="hidden" name="id" />
                         <div class="modal-body">
                             <div class="form-group">
                                 <div class="input-group">
@@ -20,7 +21,7 @@
                                         <div class="input-group-text query-form-label">代理类型</div>
                                     </div>
                                     <select name="type" class="custom-select">
-                                        <option  selected="selected" value="ADMIN">管理员</option>
+                                        <option selected="selected" value="ADMIN">管理员</option>
                                         <option  value="GENERAL_AGENT">总代理</option>
                                         <option value="AGENT">代理</option>
                                     </select>
@@ -45,7 +46,7 @@
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
-                            <button id="create-submit-btn" type="submit" class="btn btn-primary">创建</button>
+                            <button id="edit-submit-btn" type="submit" class="btn btn-primary">创建</button>
                         </div>
                     </form>
                 </div>

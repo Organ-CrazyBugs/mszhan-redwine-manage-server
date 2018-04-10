@@ -61,8 +61,15 @@
   </update>
 
   <update id="updateAgents">
-    update agents set  name = #{name}, tel = #{tel}, phone = #{phone}, update_date = #{updateDate},updator = #{updator},address = #{address}
+    update agents set  name = #{name}, tel = #{tel}, phone = #{phone}, update_date = #{updateDate},updator = #{updator}, address = #{address},
+    type = #{type}, updator_name = #{updatorName}
     where id = #{id}
   </update>
+  <select id="queryByPhone" resultMap="BaseResultMap">
+    select * from agents where phone = #{phone}
+  </select>
+  <select id="queryByPhoneAndNotInId" resultMap="BaseResultMap">
+    select * from agents where phone = #{phone} and id not in (#{id})
+  </select>
 
 </mapper>

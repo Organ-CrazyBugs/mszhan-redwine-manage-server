@@ -67,11 +67,6 @@ $(function () {
             $.alertError('缺少参数', '联系电话为必填项');
             return;
         }
-        if ($.isBlank($.trim(params['balance']))) {
-            $.alertError('缺少参数', '余额为必填项');
-            return;
-        }
-
         $.ajax({
             url: '/agent/add_agent',
             method: 'POST',
@@ -80,7 +75,9 @@ $(function () {
             data: JSON.stringify(params),
             targetBtn: $createSubmitBtn,   // 指定发送ajax请求后在请求过程中禁用的按钮对象
             success: function (data) {
+
                 if ($.ajaxIsFailure(data)) {
+
                     return;
                 }
                 $.alertSuccess('提示', '仓库创建成功!');
@@ -99,7 +96,7 @@ $(function () {
             return;
         }
         // 绑定表单数据
-        $editForm.bindData(rows[0], ["id", "name", "principal", "phone", "tel", "address", "remark"])
+        $editForm.bindData(rows[0], ["id", "name","type", "phone", "tel", "address"])
 
         $editModal.modal('show');
     });
