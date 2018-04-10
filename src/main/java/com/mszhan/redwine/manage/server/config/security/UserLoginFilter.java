@@ -31,12 +31,13 @@ public class UserLoginFilter implements Filter {
         HttpServletRequest request = (HttpServletRequest) servletRequest;
         Requests requests = Requests.newInstance(request);
         String path = request.getServletPath();
+        HttpSession session = request.getSession();
+        SecurityContextImpl securityContext = (SecurityContextImpl) session.getAttribute(HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY);
+
         if ( StringUtils.isNotBlank(path)
              && requests.isAjax()
              && !path.startsWith(WebSecurityConfig.loginProcessingUrl) // 排除登录接口不作处理
             ) {
-            HttpSession session = request.getSession();
-            SecurityContextImpl securityContext = (SecurityContextImpl) session.getAttribute(HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY);
             if (securityContext == null || securityContext.getAuthentication() == null) {
                 HttpServletResponse response = (HttpServletResponse) servletResponse;
                 Responses responses = Responses.newInstance().failed(HttpStatus.UNAUTHORIZED.getReasonPhrase(), HttpStatus.UNAUTHORIZED.value());
@@ -44,6 +45,7 @@ public class UserLoginFilter implements Filter {
                 return;
             }
         }
+
         filterChain.doFilter(servletRequest, servletResponse);
     }
 
