@@ -1,15 +1,14 @@
 package com.mszhan.redwine.manage.server.web;
 
+import com.mszhan.redwine.manage.server.core.Responses;
 import com.mszhan.redwine.manage.server.model.mszhanRedwineManage.Agents;
+import com.mszhan.redwine.manage.server.model.mszhanRedwineManage.base.PaginateResult;
 import com.mszhan.redwine.manage.server.model.mszhanRedwineManage.query.AgentQuery;
 import com.mszhan.redwine.manage.server.model.mszhanRedwineManage.query.AgentsUpdatePojo;
 import com.mszhan.redwine.manage.server.service.AgentsService;
-import com.mszhan.redwine.manage.server.service.ProductService;
-import com.mszhan.redwine.manage.server.util.ResponseUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
-import sun.management.Agent;
 
 @RestController
 @RequestMapping("/agent")
@@ -23,34 +22,38 @@ public class AgentsController {
         return view;
     }
     @GetMapping(value = "/query_by_id")
-    public ResponseUtils.ResponseVO search(Integer id) {
-        return agentsService.queryById(id);
+    public Object search(Integer id) {
+        return Responses.newInstance().succeed(agentsService.queryById(id));
     }
 
-
     @GetMapping(value = "/search")
-    public ResponseUtils.ResponseVO search(AgentQuery query) {
-        return agentsService.queryForPage(query);
+    public Object search(AgentQuery query) {
+        PaginateResult<Agents> result = agentsService.queryForPage(query);
+        return Responses.newInstance().succeed(result);
     }
 
     @PostMapping(value = "/add_agent")
-    public ResponseUtils.ResponseVO addAgents(@RequestBody Agents agents) {
-        return agentsService.addAgent(agents);
+    public Object addAgents(@RequestBody Agents agents) {
+        agentsService.addAgent(agents);
+        return Responses.newInstance().succeed();
     }
 
     @PutMapping(value = "/update_balance")
-    public ResponseUtils.ResponseVO updateBalance(@RequestBody AgentsUpdatePojo agentsUpdatePojo) {
-        return agentsService.updateBalance(agentsUpdatePojo);
+    public Object updateBalance(@RequestBody AgentsUpdatePojo agentsUpdatePojo) {
+        agentsService.updateBalance(agentsUpdatePojo);
+        return Responses.newInstance().succeed();
     }
 
     @PutMapping(value = "/update_agent")
-    public ResponseUtils.ResponseVO updateAgents(@RequestBody Agents agents) {
-        return agentsService.updateAgent(agents);
+    public Object updateAgents(@RequestBody Agents agents) {
+        agentsService.updateAgent(agents);
+        return Responses.newInstance().succeed();
     }
 
     @DeleteMapping(value = "/delete_by_id/{id}")
-    public ResponseUtils.ResponseVO deleteById(@PathVariable("id") Integer id) {
-        return agentsService.delAgent(id);
+    public Object deleteById(@PathVariable("id") Integer id) {
+        agentsService.delAgent(id);
+        return Responses.newInstance().succeed();
     }
 
 

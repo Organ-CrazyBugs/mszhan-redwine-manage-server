@@ -2,8 +2,8 @@ package com.mszhan.redwine.manage.server.service;
 
 import com.mszhan.redwine.manage.server.model.mszhanRedwineManage.Product;
 import com.mszhan.redwine.manage.server.core.Service;
+import com.mszhan.redwine.manage.server.model.mszhanRedwineManage.base.PaginateResult;
 import com.mszhan.redwine.manage.server.model.mszhanRedwineManage.query.ProductQuery;
-import com.mszhan.redwine.manage.server.util.ResponseUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
@@ -17,15 +17,15 @@ import java.util.List;
  */
 public interface ProductService extends Service<Product> {
 
-    ResponseUtils.ResponseVO queryForPage(ProductQuery query);
+    PaginateResult<Product> queryForPage(ProductQuery query);
 
-    ResponseUtils.ResponseVO addProduct(Product product, MultipartFile file);
+    void addProduct(Product product, MultipartFile file);
 
-    ResponseUtils.ResponseVO updateProduct(Product product, MultipartFile file);
+    void updateProduct(Product product, MultipartFile file);
 
-    ResponseUtils.ResponseVO upProductPic(Integer id, MultipartFile file);
+    void upProductPic(Integer id, MultipartFile file);
 
-    ResponseUtils.ResponseVO removeProduct(Integer id);
+    void removeProduct(Integer id);
 
-    ResponseUtils.ResponseVO queryById(Integer id);
+    Product queryById(Integer id);
 }

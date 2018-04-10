@@ -2,9 +2,9 @@ package com.mszhan.redwine.manage.server.service;
 
 import com.mszhan.redwine.manage.server.model.mszhanRedwineManage.Agents;
 import com.mszhan.redwine.manage.server.core.Service;
+import com.mszhan.redwine.manage.server.model.mszhanRedwineManage.base.PaginateResult;
 import com.mszhan.redwine.manage.server.model.mszhanRedwineManage.query.AgentQuery;
 import com.mszhan.redwine.manage.server.model.mszhanRedwineManage.query.AgentsUpdatePojo;
-import com.mszhan.redwine.manage.server.util.ResponseUtils;
 
 /**
  * @Description:
@@ -13,16 +13,16 @@ import com.mszhan.redwine.manage.server.util.ResponseUtils;
  */
 public interface AgentsService extends Service<Agents> {
 
-    ResponseUtils.ResponseVO queryForPage(AgentQuery query);
+    PaginateResult<Agents> queryForPage(AgentQuery query);
 
-    ResponseUtils.ResponseVO updateAgent(Agents agents);
+    void updateAgent(Agents agents);
 
-    ResponseUtils.ResponseVO queryById(Integer id);
+    Agents queryById(Integer id);
 
-    ResponseUtils.ResponseVO updateBalance(AgentsUpdatePojo agentsUpdatePojo);
+    void updateBalance(AgentsUpdatePojo agentsUpdatePojo);
 
-    ResponseUtils.ResponseVO addAgent(Agents agents);
+    void addAgent(Agents agents);
 
-    ResponseUtils.ResponseVO delAgent(Integer id);
+    void delAgent(Integer id);
 
 }

@@ -1,8 +1,8 @@
 package com.mszhan.redwine.manage.server.service.impl;
 
+import com.mszhan.redwine.manage.server.core.BasicException;
 import com.mszhan.redwine.manage.server.dao.mszhanRedwineManage.AgentPriceHistoryMapper;
 import com.mszhan.redwine.manage.server.dao.mszhanRedwineManage.AgentsMapper;
-import com.mszhan.redwine.manage.server.enums.PaymentTypeEnum;
 import com.mszhan.redwine.manage.server.model.mszhanRedwineManage.AgentPriceHistory;
 import com.mszhan.redwine.manage.server.model.mszhanRedwineManage.Agents;
 import com.mszhan.redwine.manage.server.model.mszhanRedwineManage.base.PaginateResult;
@@ -10,7 +10,6 @@ import com.mszhan.redwine.manage.server.model.mszhanRedwineManage.query.AgentQue
 import com.mszhan.redwine.manage.server.model.mszhanRedwineManage.query.AgentsUpdatePojo;
 import com.mszhan.redwine.manage.server.service.AgentsService;
 import com.mszhan.redwine.manage.server.core.AbstractService;
-import com.mszhan.redwine.manage.server.util.ResponseUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -40,44 +39,39 @@ public class AgentsServiceImpl extends AbstractService<Agents> implements Agents
 
 
     @Override
-    public ResponseUtils.ResponseVO queryForPage(AgentQuery query) {
-        PaginateResult<Agents> tableData = new PaginateResult();
+    public PaginateResult<Agents> queryForPage(AgentQuery query) {
         Integer count = agentsMapper.queryCount(query);
         if (count == null || count.equals(0)){
-            tableData.setRows(new ArrayList<>());
-            tableData.setTotal(0L);
-            return ResponseUtils.newResponse().succeed(tableData);
+            return PaginateResult.newInstance(0, new ArrayList<>());
         }
-        tableData.setTotal(Long.valueOf(count));
         List<Agents> list = agentsMapper.queryForPage(query);
-        tableData.setRows(list);
-        return ResponseUtils.newResponse().succeed(tableData);
+        return PaginateResult.newInstance(Long.valueOf(count), list);
     }
 
     @Override
-    public ResponseUtils.ResponseVO updateAgent(Agents agents) {
+    public void updateAgent(Agents agents) {
         if (agents.getId() == null){
-            return ResponseUtils.newResponse().failed(500, "id不能为空");
+            throw BasicException.newInstance().error("id不能为空", 500);
         }
         if (StringUtils.isBlank(agents.getAddress())){
-            return ResponseUtils.newResponse().failed(500, "地址不能为空");
+            throw BasicException.newInstance().error("地址不能为空", 500);
         }
         if (StringUtils.isBlank(agents.getType())){
-            return ResponseUtils.newResponse().failed(500, "代理类型不能为空");
+            throw BasicException.newInstance().error("代理类型不能为空", 500);
         }
         if (StringUtils.isBlank(agents.getName())){
-            return ResponseUtils.newResponse().failed(500, "名字不能为空");
+            throw BasicException.newInstance().error("名字不能为空", 500);
         }
         if (StringUtils.isBlank(agents.getPhone())){
-            return ResponseUtils.newResponse().failed(500, "电话号码不能为空");
+            throw BasicException.newInstance().error("电话号码不能为空", 500);
         }
         if (StringUtils.isBlank(agents.getTel())){
-            return ResponseUtils.newResponse().failed(500, "手机号码不能为空");
+            throw BasicException.newInstance().error("手机号码不能为空", 500);
         }
         agentTrimToNull(agents);
         List<Agents> agentsList = agentsMapper.queryByPhoneAndNotInId(agents.getPhone(), agents.getId());
         if (!CollectionUtils.isEmpty(agentsList)){
-            return ResponseUtils.newResponse().failed(500, "已经存在该电话号码，不可重复添加");
+            throw BasicException.newInstance().error("已经存在该电话号码，不可重复添加", 500);
         }
         Agents queryAgent = agentsMapper.selectByPrimaryKey(agents.getId());
         Date nowDate = new Date();
@@ -89,14 +83,12 @@ public class AgentsServiceImpl extends AbstractService<Agents> implements Agents
         queryAgent.setUpdatorName("1");
         queryAgent.setUpdator(1);
         agentsMapper.updateAgents(agents);
-        return ResponseUtils.newResponse().succeed();
     }
 
     @Override
-    public ResponseUtils.ResponseVO queryById(Integer id) {
-        ResponseUtils.ResponseVO vo = ResponseUtils.newResponse();
-        vo.setData(agentsMapper.selectByPrimaryKey(id));
-        return vo.succeed();
+    public Agents queryById(Integer id) {
+        Agents agents = agentsMapper.selectByPrimaryKey(id);
+        return agents;
     }
 
     private void agentTrimToNull(Agents agents) {
@@ -108,18 +100,18 @@ public class AgentsServiceImpl extends AbstractService<Agents> implements Agents
     }
 
     @Override
-    public ResponseUtils.ResponseVO updateBalance(AgentsUpdatePojo agentsUpdatePojo) {
+    public void updateBalance(AgentsUpdatePojo agentsUpdatePojo) {
         if (agentsUpdatePojo.getId() == null){
-            return ResponseUtils.newResponse().failed(500, "id不能为空");
+            throw BasicException.newInstance().error("id不能为空", 500);
         }
         if (agentsUpdatePojo.getBalance() == null){
-            return ResponseUtils.newResponse().failed(500, "余额不能为空");
+            throw BasicException.newInstance().error("余额不能为空", 500);
         }
         if (StringUtils.isBlank(agentsUpdatePojo.getPaymentType())){
-            return ResponseUtils.newResponse().failed(500, "支付方式不能为空");
+            throw BasicException.newInstance().error("支付方式不能为空", 500);
         }
         if (StringUtils.isBlank(agentsUpdatePojo.getOperationType())){
-            return ResponseUtils.newResponse().failed(500, "操作类型不能为空");
+            throw BasicException.newInstance().error("操作类型不能为空", 500);
         }
         Date nowDate = new Date();
         AgentPriceHistory history = new AgentPriceHistory();
@@ -131,42 +123,41 @@ public class AgentsServiceImpl extends AbstractService<Agents> implements Agents
         history.setAgentId(agentsUpdatePojo.getId());
         Agents agents = agentsMapper.selectByPrimaryKey(agentsUpdatePojo.getId());
         if (agents == null){
-            return ResponseUtils.newResponse().failed(500, "没有找到对应代理人");
+            throw BasicException.newInstance().error("没有找到对应代理人", 500);
         }
         BigDecimal balance = agents.getBalance();
         if (agentsUpdatePojo.getOperationType().equals("add")){
             balance = balance.add(agentsUpdatePojo.getBalance());
         } else {
             if (balance.compareTo(agentsUpdatePojo.getBalance()) < 0){
-                return ResponseUtils.newResponse().failed(500, "余额小于要扣金额，不可操作");
+                throw BasicException.newInstance().error("余额小于要扣金额，不可操作", 500);
             }
             balance = balance.subtract(agentsUpdatePojo.getBalance());
         }
         agentsMapper.updateBalance(agentsUpdatePojo.getId(), balance);
         agentPriceHistoryMapper.insert(history);
-        return ResponseUtils.newResponse().succeed();
     }
 
     @Override
-    public ResponseUtils.ResponseVO addAgent(Agents agents) {
+    public void addAgent(Agents agents) {
         if (StringUtils.isBlank(agents.getAddress())){
-            return ResponseUtils.newResponse().failed(500, "地址不能为空");
+            throw BasicException.newInstance().error("地址不能为空", 500);
         }
         if (StringUtils.isBlank(agents.getName())){
-            return ResponseUtils.newResponse().failed(500, "名字不能为空");
+            throw BasicException.newInstance().error("名字不能为空", 500);
         }
         if (StringUtils.isBlank(agents.getPhone())){
-            return ResponseUtils.newResponse().failed(500, "手机号码不能为空");
+            throw BasicException.newInstance().error("手机号码不能为空", 500);
         }
         if (StringUtils.isBlank(agents.getTel())){
-            return ResponseUtils.newResponse().failed(500, "座机号码不能为空");
+            throw BasicException.newInstance().error("座机号码不能为空", 500);
         }
         if (StringUtils.isBlank(agents.getType())){
-            return ResponseUtils.newResponse().failed(500, "代理类型不能为空");
+            throw BasicException.newInstance().error("代理类型不能为空", 500);
         }
         List<Agents> checkAgentList = agentsMapper.queryByPhone(agents.getPhone());
         if (!CollectionUtils.isEmpty(checkAgentList)){
-            return ResponseUtils.newResponse().failed(500, "已经存在该手机号码,不可添加该代理");
+            throw BasicException.newInstance().error("已经存在该手机号码,不可添加该代理", 500);
         }
         Date nowDate = new Date();
         agentTrimToNull(agents);
@@ -178,15 +169,13 @@ public class AgentsServiceImpl extends AbstractService<Agents> implements Agents
         agents.setUpdatorName("1");
         agents.setBalance(BigDecimal.ZERO);
         agentsMapper.insert(agents);
-        return ResponseUtils.newResponse().succeed();
     }
 
     @Override
-    public ResponseUtils.ResponseVO delAgent(Integer id) {
+    public void delAgent(Integer id) {
         if (id == null){
-            return ResponseUtils.newResponse().failed(500, "id不能为空");
+            throw BasicException.newInstance().error("id不能为空", 500);
         }
         agentsMapper.deleteByPrimaryKey(id);
-        return ResponseUtils.newResponse().succeed();
     }
 }

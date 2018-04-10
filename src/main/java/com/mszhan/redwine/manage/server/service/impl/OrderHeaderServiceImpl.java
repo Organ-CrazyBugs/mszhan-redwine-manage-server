@@ -1,6 +1,7 @@
 package com.mszhan.redwine.manage.server.service.impl;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.mszhan.redwine.manage.server.core.BasicException;
 import com.mszhan.redwine.manage.server.dao.mszhanRedwineManage.OrderHeaderMapper;
 import com.mszhan.redwine.manage.server.model.mszhanRedwineManage.OrderHeader;
 import com.mszhan.redwine.manage.server.model.mszhanRedwineManage.base.PaginateResult;
@@ -8,7 +9,6 @@ import com.mszhan.redwine.manage.server.model.mszhanRedwineManage.query.AddOrder
 import com.mszhan.redwine.manage.server.model.mszhanRedwineManage.query.OrderQuery;
 import com.mszhan.redwine.manage.server.service.OrderHeaderService;
 import com.mszhan.redwine.manage.server.core.AbstractService;
-import com.mszhan.redwine.manage.server.util.ResponseUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -31,38 +31,29 @@ public class OrderHeaderServiceImpl extends AbstractService<OrderHeader> impleme
     private OrderHeaderMapper orderHeaderMapper;
 
     @Override
-    public ResponseUtils.ResponseVO queryForPage(OrderQuery query) {
-        PaginateResult<OrderHeader> tableData = new PaginateResult();
+    public PaginateResult<OrderHeader> queryForPage(OrderQuery query) {
         Integer count = orderHeaderMapper.queryCount(query);
         if (count == null || count.equals(0)){
-            tableData.setRows(new ArrayList<>());
-            tableData.setTotal(0L);
-            return ResponseUtils.newResponse().succeed(tableData);
+            return PaginateResult.newInstance(0, new ArrayList<>());
         }
-        tableData.setTotal(Long.valueOf(count));
         List<OrderHeader> list = orderHeaderMapper.queryForPage(query);
-        tableData.setRows(list);
-        return ResponseUtils.newResponse().succeed(tableData);
+        return PaginateResult.newInstance(Long.valueOf(count), list);
     }
 
     @Override
-    public ResponseUtils.ResponseVO addOrder(AddOrderPojo addOrderPojo) {
+    public void addOrder(AddOrderPojo addOrderPojo) {
         if (StringUtils.isBlank(addOrderPojo.getOrderContent())){
-            return ResponseUtils.newResponse().failed(500, "订单信息不能为空");
+            throw BasicException.newInstance().error("订单信息不能为空", 500);
         }
         if (StringUtils.isBlank(addOrderPojo.getOrderItemContents())){
-            return ResponseUtils.newResponse().failed(500, "订单商品信息不能为空");
+            throw BasicException.newInstance().error("订单商品信息不能为空", 500);
         }
         ObjectMapper objMr = new ObjectMapper();
         OrderHeader orderHeader = null;
         try {
             orderHeader = objMr.readValue(addOrderPojo.getOrderContent(), OrderHeader.class);
         } catch (IOException e) {
-            e.printStackTrace();
-            return ResponseUtils.newResponse().failed(500,"订单信息转化异常");
+            throw BasicException.newInstance().error("订单信息转化异常", 500);
         }
-
-
-        return null;
     }
 }

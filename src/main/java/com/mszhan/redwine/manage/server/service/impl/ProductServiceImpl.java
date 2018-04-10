@@ -1,24 +1,21 @@
 package com.mszhan.redwine.manage.server.service.impl;
 
+import com.mszhan.redwine.manage.server.core.BasicException;
+import com.mszhan.redwine.manage.server.core.Responses;
 import com.mszhan.redwine.manage.server.dao.mszhanRedwineManage.ProductMapper;
 import com.mszhan.redwine.manage.server.model.mszhanRedwineManage.Product;
 import com.mszhan.redwine.manage.server.model.mszhanRedwineManage.base.PaginateResult;
 import com.mszhan.redwine.manage.server.model.mszhanRedwineManage.query.ProductQuery;
 import com.mszhan.redwine.manage.server.service.ProductService;
 import com.mszhan.redwine.manage.server.core.AbstractService;
-import com.mszhan.redwine.manage.server.util.ResponseUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.core.context.SecurityContext;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -41,68 +38,60 @@ public class ProductServiceImpl extends AbstractService<Product> implements Prod
     private String picturePath;
 
     @Override
-    public ResponseUtils.ResponseVO queryForPage(ProductQuery query) {
-        PaginateResult<Product> tableData = new PaginateResult();
+    public PaginateResult<Product> queryForPage(ProductQuery query) {
         Integer count = productMapper.queryCount(query);
         if (count == null || count.equals(0)){
-            tableData.setRows(new ArrayList<>());
-            tableData.setTotal(0L);
-            return ResponseUtils.newResponse().succeed(tableData);
+            PaginateResult.newInstance(0, new ArrayList<>());
         }
-        tableData.setTotal(Long.valueOf(count));
         List<Product> list = productMapper.queryForPage(query);
-        tableData.setRows(list);
-        return ResponseUtils.newResponse().succeed(tableData);
+        return PaginateResult.newInstance(count, list);
     }
 
     @Override
-    public ResponseUtils.ResponseVO addProduct(Product product, MultipartFile file) {
+    public void addProduct(Product product, MultipartFile file) {
         if (StringUtils.isBlank(product.getSku())){
-            return ResponseUtils.newResponse().failed(500, "条形码不能为空");
+            throw BasicException.newInstance().error("条形码不能为空", 500);
         }
         if (StringUtils.isBlank(product.getUnit())){
-            return ResponseUtils.newResponse().failed(500, "单位不能为空");
+            throw BasicException.newInstance().error("单位不能为空", 500);
         }
         if (StringUtils.isBlank(product.getSpecification())){
-            return ResponseUtils.newResponse().failed(500, "规格不能为空");
+            throw BasicException.newInstance().error("规格不能为空", 500);
         }
         if (StringUtils.isBlank(product.getProductName())){
-            return ResponseUtils.newResponse().failed(500, "商品名称不能为空");
+            throw BasicException.newInstance().error("商品名称不能为空", 500);
         }
         if (product.getCost() == null){
-            return ResponseUtils.newResponse().failed(500, "成本不能为空");
+            throw BasicException.newInstance().error("成本不能为空", 500);
         }
         if (product.getGeneralGentPrice() == null){
-            return ResponseUtils.newResponse().failed(500, "总代理价格不能为空");
+            throw BasicException.newInstance().error("总代理价格不能为空", 500);
         }
         if (product.getGentPrice() == null){
-            return ResponseUtils.newResponse().failed(500, "代理价格不能为空");
+            throw BasicException.newInstance().error("代理价格不能为空", 500);
         }
         if (product.getWholesalePrice() == null){
-            return ResponseUtils.newResponse().failed(500, "批发价格不能为空");
+            throw BasicException.newInstance().error("批发价格不能为空", 500);
         }
         if (product.getRetailPrice() == null){
-            return ResponseUtils.newResponse().failed(500, "零售价格不能为空");
+            throw BasicException.newInstance().error("零售价格不能为空", 500);
         }
         trimToNullValue(product);
 
         List<Product> checkProList = productMapper.queryProductBySku(product.getSku());
         if (!CollectionUtils.isEmpty(checkProList)){
-            return ResponseUtils.newResponse().failed(500, "已经存在相同的SKU，不能重复添加");
+            throw BasicException.newInstance().error("已经存在相同的SKU，不能重复添加", 500);
         }
 
-        ResponseUtils.ResponseVO res = uploadLoadProPe(file);
-        if (!res.isSuccess()){
-            return res;
+        String filePath = uploadLoadProPe(file);
+        if (StringUtils.isNotBlank(filePath)) {
+            product.setProductUrl(filePath);
         }
         //todo:用户信息
-        String path = res.getData().toString();
-        product.setProductUrl(path);
         Date date = new Date();
         product.setCreateDate(date);
         product.setUpdateDate(date);
         productMapper.insert(product);
-        return ResponseUtils.newResponse().succeed();
     }
     private void trimToNullValue(Product product){
         product.setBackRemark(StringUtils.trimToNull(product.getBackRemark()));
@@ -114,9 +103,9 @@ public class ProductServiceImpl extends AbstractService<Product> implements Prod
         product.setBackRemark(StringUtils.trimToNull(product.getUnit()));
     }
 
-    private ResponseUtils.ResponseVO uploadLoadProPe(MultipartFile file){
+    private String uploadLoadProPe(MultipartFile file){
         if (file.isEmpty()) {
-            return ResponseUtils.newResponse().succeed();
+            return null;
         }
         // 获取文件名
         String fileName = file.getOriginalFilename();
@@ -129,7 +118,7 @@ public class ProductServiceImpl extends AbstractService<Product> implements Prod
         checkTypeList.add("tiff");
         checkTypeList.add("gif");
         if (!checkTypeList.contains(suffixName.toLowerCase())){
-            return ResponseUtils.newResponse().failed(500, "图片格式必须是bmp,jpg,png,tiff,gif");
+            throw BasicException.newInstance().error("图片格式必须是bmp,jpg,png,tiff,gif", 500);
         }
 
         // 文件上传后的路径
@@ -140,52 +129,47 @@ public class ProductServiceImpl extends AbstractService<Product> implements Prod
         // 检测是否存在目录
         try {
             file.transferTo(dest);
-            ResponseUtils.ResponseVO result = ResponseUtils.newResponse();
-            result.setData(dest.getPath());
-            return result;
-        } catch (IllegalStateException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
+            return dest.getPath();
+        } catch (Exception e) {
+            throw BasicException.newInstance().error("未知异常，请联系管理员", 500).originEx(e);
         }
-        return ResponseUtils.newResponse().failed(500,"文件上传失败");
     }
 
     @Override
-    public ResponseUtils.ResponseVO updateProduct(Product upProduct, MultipartFile file) {
+    public void updateProduct(Product upProduct, MultipartFile file) {
         if (upProduct.getId() == null){
-            return ResponseUtils.newResponse().failed(500, "id不能为空");
+            throw BasicException.newInstance().error("id不能为空", 500);
         }
         if (StringUtils.isBlank(upProduct.getSku())){
-            return ResponseUtils.newResponse().failed(500, "条形码不能为空");
+            throw BasicException.newInstance().error("条形码不能为空", 500);
         }
         if (StringUtils.isBlank(upProduct.getUnit())){
-            return ResponseUtils.newResponse().failed(500, "单位不能为空");
+            throw BasicException.newInstance().error("单位不能为空", 500);
         }
         if (StringUtils.isBlank(upProduct.getSpecification())){
-            return ResponseUtils.newResponse().failed(500, "规格不能为空");
+            throw BasicException.newInstance().error("规格不能为空", 500);
         }
         if (StringUtils.isBlank(upProduct.getProductName())){
-            return ResponseUtils.newResponse().failed(500, "商品名称不能为空");
+            throw BasicException.newInstance().error("商品名称不能为空", 500);
         }
         if (upProduct.getCost() == null){
-            return ResponseUtils.newResponse().failed(500, "成本不能为空");
+            throw BasicException.newInstance().error("成本不能为空", 500);
         }
         if (upProduct.getGeneralGentPrice() == null){
-            return ResponseUtils.newResponse().failed(500, "总代理价格不能为空");
+            throw BasicException.newInstance().error("总代理价格不能为空", 500);
         }
         if (upProduct.getGentPrice() == null){
-            return ResponseUtils.newResponse().failed(500, "代理价格不能为空");
+            throw BasicException.newInstance().error("代理价格不能为空", 500);
         }
         if (upProduct.getWholesalePrice() == null){
-            return ResponseUtils.newResponse().failed(500, "批发价格不能为空");
+            throw BasicException.newInstance().error("批发价格不能为空", 500);
         }
         if (upProduct.getRetailPrice() == null){
-            return ResponseUtils.newResponse().failed(500, "零售价格不能为空");
+            throw BasicException.newInstance().error("零售价格不能为空", 500);
         }
         Product product = productMapper.selectByPrimaryKey(upProduct.getId());
         if (product == null){
-            return ResponseUtils.newResponse().failed(500,"没有找到对应商品信息");
+            throw BasicException.newInstance().error("没有找到对应商品信息", 500);
         }
         trimToNullValue(upProduct);
         Date date = new Date();
@@ -205,42 +189,33 @@ public class ProductServiceImpl extends AbstractService<Product> implements Prod
         product.setProductionArea(upProduct.getProductionArea());
         product.setProductName(upProduct.getProductName());
         productMapper.updateByPrimaryKey(product);
-        return ResponseUtils.newResponse().succeed();
     }
 
     @Override
-    public ResponseUtils.ResponseVO upProductPic(Integer id, MultipartFile file) {
+    public void upProductPic(Integer id, MultipartFile file) {
         if (id == null){
-            return ResponseUtils.newResponse().failed(500, "id不能为空");
+            throw BasicException.newInstance().error("id不能为空", 500);
         }
-        ResponseUtils.ResponseVO vo = uploadLoadProPe(file);
-        if (!vo.isSuccess()){
-           return vo;
-        }
-        String path = vo.getData().toString();
+        String path = uploadLoadProPe(file);
         if (StringUtils.isBlank(path)){
-            return ResponseUtils.newResponse().failed(500, "请上传图片");
+            throw BasicException.newInstance().error("请上传图片", 500);
         }
         Product product = productMapper.selectByPrimaryKey(id);
         if (product == null){
-            return ResponseUtils.newResponse().failed(500, "没有找到对应产品信息");
+            throw BasicException.newInstance().error("没有找到对应产品信息", 500);
         }
-
         productMapper.updatePic(id, path);
-        return ResponseUtils.newResponse().succeed();
     }
 
     @Override
-    public ResponseUtils.ResponseVO removeProduct(Integer id) {
+    public void removeProduct(Integer id) {
         productMapper.removePicById(id);
-        return ResponseUtils.newResponse().succeed();
     }
 
     @Override
-    public ResponseUtils.ResponseVO queryById(Integer id) {
-        ResponseUtils.ResponseVO vo = ResponseUtils.newResponse();
-        vo.setData(productMapper.selectByPrimaryKey(id));
-        return vo;
+    public Product queryById(Integer id) {
+        Product product = productMapper.selectByPrimaryKey(id);
+        return product;
     }
 
     private String checkPath(){
