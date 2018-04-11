@@ -5,6 +5,7 @@ import com.mszhan.redwine.manage.server.model.mszhanRedwineManage.Product;
 import com.mszhan.redwine.manage.server.model.mszhanRedwineManage.base.PaginateResult;
 import com.mszhan.redwine.manage.server.model.mszhanRedwineManage.query.ProductQuery;
 import com.mszhan.redwine.manage.server.service.ProductService;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -29,10 +30,27 @@ public class ProductController {
         return Responses.newInstance().succeed(product);
     }
     @PostMapping(value = "/add_product")
-    public Object addProduct(@RequestBody Product product, @RequestParam("file") MultipartFile file) {
-        productService.addProduct(product, file);
+    public Object addProduct(@RequestBody Product product) {
+        productService.addProduct(product);
         return Responses.newInstance().succeed();
     }
+
+    @GetMapping("/upload_file_index")
+    public ModelAndView uploadFile(Integer id, Boolean basic) {
+        ModelAndView view = new ModelAndView("product/upload_file");
+        Product product = productService.queryById(id);
+        view.addObject("id", product.getId());
+        view.addObject("filePath", product.getFilePath());
+        view.addObject("fileName", product.getProductFileName());
+        return view;
+    }
+
+    @PostMapping(value = "/upload_file")
+    public Object uploadFile(Integer id,@RequestParam("file") MultipartFile file) {
+        productService.upProductPic(id, file);
+        return Responses.newInstance().succeed();
+    }
+
     @PutMapping(value = "/update_product_pic/{id}")
     public Object updateProductPic(@PathVariable("id") Integer id, @RequestParam("file") MultipartFile file) {
         productService.upProductPic(id, file);

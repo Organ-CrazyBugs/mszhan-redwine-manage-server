@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+
+    <head th:include="/includes/ui_libs::payload('产品管理')"></head>
+    <script type="text/javascript" src="/ui-lib/main/js/product/product_list.js"></script>
+    <link href="/ui-lib/fileInput/css/fileinput.css" media="all" rel="stylesheet" type="text/css"/>
+
+    <link href="/ui-lib/themes/explorer-fa/theme.css" media="all" rel="stylesheet" type="text/css"/>
+    <script src="/ui-lib/fileInput/js/fileinput.js" type="text/javascript"></script>
+    <script src="/ui-lib/fileInput/js/locales/zh.js" type="text/javascript"></script>
+    <script src="/ui-lib/themes/explorer-fa/theme.js" type="text/javascript"></script>
+    <script src="/ui-lib/themes/fa/theme.js" type="text/javascript"></script>
+    <body>
+        <!-- 一级导航菜单 -->
+        <div th:include="/includes/nav_bar::payload('PRODUCT')">
+        <!-- 二级导航菜单 --></div>
+
+        <hidden id="idValue" th:value="${id}" />
+        <hidden id="filePath" th:value="${filePath}" />
+        <hidden id="fileName" th:value="${fileName}" />
+        <main class="container">
+            <div class="my-3 p-3 bg-white rounded box-shadow">
+                <!-- 页面内容在此处填充 -->
+
+                <form enctype="multipart/form-data" >
+                    <div class="form-group">
+                        <div class="file-loading">
+                            <input id="file" name="file" type="file" class="file"  />
+                        </div>
+                    </div>
+
+
+                </form>
+
+
+            </div>
+        </main>
+    </body>
+    <script>
+
+            $("#file").fileinput({
+                theme: 'fa',
+                language : 'zh',
+                uploadExtraData: {id: '5'},
+                uploadUrl: '/product/upload_file',
+                uploadAsync: true,
+                dropZoneTitle: '拖拽文件到这里或者点击选择上传 …',
+                msgErrorClass: 'alert alert-block alert-danger',
+                allowedFileExtensions: ['jpg', 'gif', 'png', 'jpeg'],
+                initialPreview: [
+                    "http://lorempixel.com/800/460/people/1",
+                    "http://lorempixel.com/800/460/people/1"
+                ],
+                initialPreviewAsData: true, // identify if you are sending preview data only and not the raw markup
+                initialPreviewFileType: 'image', // image is the default and can be overridden in config below
+                initialPreviewConfig: [
+                    {caption: "People-1.jpg", size: 576237, width: "120px", url: "/site/file-delete", key: 1},
+                    {caption: "People-1.jpg", size: 932882, width: "120px", url: "/site/file-delete", key: 2},
+                ],
+            });
+
+
+
+    </script>
+</html>

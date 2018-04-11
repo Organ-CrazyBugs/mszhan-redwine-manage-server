@@ -66,10 +66,13 @@ public class Product {
     private String productionArea;
 
     /**
-     * 图片地址
+     * 图片名称
      */
-    @Column(name = "product_url")
-    private String productUrl;
+    @Column(name = "product_file_name")
+    private String productFileName;
+
+    @Column(name = "file_path")
+    private String filePath;
 
     /**
      * sku
@@ -81,16 +84,17 @@ public class Product {
     @Column(name = "create_date")
     private Date createDate;
 
+    @Column(name = "creator_name")
+    private String creatorName;
+
+    @Column(name = "updator_name")
+    private String updatorName;
+
     @Column(name = "update_date")
     private Date updateDate;
 
     private Integer updator;
 
-    /**
-     * 背景
-     */
-    @Column(name = "back_remark")
-    private String backRemark;
 
     /**
      * 品牌
@@ -104,7 +108,201 @@ public class Product {
     @Column(name = "alcohol_content")
     private BigDecimal alcoholContent;
 
+
+
     private String remove;
+    /**
+     * 原产国
+     */
+    @Column(name = "origin_country")
+    private String originCountry;
+
+    /**
+     * 树龄
+     */
+    @Column(name = "tree_age")
+    private String treeAge;
+    /**
+     * 葡萄酒类型
+     */
+    @Column(name = "wine_type")
+    private String wineType;
+
+    /**
+     * 贮藏方式
+     */
+    @Column(name = "storage_method")
+    private String storageMethod;
+
+    /**
+     * 美食搭配
+     */
+    @Column(name = "with_food")
+    private String withFood;
+
+    /**
+     * 葡萄酒品种
+     */
+    @Column(name = "category")
+    private String category;
+
+    /**
+     * 年份
+     */
+    @Column(name = "age")
+    private String age;
+
+    /**
+     * 净含量
+     */
+    @Column(name = "net_weight")
+    private BigDecimal netWeight;
+
+    /**
+     * 酿酒时间
+     */
+    @Column(name = "making_time")
+    private String makingTime;
+
+    /**
+     * 品鉴记录
+     */
+    @Column(name = "tasting_records")
+    private String tastingRecords;
+
+    /**
+     * 推荐理由
+     */
+    @Column(name = "recommended_reason")
+    private String recommendedReason;
+
+    /**
+     * 品牌背景
+     */
+    @Column(name = "brand_backgroud")
+    private String brandBackgroud;
+
+    /**
+     * 介绍图片
+     */
+    @Column(name = "background_file_name")
+    private String backgroundFileName;
+
+    @Column(name = "background_path")
+    private String backgroundPath;
+
+    public String getUpdatorName() {
+        return updatorName;
+    }
+
+    public void setUpdatorName(String updatorName) {
+        this.updatorName = updatorName;
+    }
+
+    public String getCreatorName() {
+
+        return creatorName;
+    }
+
+    public void setCreatorName(String creatorName) {
+        this.creatorName = creatorName;
+    }
+
+    public String getOriginCountry() {
+        return originCountry;
+    }
+
+    public void setOriginCountry(String originCountry) {
+        this.originCountry = originCountry;
+    }
+
+    public String getTreeAge() {
+        return treeAge;
+    }
+
+    public void setTreeAge(String treeAge) {
+        this.treeAge = treeAge;
+    }
+
+    public String getWineType() {
+        return wineType;
+    }
+
+    public void setWineType(String wineType) {
+        this.wineType = wineType;
+    }
+
+    public String getStorageMethod() {
+        return storageMethod;
+    }
+
+    public void setStorageMethod(String storageMethod) {
+        this.storageMethod = storageMethod;
+    }
+
+    public String getWithFood() {
+        return withFood;
+    }
+
+    public void setWithFood(String withFood) {
+        this.withFood = withFood;
+    }
+
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
+    }
+
+    public String getAge() {
+        return age;
+    }
+
+    public void setAge(String age) {
+        this.age = age;
+    }
+
+    public BigDecimal getNetWeight() {
+        return netWeight;
+    }
+
+    public void setNetWeight(BigDecimal netWeight) {
+        this.netWeight = netWeight;
+    }
+
+    public String getMakingTime() {
+        return makingTime;
+    }
+
+    public void setMakingTime(String makingTime) {
+        this.makingTime = makingTime;
+    }
+
+    public String getTastingRecords() {
+        return tastingRecords;
+    }
+
+    public void setTastingRecords(String tastingRecords) {
+        this.tastingRecords = tastingRecords;
+    }
+
+    public String getRecommendedReason() {
+        return recommendedReason;
+    }
+
+    public void setRecommendedReason(String recommendedReason) {
+        this.recommendedReason = recommendedReason;
+    }
+
+    public String getBrandBackgroud() {
+        return brandBackgroud;
+    }
+
+    public void setBrandBackgroud(String brandBackgroud) {
+        this.brandBackgroud = brandBackgroud;
+    }
 
 
     public String getRemove() {
@@ -314,17 +512,37 @@ public class Product {
      *
      * @return product_url - 图片地址
      */
-    public String getProductUrl() {
-        return productUrl;
+
+    public String getProductFileName() {
+        return productFileName;
     }
 
-    /**
-     * 设置图片地址
-     *
-     * @param productUrl 图片地址
-     */
-    public void setProductUrl(String productUrl) {
-        this.productUrl = productUrl;
+    public void setProductFileName(String productFileName) {
+        this.productFileName = productFileName;
+    }
+
+    public String getFilePath() {
+        return filePath;
+    }
+
+    public void setFilePath(String filePath) {
+        this.filePath = filePath;
+    }
+
+    public String getBackgroundFileName() {
+        return backgroundFileName;
+    }
+
+    public void setBackgroundFileName(String backgroundFileName) {
+        this.backgroundFileName = backgroundFileName;
+    }
+
+    public String getBackgroundPath() {
+        return backgroundPath;
+    }
+
+    public void setBackgroundPath(String backgroundPath) {
+        this.backgroundPath = backgroundPath;
     }
 
     /**
@@ -401,23 +619,6 @@ public class Product {
         this.updator = updator;
     }
 
-    /**
-     * 获取背景
-     *
-     * @return back_remark - 背景
-     */
-    public String getBackRemark() {
-        return backRemark;
-    }
-
-    /**
-     * 设置背景
-     *
-     * @param backRemark 背景
-     */
-    public void setBackRemark(String backRemark) {
-        this.backRemark = backRemark;
-    }
 
     /**
      * 获取品牌

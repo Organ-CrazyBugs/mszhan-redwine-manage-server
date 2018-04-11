@@ -1,7 +1,9 @@
 package com.mszhan.redwine.manage.server.service.impl;
 
+import com.mszhan.redwine.manage.server.config.security.User;
 import com.mszhan.redwine.manage.server.core.BasicException;
 import com.mszhan.redwine.manage.server.core.Responses;
+import com.mszhan.redwine.manage.server.core.SecurityUtils;
 import com.mszhan.redwine.manage.server.dao.mszhanRedwineManage.ProductMapper;
 import com.mszhan.redwine.manage.server.model.mszhanRedwineManage.Product;
 import com.mszhan.redwine.manage.server.model.mszhanRedwineManage.base.PaginateResult;
@@ -48,7 +50,7 @@ public class ProductServiceImpl extends AbstractService<Product> implements Prod
     }
 
     @Override
-    public void addProduct(Product product, MultipartFile file) {
+    public void addProduct(Product product) {
         if (StringUtils.isBlank(product.getSku())){
             throw BasicException.newInstance().error("条形码不能为空", 500);
         }
@@ -77,33 +79,50 @@ public class ProductServiceImpl extends AbstractService<Product> implements Prod
             throw BasicException.newInstance().error("零售价格不能为空", 500);
         }
         trimToNullValue(product);
-
+        User user = SecurityUtils.getAuthenticationUser();
+        if (user == null){
+            throw BasicException.newInstance().error("请先登录", 500);
+        }
         List<Product> checkProList = productMapper.queryProductBySku(product.getSku());
         if (!CollectionUtils.isEmpty(checkProList)){
             throw BasicException.newInstance().error("已经存在相同的SKU，不能重复添加", 500);
         }
 
-        String filePath = uploadLoadProPe(file);
-        if (StringUtils.isNotBlank(filePath)) {
-            product.setProductUrl(filePath);
-        }
+//        String filePath = uploadLoadProPe(file);
+//        if (StringUtils.isNotBlank(filePath)) {
+//            product.setProductUrl(filePath);
+//        }
         //todo:用户信息
         Date date = new Date();
         product.setCreateDate(date);
         product.setUpdateDate(date);
+        product.setCreator(user.getUserLoginId());
+        product.setCreatorName(user.getUsername());
+        product.setUpdatorName(user.getUsername());
+        product.setRemove("N");
         productMapper.insert(product);
     }
     private void trimToNullValue(Product product){
-        product.setBackRemark(StringUtils.trimToNull(product.getBackRemark()));
-        product.setBackRemark(StringUtils.trimToNull(product.getBrandName()));
-        product.setBackRemark(StringUtils.trimToNull(product.getProductionArea()));
-        product.setBackRemark(StringUtils.trimToNull(product.getLevel()));
-        product.setBackRemark(StringUtils.trimToNull(product.getSku()));
-        product.setBackRemark(StringUtils.trimToNull(product.getSpecification()));
-        product.setBackRemark(StringUtils.trimToNull(product.getUnit()));
+        product.setBrandName(StringUtils.trimToNull(product.getBrandName()));
+        product.setProductionArea(StringUtils.trimToNull(product.getProductionArea()));
+        product.setLevel(StringUtils.trimToNull(product.getLevel()));
+        product.setSku(StringUtils.trimToNull(product.getSku()));
+        product.setSpecification(StringUtils.trimToNull(product.getSpecification()));
+        product.setUnit(StringUtils.trimToNull(product.getUnit()));
+
+        product.setOriginCountry(StringUtils.trimToNull(product.getOriginCountry()));
+        product.setTreeAge(StringUtils.trimToNull(product.getTreeAge()));
+        product.setStorageMethod(StringUtils.trimToNull(product.getStorageMethod()));
+        product.setWithFood(StringUtils.trimToNull(product.getWithFood()));
+        product.setCategory(StringUtils.trimToNull(product.getCategory()));
+        product.setAge(StringUtils.trimToNull(product.getAge()));
+        product.setMakingTime(StringUtils.trimToNull(product.getMakingTime()));
+        product.setTastingRecords(StringUtils.trimToNull(product.getTastingRecords()));
+        product.setRecommendedReason(StringUtils.trimToNull(product.getRecommendedReason()));
+        product.setBrandBackgroud(StringUtils.trimToNull(product.getBrandBackgroud()));
     }
 
-    private String uploadLoadProPe(MultipartFile file){
+    private String uploadLoadProPe(MultipartFile file, String sku){
         if (file.isEmpty()) {
             return null;
         }
@@ -112,20 +131,19 @@ public class ProductServiceImpl extends AbstractService<Product> implements Prod
         // 获取文件的后缀名
         String suffixName = fileName.substring(fileName.lastIndexOf("."));
         List<String> checkTypeList = new ArrayList<>();
-        checkTypeList.add("bmp");
+        checkTypeList.add("gif");
         checkTypeList.add("jpg");
         checkTypeList.add("png");
-        checkTypeList.add("tiff");
-        checkTypeList.add("gif");
-        if (!checkTypeList.contains(suffixName.toLowerCase())){
-            throw BasicException.newInstance().error("图片格式必须是bmp,jpg,png,tiff,gif", 500);
+        checkTypeList.add("jpeg");
+        if (!checkTypeList.contains(suffixName.toLowerCase().replace(".",""))){
+            throw BasicException.newInstance().error("图片格式必须是jpeg,jpg,png,gif", 500);
         }
-
+        String newFileName = String.format("%s%s", sku, suffixName);
         // 文件上传后的路径
         String filePath = checkPath();
         // 解决中文问题，liunx下中文路径，图片显示问题
         // fileName = UUID.randomUUID() + suffixName;
-        File dest = new File(filePath + fileName);
+        File dest = new File(String.format("%s/%s",filePath, newFileName));
         // 检测是否存在目录
         try {
             file.transferTo(dest);
@@ -175,7 +193,6 @@ public class ProductServiceImpl extends AbstractService<Product> implements Prod
         Date date = new Date();
         product.setUpdateDate(date);
         product.setUpdator(1);
-        product.setBackRemark(upProduct.getBackRemark());
         product.setAlcoholContent(upProduct.getAlcoholContent());
         product.setBrandName(upProduct.getBrandName());
         product.setCost(upProduct.getCost());
@@ -196,13 +213,14 @@ public class ProductServiceImpl extends AbstractService<Product> implements Prod
         if (id == null){
             throw BasicException.newInstance().error("id不能为空", 500);
         }
-        String path = uploadLoadProPe(file);
-        if (StringUtils.isBlank(path)){
-            throw BasicException.newInstance().error("请上传图片", 500);
-        }
         Product product = productMapper.selectByPrimaryKey(id);
         if (product == null){
             throw BasicException.newInstance().error("没有找到对应产品信息", 500);
+        }
+        String sku = product.getSku();
+        String path = uploadLoadProPe(file, sku);
+        if (StringUtils.isBlank(path)){
+            throw BasicException.newInstance().error("请上传图片", 500);
         }
         productMapper.updatePic(id, path);
     }

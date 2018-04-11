@@ -16,6 +16,8 @@ $(function () {
     let $editBalanceForm = $('#edit-balance-form');
     let $editBalanceSubmitBtn = $("#edit-balance-submit-btn");
     let $editSubmitBtn = $('#edit-submit-btn');
+    let $createBtn = $('#create_btn');
+    let $uploadBtn = $('#upload_btn');
 
     $table.bootstrapTable({
         url: '/product/search',
@@ -89,24 +91,40 @@ $(function () {
     $createSubmitBtn.on('click', function(event){
         event.preventDefault();
         let params = $createForm.serializeObject();
-        if ($.isBlank($.trim(params['type']))) {
-            $.alertError('缺少参数', '代理类型为必填项');
+        if ($.isBlank($.trim(params['productName']))) {
+            $.alertError('缺少参数', '产品名称为必填项');
             return;
         }
-        if ($.isBlank($.trim(params['name']))) {
-            $.alertError('缺少参数', '代理名称为必填项');
+        if ($.isBlank($.trim(params['sku']))) {
+            $.alertError('缺少参数', 'SKU为必填项');
             return;
         }
-        if ($.isBlank($.trim(params['tel']))) {
-            $.alertError('缺少参数', '座机号码为必填项');
+        if ($.isBlank($.trim(params['generalGentPrice']))) {
+            $.alertError('缺少参数', '总代理价格为必填项');
             return;
         }
-        if ($.isBlank($.trim(params['phone']))) {
-            $.alertError('缺少参数', '联系电话为必填项');
+        if ($.isBlank($.trim(params['gentPrice']))) {
+            $.alertError('缺少参数', '代理价格为必填项');
+            return;
+        }
+        if ($.isBlank($.trim(params['wholesalePrice']))) {
+            $.alertError('缺少参数', '批发价为必填项');
+            return;
+        }
+        if ($.isBlank($.trim(params['retailPrice']))) {
+            $.alertError('缺少参数', '零售价为必填项');
+            return;
+        }
+        if ($.isBlank($.trim(params['cost']))) {
+            $.alertError('缺少参数', '成本价为必填项');
+            return;
+        }
+        if ($.isBlank($.trim(params['unit']))) {
+            $.alertError('缺少参数', '单位为必填项');
             return;
         }
         $.ajax({
-            url: '/agent/add_agent',
+            url: '/product/add_product',
             method: 'POST',
             contentType: 'application/json',
             dataType: 'json',
@@ -118,7 +136,7 @@ $(function () {
 
                     return;
                 }
-                $.alertSuccess('提示', '仓库创建成功!');
+                $.alertSuccess('提示', '产品创建成功!');
 
                 $table.bootstrapTable('refresh');                       // 刷新列表
                 $createModal.modal('hide');    // 关闭模态框
@@ -231,42 +249,22 @@ $(function () {
         });
     });
 
-    // 禁用/启用 仓库
-    function changeStatusEvent(status){
-        let statusName = status === 'ENABLED' ? '启用' : '禁用';
-        return function () {
-            let rows = $table.bootstrapTable('getSelections');
-            if (rows.length <= 0) {
-                $.alertWarning('提示', '请选择需要操作的记录项');
-                return;
-            }
-            let ids = [];
-            rows.forEach(item => ids.push(item.id));
-            let warehouseIds = ids.join(',');
+    $createBtn.on('click', function (){
+        window.open("/page/product/create_index");
+    });
 
-            let text = $.formatString('确认{1}已选择的{2}个仓库吗？', statusName, rows.length);
-            $.confirm('请确认您的操作', text, function (){
-
-                $.ajax({
-                    url: '/api/warehouse/manage/change_status',
-                    method: 'PUT',
-                    // contentType: 'application/json',
-                    dataType: 'json',
-                    data: { warehouseIds, status },
-                    targetBtn: status === 'ENABLED' ? $enabledBtn : $disabledBtn,   // 指定发送ajax请求后在请求过程中禁用的按钮对象
-                    success: function (data) {
-                        if ($.ajaxIsFailure(data)) {
-                            return;
-                        }
-                        $.alertSuccess('提示', '仓库状态修改成功!');
-
-                        $table.bootstrapTable('refresh');                       // 刷新列表
-                    }
-                });
-            });
+    $uploadBtn.on('click', function(){
+        let rows = $table.bootstrapTable('getSelections');
+        if (rows.length <= 0 ) {
+            $.alertWarning('提示', '请选择需要修改的记录项');
+            return;
         }
-    };
+        if (rows.length > 1){
+            $.alertWarning('提示', '只能勾选一个修改项');
+            return;
+        }
+        var id = $editBalanceForm.bindData(rows[0], ["id"])
+        window.open("/product/upload_file_index?id=" + id);
+    });
 
-    $enabledBtn.on('click', changeStatusEvent('ENABLED'));
-    $disabledBtn.on('click', changeStatusEvent('DISABLED'));
 });

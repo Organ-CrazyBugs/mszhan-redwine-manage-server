@@ -16,16 +16,34 @@
     <result column="specification" jdbcType="VARCHAR" property="specification" />
     <result column="level" jdbcType="VARCHAR" property="level" />
     <result column="production_area" jdbcType="VARCHAR" property="productionArea" />
-    <result column="product_url" jdbcType="VARCHAR" property="productUrl" />
+    <result column="product_file_name" jdbcType="VARCHAR" property="productFileName" />
+    <result column="file_path" jdbcType="VARCHAR" property="filePath" />
     <result column="sku" jdbcType="VARCHAR" property="sku" />
     <result column="creator" jdbcType="INTEGER" property="creator" />
     <result column="create_date" jdbcType="TIMESTAMP" property="createDate" />
     <result column="update_date" jdbcType="TIMESTAMP" property="updateDate" />
     <result column="updator" jdbcType="INTEGER" property="updator" />
-    <result column="back_remark" jdbcType="VARCHAR" property="backRemark" />
     <result column="brand_name" jdbcType="VARCHAR" property="brandName" />
     <result column="alcohol_content" jdbcType="DECIMAL" property="alcoholContent" />
     <result column="remove" jdbcType="VARCHAR" property="remove" />
+    <result column="creator_name" jdbcType="VARCHAR" property="creatorName" />
+    <result column="updator_name" jdbcType="VARCHAR" property="updatorName" />
+    <result column="origin_country" jdbcType="VARCHAR" property="originCountry" />
+    <result column="tree_age" jdbcType="VARCHAR" property="treeAge" />
+    <result column="wine_type" jdbcType="VARCHAR" property="wineType" />
+    <result column="storage_method" jdbcType="VARCHAR" property="storageMethod" />
+    <result column="with_food" jdbcType="VARCHAR" property="withFood" />
+    <result column="category" jdbcType="VARCHAR" property="category" />
+    <result column="age" jdbcType="VARCHAR" property="age" />
+    <result column="net_weight" jdbcType="VARCHAR" property="netWeight" />
+    <result column="making_time" jdbcType="VARCHAR" property="makingTime" />
+    <result column="tasting_records" jdbcType="VARCHAR" property="tastingRecords" />
+    <result column="recommended_reason" jdbcType="VARCHAR" property="recommendedReason" />
+    <result column="brand_backgroud" jdbcType="VARCHAR" property="brandBackgroud" />
+    <result column="background_path" jdbcType="VARCHAR" property="backgroundPath" />
+    <result column="background_file_name" jdbcType="VARCHAR" property="backgroundFileName" />
+
+
 
   </resultMap>
   <select id="queryForPage" resultMap="BaseResultMap"  parameterType="com.mszhan.redwine.manage.server.model.mszhanRedwineManage.query.ProductQuery">

@@ -114,4 +114,6 @@ public class WebBasicErrorController extends AbstractErrorController {
     public ErrorProperties getErrorProperties() {
         return errorProperties;
     }
+
+
 }

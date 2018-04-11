@@ -18,4 +18,11 @@ public class ProductPageController {
         return view;
     }
 
+    @GetMapping("/page/product/create_index")
+    public ModelAndView createIndex() {
+        ModelAndView view = new ModelAndView("product/create_product");
+        return view;
+    }
+
+
 }

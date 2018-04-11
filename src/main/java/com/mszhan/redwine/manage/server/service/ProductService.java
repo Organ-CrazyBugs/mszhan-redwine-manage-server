@@ -19,7 +19,7 @@ public interface ProductService extends Service<Product> {
 
     PaginateResult<Product> queryForPage(ProductQuery query);
 
-    void addProduct(Product product, MultipartFile file);
+    void addProduct(Product product);
 
     void updateProduct(Product product, MultipartFile file);
 
