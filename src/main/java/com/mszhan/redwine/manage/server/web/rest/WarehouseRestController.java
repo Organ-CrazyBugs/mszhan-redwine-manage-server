@@ -4,6 +4,7 @@ import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.mszhan.redwine.manage.server.core.Requests;
 import com.mszhan.redwine.manage.server.core.Responses;
+import com.mszhan.redwine.manage.server.core.SecurityUtils;
 import com.mszhan.redwine.manage.server.dao.mszhanRedwineManage.WarehouseMapper;
 import com.mszhan.redwine.manage.server.model.mszhanRedwineManage.Warehouse;
 import com.mszhan.redwine.manage.server.model.mszhanRedwineManage.base.PaginateResult;
@@ -15,7 +16,6 @@ import org.springframework.web.bind.annotation.*;
 import tk.mybatis.mapper.entity.Condition;
 import tk.mybatis.mapper.entity.Example;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,13 +33,11 @@ public class WarehouseRestController {
     private WarehouseService warehouseService;
 
     @GetMapping(value = "/api/warehouse/manage/list")
-    public Object list(HttpServletRequest request) {
-        Requests requests = Requests.newInstance(request);
-
-        String warehouseName = requests.getString("warehouseName", null);
-        String status = requests.getString("status", null);
-        Integer offset = requests.getInteger("offset", 0);
-        Integer limit = requests.getInteger("limit", 10);
+    public Object list(Requests request) {
+        String warehouseName = request.getString("warehouseName", null);
+        String status = request.getString("status", null);
+        Integer offset = request.getInteger("offset", 0);
+        Integer limit = request.getInteger("limit", 10);
 
         Condition searchCon = new Condition(Warehouse.class);
         Example.Criteria searchCriteria = searchCon.createCriteria();
@@ -66,7 +64,7 @@ public class WarehouseRestController {
         warehouse.setRemark(createVO.getRemark());
         warehouse.setStatus(WarehouseService.WarehouseStatus.ENABLED.toString());
 
-        Integer userId = 0; //TODO: 从Session中获取用户ID
+        Integer userId = SecurityUtils.getAuthenticationUser().getUserLoginId();
 
         this.warehouseService.createWarehouse(userId, warehouse);
 
@@ -74,12 +72,11 @@ public class WarehouseRestController {
     }
 
     @PutMapping(value = "/api/warehouse/manage/change_status")
-    public Object changeStatus(HttpServletRequest request){
-        Requests requests = Requests.newInstance(request);
-        List<Integer> warehouseIds = requests.getIntegerArray("warehouseIds", ",", new ArrayList<>());
-        WarehouseService.WarehouseStatus status = requests.getEnum("status", WarehouseService.WarehouseStatus.class, null);
+    public Object changeStatus(Requests request){
+        List<Integer> warehouseIds = request.getIntegerArray("warehouseIds", ",", new ArrayList<>());
+        WarehouseService.WarehouseStatus status = request.getEnum("status", WarehouseService.WarehouseStatus.class, null);
 
-        Integer userId = 0; //TODO: 从Session中获取用户ID
+        Integer userId = SecurityUtils.getAuthenticationUser().getUserLoginId();
 
         this.warehouseService.changeStatus(userId, warehouseIds, status);
 
@@ -97,7 +94,7 @@ public class WarehouseRestController {
         warehouse.setTel(editVO.getTel());
         warehouse.setRemark(editVO.getRemark());
 
-        Integer userId = 0; //TODO: 从Session中获取用户ID
+        Integer userId = SecurityUtils.getAuthenticationUser().getUserLoginId();
 
         this.warehouseService.updateWarehouse(userId, warehouse);
 

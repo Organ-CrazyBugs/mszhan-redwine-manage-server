@@ -8,6 +8,7 @@ import com.mszhan.redwine.manage.server.core.AbstractService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.Assert;
 import org.springframework.util.CollectionUtils;
 import tk.mybatis.mapper.entity.Condition;
 
@@ -29,27 +30,16 @@ public class WarehouseServiceImpl extends AbstractService<Warehouse> implements 
 
     @Override
     public Warehouse createWarehouse(Integer userId, Warehouse warehouse) {
-        if (warehouse == null) {
-            throw BasicException.newInstance().error("缺少仓库信息参数", 500);
-        }
-        if (userId == null) {
-            throw BasicException.newInstance().error("仓库创建人不能为空", 500);
-        }
-        if (StringUtils.isBlank(warehouse.getName())) {
-            throw BasicException.newInstance().error("仓库名称不能为空", 500);
-        }
-        if (StringUtils.isBlank(warehouse.getPrincipal())) {
-            throw BasicException.newInstance().error("仓库负责人不能为空", 500);
-        }
-        if (StringUtils.isBlank(warehouse.getPhone())) {
-            throw BasicException.newInstance().error("联系方式不能为空", 500);
-        }
+        Assert.notNull(warehouse, "缺少仓库信息参数");
+        Assert.notNull(userId, "仓库创建人不能为空");
+        Assert.hasLength(warehouse.getName(), "仓库名称不能为空");
+        Assert.hasLength(warehouse.getPrincipal(), "仓库负责人不能为空");
+        Assert.hasLength(warehouse.getPhone(), "联系方式不能为空");
+
         Condition checkNameCon = new Condition(Warehouse.class);
         checkNameCon.createCriteria().andEqualTo("name", warehouse.getName());
         int nameExists = this.warehouseMapper.selectCountByCondition(checkNameCon);
-        if (nameExists > 0) {
-            throw BasicException.newInstance().error("该仓库名称已经存在", 500);
-        }
+        Assert.isTrue(nameExists == 0, "该仓库名称已经存在");
 
         warehouse.setCreator(userId);
         warehouse.setUpdator(userId);
@@ -61,29 +51,17 @@ public class WarehouseServiceImpl extends AbstractService<Warehouse> implements 
 
     @Override
     public void updateWarehouse(Integer userId, Warehouse warehouse){
-        if (userId == null) {
-            throw BasicException.newInstance().error("仓库状态修改人不能为空", 500);
-        }
-        if (warehouse == null) {
-            throw BasicException.newInstance().error("缺少仓库信息参数", 500);
-        }
-        if (StringUtils.isBlank(warehouse.getName())) {
-            throw BasicException.newInstance().error("仓库名称不能为空", 500);
-        }
-        if (StringUtils.isBlank(warehouse.getPrincipal())) {
-            throw BasicException.newInstance().error("仓库负责人不能为空", 500);
-        }
-        if (StringUtils.isBlank(warehouse.getPhone())) {
-            throw BasicException.newInstance().error("联系方式不能为空", 500);
-        }
+        Assert.notNull(userId, "仓库状态修改人不能为空");
+        Assert.notNull(warehouse, "缺少仓库信息参数");
+        Assert.hasLength(warehouse.getName(), "仓库名称不能为空");
+        Assert.hasLength(warehouse.getPrincipal(), "仓库负责人不能为空");
+        Assert.hasLength(warehouse.getPhone(), "联系方式不能为空");
 
         Condition con = new Condition(Warehouse.class);
         con.createCriteria().andEqualTo("name", warehouse.getName())
                 .andNotEqualTo("id", warehouse.getId());
         int count = this.warehouseMapper.selectCountByCondition(con);
-        if (count > 0) {
-            throw BasicException.newInstance().error("该仓库名称已经存在", 500);
-        }
+        Assert.isTrue(count == 0, "该仓库名称已经存在");
 
         warehouse.setUpdateDate(new Date());
         warehouse.setUpdator(userId);
@@ -93,15 +71,9 @@ public class WarehouseServiceImpl extends AbstractService<Warehouse> implements 
 
     @Override
     public void changeStatus(Integer userId, List<Integer> warehouseIds, WarehouseStatus status) {
-        if (userId == null) {
-            throw BasicException.newInstance().error("仓库状态修改人不能为空", 500);
-        }
-        if (CollectionUtils.isEmpty(warehouseIds)) {
-            throw BasicException.newInstance().error("仓库状态修改项不能为空", 500);
-        }
-        if (status == null) {
-            throw BasicException.newInstance().error("仓库状态参数不能为空", 500);
-        }
+        Assert.notNull(userId, "仓库状态修改人不能为空");
+        Assert.notNull(status, "仓库状态参数不能为空");
+        Assert.notEmpty(warehouseIds, "仓库状态修改项不能为空");
 
         Warehouse record = new Warehouse();
         record.setStatus(status.toString());

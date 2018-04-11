@@ -3,6 +3,8 @@ $(function(){
     let $loginAccountCreateModal = $('#login-account-create-modal');
     let $userLoginCreateForm = $('#user-login-create-form');
     let $userLoginCreateSubmitBtn = $('#user-login-create-submit-btn');
+    let $userLoginEnableBtn = $('#user-login-enable-btn');
+    let $userLoginDisableBtn = $('#user-login-disable-btn');
 
     $table.bootstrapTable({
         url: '/api/user_login/list',
@@ -73,6 +75,46 @@ $(function(){
             }
         });
     });
+
+
+    // 禁用/启用 登陆账号
+    function changeUserLoginStatusEvent(status){
+        let statusName = status === 'ENABLED' ? '启用' : '禁用';
+        return function () {
+            let rows = $table.bootstrapTable('getSelections');
+            if (rows.length <= 0) {
+                $.alertWarning('提示', '请选择需要操作的记录项');
+                return;
+            }
+            let ids = [];
+            rows.forEach(item => ids.push(item.id));
+            let userLoginIds = ids.join(',');
+
+            let text = $.formatString('确认{1}已选择的{2}个账号吗？', statusName, rows.length);
+            $.confirm('请确认您的操作', text, function (){
+
+                $.ajax({
+                    url: '/api/user_login/change_status',
+                    method: 'PUT',
+                    // contentType: 'application/json',
+                    dataType: 'json',
+                    data: { userLoginIds, status },
+                    targetBtn: status === 'ENABLED' ? $userLoginEnableBtn : $userLoginDisableBtn,
+                    success: function (data) {
+                        if ($.ajaxIsFailure(data)) {
+                            return;
+                        }
+                        $.alertSuccess('提示', '账号状态修改成功!');
+
+                        $table.bootstrapTable('refresh');                       // 刷新列表
+                    }
+                });
+            });
+        }
+    };
+
+    $userLoginEnableBtn.on('click', changeUserLoginStatusEvent('ENABLED'));
+    $userLoginDisableBtn.on('click', changeUserLoginStatusEvent('DISABLED'));
 
 
 });
