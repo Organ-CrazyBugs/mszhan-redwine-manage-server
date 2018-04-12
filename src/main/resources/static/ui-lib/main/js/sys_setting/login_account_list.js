@@ -5,6 +5,10 @@ $(function(){
     let $userLoginCreateSubmitBtn = $('#user-login-create-submit-btn');
     let $userLoginEnableBtn = $('#user-login-enable-btn');
     let $userLoginDisableBtn = $('#user-login-disable-btn');
+    let $userLoginPasswordChange = $('#user-login-password-change');
+    let $loginAccountChangPasswordModal = $('#login-account-chang-password-modal');
+    let $userLoginChangePasswordForm = $('#user-login-change-password-form');
+    let $userLoginChangePasswordSubmitBtn = $('#user-login-change-password-submit-btn');
 
     $table.bootstrapTable({
         url: '/api/user_login/list',
@@ -33,7 +37,10 @@ $(function(){
 
     // 绑定创建仓库Modal隐藏事件， 隐藏时候清空表单内容
     $loginAccountCreateModal.on('hide.bs.modal', function (e) {
-        $userLoginCreateForm.reset();       // 清空模态框内表单数据
+        $userLoginCreateForm.reset();
+    });
+    $loginAccountChangPasswordModal.on('hide.bs.modal', function (e) {
+        $userLoginChangePasswordForm.reset();
     });
 
     // 点击创建账号按钮事件
@@ -112,10 +119,28 @@ $(function(){
             });
         }
     };
-
     $userLoginEnableBtn.on('click', changeUserLoginStatusEvent('ENABLED'));
     $userLoginDisableBtn.on('click', changeUserLoginStatusEvent('DISABLED'));
 
 
+    // 修改密码按钮点击事件
+    $userLoginPasswordChange.on('click', function (event) {
+        let rows = $table.bootstrapTable('getSelections');
+        if (rows.length <= 0) {
+            $.alertWarning('提示', '请选择需要操作的记录项');
+            return;
+        }
+        $userLoginChangePasswordForm.bindData(rows[0], ['userName', 'personName', 'id']);
+        $loginAccountChangPasswordModal.modal('show');
+    });
+
+    // 修改密码点击保存按钮事件
+    $userLoginChangePasswordSubmitBtn.on('click', function (evnet) {
+        let data = $userLoginChangePasswordForm.serializeObject();
+        if ($.isBlank($.trim(data['password']))) {
+            $.alertWarning('缺少参数', '请输入新的密码');
+            return;
+        }
+    });
 });
 

@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+
+    <div th:fragment="payload(title)">
+        <div class="modal fade" id="login-popup-modal" tabindex="-1" role="dialog">
+            <div class="modal-dialog modal-dialog-centered modal-sm" style="max-width: 320px;" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" th:text="${title}"></h5>
+                    </div>
+                    <form id="login-popup-form" action="#">
+                        <div class="modal-body">
+                            <div class="alert alert-danger" role="alert">会话超时, 请重新登陆.</div>
+
+                            <div class="input-group form-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text"><i class="fa fa-user fa-fw"></i></span>
+                                </div>
+                                <input name="username" type="text" readonly="readonly" class="form-control" placeholder="账号" />
+                            </div>
+
+                            <div class="input-group form-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text"><i class="fa fa-key fa-fw"></i></span>
+                                </div>
+                                <input name="password" type="password" class="form-control" placeholder="密码" />
+                            </div>
+                            <div class="text-right">
+                                <button type="submit" class="btn btn-primary"><i class="fa fa-sign-in"></i>&nbsp;登陆</button>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button id="login-popup-other-login-btn" type="button" class="btn btn-link">其他账号登陆</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</html>

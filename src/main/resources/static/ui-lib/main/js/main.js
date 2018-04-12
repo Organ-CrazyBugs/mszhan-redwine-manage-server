@@ -11,6 +11,9 @@ $.ajax = function (options) {
     var fn = {
         error: function (jqXHR, textStatus, errorThrown){
             console.log('执行了['+options.url+'] error');
+            if (jqXHR.status === 401) {
+                showLoginPopup();
+            }
 
             if (originError){
                 try {
@@ -22,6 +25,7 @@ $.ajax = function (options) {
         },
         success: function (data, textStatus, jqXHR) {
             console.log('执行了['+options.url+'] success');
+
             if (!$.ajaxIsSuccess(data)) {
                 let error = $.ajaxGetError(data);
                 let errorMsg = '未知错误, 请联系管理员!';
@@ -47,7 +51,7 @@ $.ajax = function (options) {
             console.log('执行了['+options.url+'] complete');
             if (options.targetBtn) {
                 options.targetLoadingIcon.remove();
-                options.targetBtn.removeAttr('disabled').text(options.targetBtnText);
+                options.targetBtn.removeAttr('disabled').html(options.targetBtnHtml);
             }
 
             if (originComplete) {
@@ -58,11 +62,11 @@ $.ajax = function (options) {
                 }
             }
         },
-        beforeSend: function (jqXHR, settings ) {
+        beforeSend: function (jqXHR, settings) {
             console.log('执行了['+options.url+'] beforeSend');
             if (options.targetBtn) {
                 options.targetLoadingIcon = $('<span><li class="fa fa-spinner fa-spin"></li>&nbsp;处理中...</span>');
-                options.targetBtnText = options.targetBtn.text();
+                options.targetBtnHtml = options.targetBtn.html();
                 options.targetBtn.attr('disabled', true).text('').prepend(options.targetLoadingIcon);
             }
 
@@ -290,9 +294,80 @@ $.fn.extend({
     }
 });
 
+function showLoginPopup() {
+    // 获取LocalStorage中的userName
+    let userName = window.localStorage.getItem('loginUserName');
+    if (userName) {
+        $('#login-popup-form input[name="username"]').val(userName).attr('readonly', true);
+    } else {
+        $('#login-popup-form input[name="username"]').removeAttr('readonly');
+    }
+    $('#login-popup-modal').modal({
+        'backdrop': 'static',
+        'show': true,
+        'keyboard': false
+    });
+}
 
 $(function () {
+    let $loginPopupForm = $('#login-popup-form');
+    let $loginPopupModal = $('#login-popup-modal');
+    let $loginPopupOtherLoginBtn = $('#login-popup-other-login-btn');
+
     $('[data-toggle="offcanvas"]').on('click', function () {
         $('.offcanvas-collapse').toggleClass('open');
     });
+
+    $loginPopupForm.on('submit', function(event) {
+        event.preventDefault();
+        let params = $loginPopupForm.serializeObject();
+        if ($.isBlank(params['username'])) {
+            $.alertWarning('缺少参数', '请输入登陆账号');
+            return;
+        }
+
+        if ($.isBlank(params['password'])) {
+            $.alertWarning('缺少参数', '请输入登陆密码');
+            return;
+        }
+
+        $.ajax({
+            url: '/api/login',
+            method: 'POST',
+            dataType: 'json',
+            data: params,
+            targetBtn: $loginPopupForm.find(':submit'),
+            success: function (data) {
+                if ($.ajaxIsFailure(data)) {
+                    return;
+                }
+                $.alertSuccess('提示', '登陆成功');
+                $loginPopupModal.modal('hide');
+
+                // 保存用户名至LocalStorage
+                let obj = $.ajaxGetData(data);
+                if (obj && obj.userName) {
+                    window.localStorage.setItem('loginUserName', obj.userName);
+                }
+            }
+        });
+        return false;
+    });
+
+    $loginPopupOtherLoginBtn.on('click', function (event) {
+        $.confirm('确认', '使用其他账号登陆将会跳转到页面，如果当前页面存在未保存的数据将会丢失，确认要使用其他账号登陆吗？', function () {
+            location.href = '/page/login';
+        });
+    });
+
+
+    // 解决bootstrap多层modal, 最新的modal无法出现再上面
+    $(document).on('show.bs.modal', '.modal', function() {
+        var zIndex = 1040 + (10 * $('.modal:visible').length);
+        $(this).css('z-index', zIndex);
+        setTimeout(function() {
+            $('.modal-backdrop').not('.modal-stack').css('z-index', zIndex - 1).addClass('modal-stack');
+        }, 0);
+    });
+
 });

@@ -63,8 +63,8 @@ public class Requests {
     }
 
     public boolean isAjax() {
-        String headeVal = request.getHeader("X-Requested-With");
-        return "XMLHttpRequest".equals(headeVal);
+        return "XMLHttpRequest".equals(request.getHeader("X-Requested-With")) ||
+                (request.getHeader("Accept") != null && request.getHeader("Accept").contains("application/json"));
     }
 
     public Requests(HttpServletRequest request) {

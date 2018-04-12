@@ -34,6 +34,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     private LoginFailureHandler loginFailureHandler;
     @Autowired
     private UserLoginFilter userLoginFilter;
+    @Autowired
+    private AjaxAuthenticationEntryPoint ajaxAuthenticationEntryPoint;
 
     @Bean
     public DaoAuthenticationProvider daoAuthenticationProvider() {
@@ -47,6 +49,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     public void configure(AuthenticationManagerBuilder auth) {
         auth.authenticationProvider(daoAuthenticationProvider());
     }
+
+
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
@@ -71,6 +75,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                     .logoutSuccessUrl(logoutSuccessUrl)
                     .invalidateHttpSession(true)
                     .permitAll()
+
+                .and()
+                    .exceptionHandling()
+                    .defaultAuthenticationEntryPointFor(ajaxAuthenticationEntryPoint, new AjaxRequestMatcher())
                 ;
     }
 
