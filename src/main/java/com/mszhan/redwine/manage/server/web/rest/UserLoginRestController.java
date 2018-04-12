@@ -11,7 +11,7 @@ import com.mszhan.redwine.manage.server.service.UserLoginService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
 /**
  * @Description:
@@ -27,15 +27,14 @@ public class UserLoginRestController {
     private UserLoginService userLoginService;
 
     @GetMapping(value = "/api/user_login/list")
-    public Object list(HttpServletRequest request){
-        Requests requests = Requests.newInstance(request);
-        Integer offset = requests.getInteger("offset", 0);
-        Integer limit = requests.getInteger("limit", 10);
+    public Object list(Requests request){
+        Integer offset = request.getInteger("offset", 0);
+        Integer limit = request.getInteger("limit", 10);
 
-        Integer agentId = requests.getInteger("agentId", null);
-        String status = requests.getString("status", null);
-        String personName = requests.getString("personName", null);
-        String userName = requests.getString("userName", null);
+        Integer agentId = request.getInteger("agentId", null);
+        String status = request.getString("status", null);
+        String personName = request.getString("personName", null);
+        String userName = request.getString("userName", null);
 
         Page<UserLogin> page = PageHelper.offsetPage(offset, limit).doSelectPage(() -> this.userLoginMapper.fetchAllUserLogin(agentId, status, personName, userName));
         return Responses.newInstance().succeed(PaginateResult.newInstance(page.getTotal(), page));
@@ -44,6 +43,16 @@ public class UserLoginRestController {
     @PostMapping(value = "/api/user_login/create")
     public Object create(@RequestBody UserLogin userLogin){
         this.userLoginService.createUserLogin(userLogin);
+
+        return Responses.newInstance().succeed();
+    }
+
+    @PutMapping(value = "/api/user_login/change_status")
+    public Object changeStatus(Requests request){
+        List<Integer> userLoginIds = request.getIntegerArray("userLoginIds", ",", null);
+        UserLoginService.UserLoginStatus status = request.getEnum("status", UserLoginService.UserLoginStatus.class, null);
+
+        this.userLoginService.changeStatus(userLoginIds, status);
 
         return Responses.newInstance().succeed();
     }

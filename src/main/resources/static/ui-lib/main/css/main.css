@@ -1,47 +1,8 @@
-html {
-  font-size: 14px;
-}
-
-
-@media (min-width: 768px){
-  body{
-    padding-top: 62px;
-  }
-}
-
-@media (min-width: 992px){
-  body{
-    padding-top: 50px;
-  }
-}
-
 
 .border-bottom { border-bottom: 1px solid #e5e5e5; }
 
 .box-shadow { box-shadow: 0 .25rem .75rem rgba(0, 0, 0, .05); }
 
-
-.nav-scroller {
-  position: relative;
-  z-index: 2;
-  height: 2.75rem;
-  overflow-y: hidden;
-}
-
-.nav-scroller .nav {
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -ms-flex-wrap: nowrap;
-  flex-wrap: nowrap;
-  padding-bottom: 1rem;
-  margin-top: -1px;
-  overflow-x: auto;
-  color: rgba(255, 255, 255, .75);
-  text-align: center;
-  white-space: nowrap;
-  -webkit-overflow-scrolling: touch;
-}
 
 .nav-scroller .nav-underline .active{
   border-bottom: 6px solid var(--purple);
@@ -59,8 +20,12 @@ html {
   background-color: var(--purple);
 }
 
+.navbar .navbar-brand{
+  padding-right: 16px;
+}
+
 .nav-underline .nav-link:hover {
-  color: var(--blue);
+  color: var(--indigo);
 }
 
 .nav-underline .active {
@@ -130,9 +95,6 @@ main.container{
   box-shadow: 0 0 0 0.2rem rgba(111, 66, 193, 0.5);
 }
 
-
-
-
 .btn-outline-primary {
   color: var(--purple);
   background-color: transparent;
@@ -199,4 +161,14 @@ main.container{
 .confirm-bg-white .confirm-cancel-btn.ui-pnotify-action-button:hover {
   color: #FFF;
   background-color: var(--secondary);
+}
+
+.table-query-form .row>.col-md-3:not(:first-child) {
+  margin-top: 0px;
+}
+
+@media (max-width: 767px) {
+  .table-query-form .row>.col-md-3:not(:first-child) {
+    margin-top: 6px;
+  }
 }
