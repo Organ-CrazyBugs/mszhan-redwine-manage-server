@@ -27,6 +27,8 @@ public class User extends org.springframework.security.core.userdetails.User {
     }
 
     private Integer userLoginId;
+    private Integer agentId;
+    private String agentName;
 
     public static UserBuilder withUserLogin(UserLogin userLogin) {
         return new UserBuilder()
@@ -45,11 +47,23 @@ public class User extends org.springframework.security.core.userdetails.User {
         private boolean accountLocked;
         private boolean credentialsExpired;
         private boolean disabled;
+        private Integer agentId;
+        private String agentName;
 
         /**
          * Creates a new instance
          */
         private UserBuilder() {
+        }
+
+        public UserBuilder agentId(Integer agentId) {
+            this.agentId = agentId;
+            return this;
+        }
+
+        public UserBuilder agentName(String agentName) {
+            this.agentName = agentName;
+            return this;
         }
 
         private UserBuilder username(String username) {
@@ -116,8 +130,26 @@ public class User extends org.springframework.security.core.userdetails.User {
         public UserDetails build() {
             User user = new User(username, password, !disabled, !accountExpired, !credentialsExpired, !accountLocked, authorities);
             user.setUserLoginId(userLoginId);
+            user.setAgentId(agentId);
+            user.setAgentName(agentName);
             return user;
         }
+    }
+
+    public Integer getAgentId() {
+        return agentId;
+    }
+
+    public void setAgentId(Integer agentId) {
+        this.agentId = agentId;
+    }
+
+    public String getAgentName() {
+        return agentName;
+    }
+
+    public void setAgentName(String agentName) {
+        this.agentName = agentName;
     }
 
     public Integer getUserLoginId() {

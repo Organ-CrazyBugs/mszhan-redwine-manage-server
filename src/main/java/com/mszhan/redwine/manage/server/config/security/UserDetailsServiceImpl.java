@@ -1,6 +1,8 @@
 package com.mszhan.redwine.manage.server.config.security;
 
+import com.mszhan.redwine.manage.server.dao.mszhanRedwineManage.AgentsMapper;
 import com.mszhan.redwine.manage.server.dao.mszhanRedwineManage.UserLoginMapper;
+import com.mszhan.redwine.manage.server.model.mszhanRedwineManage.Agents;
 import com.mszhan.redwine.manage.server.model.mszhanRedwineManage.UserLogin;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +28,8 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
     @Autowired
     private UserLoginMapper userLoginMapper;
+    @Autowired
+    private AgentsMapper agentsMapper;
 
     @Override
     public UserDetails loadUserByUsername(String userName) throws UsernameNotFoundException {
@@ -44,12 +48,24 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         List<GrantedAuthority> authorities = new ArrayList<>();
         authorities.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
 
+        // 获取代理信息
+        Integer agentId = userLogin.getAgentId();
+        String agentName = null;
+        if (agentId != null) {
+            Agents agent = this.agentsMapper.selectByPrimaryKey(agentId);
+            if (agent != null) {
+                agentName = agent.getName();
+            }
+        }
+
         return User.withUserLogin(userLogin)
                 .accountExpired(false)
                 .accountLocked(false)
                 .disabled(false)
                 .authorities(authorities)
                 .credentialsExpired(false)
+                .agentName(agentName)
+                .agentId(agentId)
                 .build()
                 ;
     }
