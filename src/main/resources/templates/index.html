@@ -23,6 +23,7 @@
     <script type="text/javascript">
         $(function(){
             $('#table').bootstrapTable({
+                height: 400,
                 classes: 'table table-no-bordered',
                 pagination: true,
                 columns: [{
@@ -50,6 +51,11 @@
                     name: 'Item 2',
                     price: '$2'
                 }]
+            });
+
+            $('.fixed-table-body').mCustomScrollbar({
+                axis: 'y',
+                theme: 'dark'
             });
         })
     </script>
