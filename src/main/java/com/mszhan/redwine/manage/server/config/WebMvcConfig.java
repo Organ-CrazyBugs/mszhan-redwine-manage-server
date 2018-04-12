@@ -1,6 +1,8 @@
 package com.mszhan.redwine.manage.server.config;
 
 import com.mszhan.redwine.manage.server.core.RequestsArgumentResolver;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistration;
@@ -18,9 +20,12 @@ import java.util.List;
 @Configuration
 public class WebMvcConfig extends WebMvcConfigurerAdapter {
 
+    @Value("${productResoucePath}")
+    public String productImgResouce;
+
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        registry.addResourceHandler("/product_img/**").addResourceLocations("file:C:/TsdTemp/");
+        registry.addResourceHandler("/product_img/**").addResourceLocations(productImgResouce);
     }
 
     /**

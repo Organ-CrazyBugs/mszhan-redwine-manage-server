@@ -38,3 +38,7 @@ server:
     path: /page/error
 
 productPath: /productPicture/basic
+largePath: /productPicture/large
+
+
+productResoucePath: file:D:/workspace/idea-aukey-st/aukey-cloud/productPicture/

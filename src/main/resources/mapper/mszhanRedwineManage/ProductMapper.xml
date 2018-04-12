@@ -120,8 +120,16 @@
     and remove = 'N'
   </select>
   <update id="updatePic" >
-    update product set product_url = #{url} where id = #{id}
+    update product set
+    <if test="large == true">
+      background_file_name = #{fileName}, background_path = #{filePath}
+    </if>
+    <if test="large == false">
+      product_file_name = #{fileName}, file_path = #{filePath}
+    </if>
+    where id = #{id}
   </update>
+
   <update id="removeById" >
     update product set remove = 'Y' where id = #{id}
   </update>

@@ -19,6 +19,7 @@ $(function () {
     let $createBtn = $('#create_btn');
     let $uploadBtn = $('#upload_btn');
 
+
     $table.bootstrapTable({
         url: '/product/search',
         tableQueryForm: '#table-query-form',

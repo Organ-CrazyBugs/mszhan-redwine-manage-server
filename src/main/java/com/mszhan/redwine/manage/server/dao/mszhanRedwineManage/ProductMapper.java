@@ -13,9 +13,9 @@ public interface ProductMapper extends Mapper<Product> {
 
     List<Product> queryForPage(ProductQuery query);
 
-    void updatePic(@Param("id") Integer id, @Param("url") String url);
+    void updatePic(@Param("id") Integer id, @Param("filePath") String filePath, @Param("fileName") String fileName, @Param("large") Boolean large);
 
-    void removePicById(@Param("id") Integer id);
+
 
     List<Product> queryProductBySku(@Param("sku") String sku);
 

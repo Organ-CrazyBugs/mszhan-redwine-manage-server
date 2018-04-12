@@ -9,6 +9,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @Description:
@@ -23,9 +24,11 @@ public interface ProductService extends Service<Product> {
 
     void updateProduct(Product product, MultipartFile file);
 
-    void upProductPic(Integer id, MultipartFile file);
+    Map<String, String> upProductPic(Integer id, String sku, MultipartFile file, Boolean large);
 
     void removeProduct(Integer id);
+
+    void removePic(Integer id, Boolean large);
 
     Product queryById(Integer id);
 }

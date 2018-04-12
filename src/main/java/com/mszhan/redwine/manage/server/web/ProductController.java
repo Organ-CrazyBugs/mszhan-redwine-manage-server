@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.util.Map;
+
 @RestController
 @RequestMapping("/product")
 public class ProductController {
@@ -46,27 +48,36 @@ public class ProductController {
     }
 
     @PostMapping(value = "/upload_file")
-    public Object uploadFile(Integer id,@RequestParam("file") MultipartFile file) {
-        productService.upProductPic(id, file);
-        return Responses.newInstance().succeed();
+    public Object uploadFile(Integer id, String sku, @RequestParam("file") MultipartFile file, Boolean large) {
+        Map<String, String> pathMap = productService.upProductPic(id, sku, file, large);
+        return Responses.newInstance().succeed(pathMap);
     }
+//    @PostMapping(value = "/delete_pic")
+//    public Object uploadFile(Integer id) {
+//        productService.upProductPic(id, file);
+//        return Responses.newInstance().succeed();
+//    }
 
-    @PutMapping(value = "/update_product_pic/{id}")
-    public Object updateProductPic(@PathVariable("id") Integer id, @RequestParam("file") MultipartFile file) {
-        productService.upProductPic(id, file);
-        return Responses.newInstance().succeed();
-    }
+//    @PutMapping(value = "/update_product_pic/{id}")
+//    public Object updateProductPic(@PathVariable("id") Integer id, @RequestParam("file") MultipartFile file) {
+//        productService.upProductPic(id, file);
+//        return Responses.newInstance().succeed();
+//    }
     @GetMapping(value = "/index")
     public ModelAndView productIndex() {
         ModelAndView view = new ModelAndView("product");
         return view;
     }
-    @PutMapping(value = "/updateProduct")
+    @PutMapping(value = "/update_product")
     public Object updateProduct(@RequestBody Product product, @RequestParam("file") MultipartFile file) {
         productService.updateProduct(product, file);
         return Responses.newInstance().succeed();
     }
-
+    @PostMapping(value = "/delete_pic")
+    public Object deletePic(Integer id, Boolean large) {
+        productService.removePic(id, large);
+        return Responses.newInstance().succeed();
+    }
 
 
     @DeleteMapping(value = "/updateProduct/{id}")

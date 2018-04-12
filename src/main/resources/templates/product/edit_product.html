@@ -49,6 +49,7 @@
 
                     <input type="hidden" name="backgroundFileName"  />
                     <input type="hidden" name="backgroundPath" />
+                    <input type="hidden" name="id"  th:value="${id}"/>
                     <div class="modal-body">
                         <label style="color:red;">必填属性</label>
                         <div class="form-group">
@@ -223,6 +224,39 @@
 
 
 
+        var id = $("#create-form").find("[name='id']").val();
+
+        $.ajax({
+            url: '/product/query_by_id',
+            method: 'GET',
+            async: false,
+            contentType: 'application/json',
+            dataType: 'json',
+            data: "id=" + id,
+            success: function (data) {
+                $("#create-form").bindData(data.data, ["productFileName","id","filePath","backgroundFileName","backgroundPath","productName","sku","generalGentPrice"
+                ,"gentPrice","wholesalePrice","retailPrice","cost","unit","alcoholContent","specification","level","makingTime","originCountry","productionArea"
+                 ,"brandName","treeAge","wineType","storageMethod","category","age","netWeight","withFood","tastingRecords","recommendedReason","brandBackgroud"
+                ]);
+            }
+        });
+
+
+        var fileName = $("#create-form").find("input[name='productFileName']").val();
+        var largeFileName = $("#create-form").find("input[name='backgroundFileName']").val();
+        var smCaption ={} ;
+        var largeCaption = {};
+        var smFilePath = "";
+        var largeFilePath = "";
+        if ($.trim(fileName) !=''){
+            smFilePath = "/product_img/basic/" + fileName;
+            smCaption = {caption: fileName, size: 1, width: "120px", url: "/product/delete_pic",  extra: {id: id, large: false}};
+        }
+        if ($.trim(largeFileName) !=''){
+            largeFilePath = "/product_img/large/" + largeFileName;
+            largeCaption = {caption: largeFileName, size: 1, width: "120px", url: "/product/delete_pic",  extra: {id: id, large : true}};
+        }
+
             var  mydata;
             var largeData;
             //        var filePath = "<img src='product_img/basic/${fileName}' style='width : 120px'  />".replace("${fileName}", "123");
@@ -238,6 +272,14 @@
                 showUpload:false, //是否显示上传按钮
                 showRemove :false, //显示移除按钮
                 allowedFileExtensions: ['jpg', 'gif', 'png', 'jpeg'],
+                initialPreview: [
+                    smFilePath
+                ],
+                initialPreviewAsData: true, // identify if you are sending preview data only and not the raw markup
+                initialPreviewFileType: 'image', // image is the default and can be overridden in config below
+                initialPreviewConfig: [
+                    smCaption
+                ],
             }).on("filepreajax", function(event, data){
                 var sku = $("#create-form").find("input[name='sku']").val();
                 mydata ={
@@ -262,6 +304,14 @@
                 showUpload:false, //是否显示上传按钮
                 showRemove :false, //显示移除按钮
                 allowedFileExtensions: ['jpg', 'gif', 'png', 'jpeg'],
+                initialPreview: [
+                    largeFilePath
+                ],
+                initialPreviewAsData: true, // identify if you are sending preview data only and not the raw markup
+                initialPreviewFileType: 'image', // image is the default and can be overridden in config below
+                initialPreviewConfig: [
+                    largeCaption
+                ],
             }).on("filepreajax", function(event, data){
                 var sku = $("#create-form").find("input[name='sku']").val();
                 largeData ={

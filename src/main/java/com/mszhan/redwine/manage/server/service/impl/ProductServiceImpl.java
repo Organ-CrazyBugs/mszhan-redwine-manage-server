@@ -20,9 +20,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.annotation.Resource;
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 
 /**
@@ -38,6 +36,11 @@ public class ProductServiceImpl extends AbstractService<Product> implements Prod
 
     @Value("${productPath}")
     private String picturePath;
+
+    @Value("${largePath}")
+    private String largePath;
+
+
 
     @Override
     public PaginateResult<Product> queryForPage(ProductQuery query) {
@@ -122,9 +125,9 @@ public class ProductServiceImpl extends AbstractService<Product> implements Prod
         product.setBrandBackgroud(StringUtils.trimToNull(product.getBrandBackgroud()));
     }
 
-    private String uploadLoadProPe(MultipartFile file, String sku){
+    private Map<String, String> uploadLoadProPe(String sku, MultipartFile file, Boolean largePath){
         if (file.isEmpty()) {
-            return null;
+            throw BasicException.newInstance().error("未找到图片，格式必须是jpeg,jpg,png,gif", 500);
         }
         // 获取文件名
         String fileName = file.getOriginalFilename();
@@ -140,14 +143,17 @@ public class ProductServiceImpl extends AbstractService<Product> implements Prod
         }
         String newFileName = String.format("%s%s", sku, suffixName);
         // 文件上传后的路径
-        String filePath = checkPath();
+        String filePath = checkPath(largePath);
         // 解决中文问题，liunx下中文路径，图片显示问题
         // fileName = UUID.randomUUID() + suffixName;
         File dest = new File(String.format("%s/%s",filePath, newFileName));
         // 检测是否存在目录
         try {
             file.transferTo(dest);
-            return dest.getPath();
+            Map<String, String> resultMap = new HashMap<>();
+            resultMap.put("path", filePath);
+            resultMap.put("fileName", newFileName);
+            return resultMap;
         } catch (Exception e) {
             throw BasicException.newInstance().error("未知异常，请联系管理员", 500).originEx(e);
         }
@@ -208,27 +214,54 @@ public class ProductServiceImpl extends AbstractService<Product> implements Prod
         productMapper.updateByPrimaryKey(product);
     }
 
+//    @Override
+//    public void upProductPic(Integer id, MultipartFile file) {
+//        if (id == null){
+//            throw BasicException.newInstance().error("id不能为空", 500);
+//        }
+//        Product product = productMapper.selectByPrimaryKey(id);
+//        if (product == null){
+//            throw BasicException.newInstance().error("没有找到对应产品信息", 500);
+//        }
+//        String sku = product.getSku();
+//        String path = uploadLoadProPe(file, sku);
+//        if (StringUtils.isBlank(path)){
+//            throw BasicException.newInstance().error("请上传图片", 500);
+//        }
+//        productMapper.updatePic(id, path);
+//    }
+
     @Override
-    public void upProductPic(Integer id, MultipartFile file) {
+    public Map<String, String> upProductPic(Integer id, String sku, MultipartFile file, Boolean large) {
+        if (large == null){
+            throw BasicException.newInstance().error("上传类型不能为空", 500);
+        }
+        if (StringUtils.isBlank(sku)){
+            throw BasicException.newInstance().error("sku不能为空", 500);
+        }
+        Map<String, String> pathMap = null;
         if (id == null){
-            throw BasicException.newInstance().error("id不能为空", 500);
+            List<Product> product = productMapper.queryProductBySku(sku);
+            if (!CollectionUtils.isEmpty(product)){
+                throw BasicException.newInstance().error("已经存在该SKU，不可操作上传", 500);
+            }
+            pathMap = uploadLoadProPe(sku, file, large);
+        } else {
+            pathMap = uploadLoadProPe(sku, file, large);
+            productMapper.updatePic(id, pathMap.get("filePath"), pathMap.get("fileName"), large);
         }
-        Product product = productMapper.selectByPrimaryKey(id);
-        if (product == null){
-            throw BasicException.newInstance().error("没有找到对应产品信息", 500);
-        }
-        String sku = product.getSku();
-        String path = uploadLoadProPe(file, sku);
-        if (StringUtils.isBlank(path)){
-            throw BasicException.newInstance().error("请上传图片", 500);
-        }
-        productMapper.updatePic(id, path);
+        return pathMap;
+
+    }
+    @Override
+    public void removeProduct(Integer id) {
     }
 
     @Override
-    public void removeProduct(Integer id) {
-        productMapper.removePicById(id);
+    public void removePic(Integer id, Boolean large) {
+        productMapper.updatePic(id, null, null, large);
     }
+
 
     @Override
     public Product queryById(Integer id) {
@@ -236,10 +269,15 @@ public class ProductServiceImpl extends AbstractService<Product> implements Prod
         return product;
     }
 
-    private String checkPath(){
+    private String checkPath(Boolean large){
         File directory = new File("..");
         try {
-            String path = String.format("%s%s", directory.getCanonicalPath(), picturePath);
+            String path = null;
+            if (large){
+                path = String.format("%s%s", directory.getCanonicalPath(), largePath);
+            } else {
+                path = String.format("%s%s", directory.getCanonicalPath(), picturePath);
+            }
             File file = new File(path);
             file.mkdirs();
             return path;
