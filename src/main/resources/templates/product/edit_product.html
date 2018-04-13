@@ -43,7 +43,7 @@
 
                 </form>
 
-                <form id="create-form" action="#">
+                <form id="edit-form" action="#">
                     <input type="hidden" name="productFileName"  />
                     <input type="hidden" name="filePath" />
 
@@ -60,7 +60,7 @@
                             <div class="col-md-3">
                                 <div class="form-group">
                                     <label>SKU<span class="text-danger">*</span></label>
-                                    <input type="text" class="form-control" name="sku" placeholder="SKU" />
+                                    <input type="text" class="form-control" readonly="readonly" name="sku" placeholder="SKU" />
                                 </div>
                             </div>
                             <div class="col-md-3">
@@ -214,7 +214,7 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
-                        <button id="create-submit-btn" type="submit" class="btn btn-primary">创建</button>
+                        <button id="edit-submit-btn" type="submit" class="btn btn-primary">修改</button>
                     </div>
                 </form>
             </div>
@@ -224,7 +224,7 @@
 
 
 
-        var id = $("#create-form").find("[name='id']").val();
+        var id = $("#edit-form").find("[name='id']").val();
 
         $.ajax({
             url: '/product/query_by_id',
@@ -234,7 +234,7 @@
             dataType: 'json',
             data: "id=" + id,
             success: function (data) {
-                $("#create-form").bindData(data.data, ["productFileName","id","filePath","backgroundFileName","backgroundPath","productName","sku","generalGentPrice"
+                $("#edit-form").bindData(data.data, ["productFileName","id","filePath","backgroundFileName","backgroundPath","productName","sku","generalGentPrice"
                 ,"gentPrice","wholesalePrice","retailPrice","cost","unit","alcoholContent","specification","level","makingTime","originCountry","productionArea"
                  ,"brandName","treeAge","wineType","storageMethod","category","age","netWeight","withFood","tastingRecords","recommendedReason","brandBackgroud"
                 ]);
@@ -242,8 +242,8 @@
         });
 
 
-        var fileName = $("#create-form").find("input[name='productFileName']").val();
-        var largeFileName = $("#create-form").find("input[name='backgroundFileName']").val();
+        var fileName = $("#edit-form").find("input[name='productFileName']").val();
+        var largeFileName = $("#edit-form").find("input[name='backgroundFileName']").val();
         var smCaption ={} ;
         var largeCaption = {};
         var smFilePath = "";
@@ -281,13 +281,13 @@
                     smCaption
                 ],
             }).on("filepreajax", function(event, data){
-                var sku = $("#create-form").find("input[name='sku']").val();
+                var sku = $("#edit-form").find("input[name='sku']").val();
                 mydata ={
-                    sku:sku, large : false   //此时可以动态获取
+                    sku:sku, large : false, id: id   //此时可以动态获取
                 };
             }).on("fileuploaded", function(event, data, previewId, index) {
-                $("#create-form").find("input[name='filePath']").val(data.response.data.path);
-                $("#create-form").find("input[name='productFileName']").val(data.response.data.fileName);
+                $("#edit-form").find("input[name='filePath']").val(data.response.data.path);
+                $("#edit-form").find("input[name='productFileName']").val(data.response.data.fileName);
             }).on("fileerror", function(){
                 return "error";
             });
@@ -313,13 +313,13 @@
                     largeCaption
                 ],
             }).on("filepreajax", function(event, data){
-                var sku = $("#create-form").find("input[name='sku']").val();
+                var sku = $("#edit-form").find("input[name='sku']").val();
                 largeData ={
-                    sku:sku, large : true   //此时可以动态获取
+                    sku:sku, large : true, id : id   //此时可以动态获取
                 };
             }).on("fileuploaded", function(event, data, previewId, index) {
-                $("#create-form").find("input[name='backgroundPath']").val(data.response.data.path);
-                $("#create-form").find("input[name='backgroundFileName']").val(data.response.data.fileName);
+                $("#edit-form").find("input[name='backgroundPath']").val(data.response.data.path);
+                $("#edit-form").find("input[name='backgroundFileName']").val(data.response.data.fileName);
             }).on("fileerror", function(){
                 return "error";
             });
