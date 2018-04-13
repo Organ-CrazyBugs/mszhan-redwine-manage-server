@@ -15,6 +15,9 @@
                     <li th:classappend="${activeNav eq 'HOME'} ? 'active'" class="nav-item">
                         <a class="nav-link" th:href="@{/page/index}">首页</a>
                     </li>
+                    <li th:classappend="${activeNav eq 'ORDER'} ? 'active'" class="nav-item">
+                        <a class="nav-link" th:href="@{/page/order/order_list}">订单管理</a>
+                    </li>
                     <li th:classappend="${activeNav eq 'AGENT'} ? 'active'" class="nav-item">
                         <a class="nav-link" th:href="@{/page/agent/index}">代理管理</a>
                     </li>

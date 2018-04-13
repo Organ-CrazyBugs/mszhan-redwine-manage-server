@@ -36,6 +36,13 @@
             </nav>
         </div>
 
+        <!--/*  订单模块二级导航栏  */-->
+        <div th:if="${moduleCode} eq 'ORDER'" class="nav-scroller bg-white box-shadow">
+            <nav class="nav nav-underline container">
+                <a th:classappend="${activeNav eq 'ORDER_LIST'} ? 'active'" class="nav-link" th:href="@{/page/order/order_list}">订单列表</a>
+            </nav>
+        </div>
+
         <!--/*  产品模块二级导航栏  */-->
         <div th:if="${moduleCode} eq 'PRODUCT'" class="nav-scroller bg-white box-shadow">
             <nav class="nav nav-underline container">

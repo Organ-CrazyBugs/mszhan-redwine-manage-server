@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+
+    <div th:fragment="payload(title, modalId)">
+        <div class="modal fade" th:id="${modalId}" tabindex="-1" role="dialog">
+            <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+                <div class="modal-content" style="overflow-x: hidden;">
+                    <div class="modal-header">
+                        <h5 class="modal-title" th:text="${title}"></h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <form id="warehouse-input-form" action="#">
+                        <div class="modal-body" style="max-height: 500px;overflow-y: scroll;overflow-x:hidden;">
+
+                            <div class="row">
+                                <div class="col-md-12 border-bottom mb-2 text-info">
+                                    <h5>基本信息</h5>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label>代理</label>
+                                        <select class="form-control" name="agentId" required="required">
+                                            <option value="">请选择代理</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-12 border-bottom mb-2 mt-2 text-info">
+                                    <h5>发货信息</h5>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label>收件人</label>
+                                        <input type="text" class="form-control" name="customerName" placeholder="收件人" />
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label>联系电话</label>
+                                        <input type="text" class="form-control" name="phoneNumber" placeholder="联系电话" />
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label>邮政编码</label>
+                                        <input type="text" class="form-control" name="postalCode" placeholder="邮政编码" />
+                                    </div>
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label>详细地址</label>
+                                        <input type="text" class="form-control" name="address" placeholder="详细地址" />
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-12 border-bottom mb-2 text-info">
+                                    <h5>商品信息</h5>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label>代理</label>
+                                        <select class="form-control" name="agentId" required="required">
+                                            <option value="">请选择代理</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-12 border-bottom mb-2 text-info">
+                                    <h5>商品信息</h5>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label>代理</label>
+                                        <select class="form-control" name="agentId" required="required">
+                                            <option value="">请选择代理</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label>商品SKU</label>
+                                <input type="text" class="form-control" required="required" name="sku" placeholder="商品SKU" />
+                            </div>
+                            <div class="form-group">
+                                <label>入库类型</label>
+                                <select class="form-control" name="inputType" required="required">
+                                    <option value="PURCHASE_INPUT" selected="selected">采购入库</option>
+                                    <option value="ALLOT_INPUT">调拨入库</option>
+                                    <option value="ADJUST_INPUT">调整入库</option>
+                                    <option value="OTHER_INPUT">其他入库</option>
+                                </select>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group col-md-6">
+                                    <label>整箱数量</label>
+                                    <input type="number" class="form-control" name="boxQty" placeholder="整箱数量" />
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label>散装支数量</label>
+                                    <input type="number" class="form-control" name="bottleQty" placeholder="散装支数量" />
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label>入库备注</label>
+                                <textarea class="form-control" name="remark" rows="3"></textarea>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
+                            <button id="warehouse-input-submit-btn" type="submit" class="btn btn-primary"><i class="fa fa-sign-in"></i>&nbsp;入库</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</html>
