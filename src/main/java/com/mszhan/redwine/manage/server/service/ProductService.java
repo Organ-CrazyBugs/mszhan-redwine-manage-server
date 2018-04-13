@@ -22,7 +22,7 @@ public interface ProductService extends Service<Product> {
 
     void addProduct(Product product);
 
-    void updateProduct(Product product, MultipartFile file);
+    void updateProduct(Product product);
 
     Map<String, String> upProductPic(Integer id, String sku, MultipartFile file, Boolean large);
 

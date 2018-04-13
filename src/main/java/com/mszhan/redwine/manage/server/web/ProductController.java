@@ -69,8 +69,8 @@ public class ProductController {
         return view;
     }
     @PutMapping(value = "/update_product")
-    public Object updateProduct(@RequestBody Product product, @RequestParam("file") MultipartFile file) {
-        productService.updateProduct(product, file);
+    public Object updateProduct(@RequestBody Product product) {
+        productService.updateProduct(product);
         return Responses.newInstance().succeed();
     }
     @PostMapping(value = "/delete_pic")

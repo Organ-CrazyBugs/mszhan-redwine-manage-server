@@ -100,8 +100,8 @@ public class ProductServiceImpl extends AbstractService<Product> implements Prod
         product.setCreateDate(date);
         product.setUpdateDate(date);
         product.setCreator(user.getUserLoginId());
-        product.setCreatorName(user.getUsername());
-        product.setUpdatorName(user.getUsername());
+        product.setCreatorName(user.getAgentName());
+        product.setUpdatorName(user.getAgentName());
         product.setRemove("N");
         productMapper.insert(product);
     }
@@ -160,7 +160,7 @@ public class ProductServiceImpl extends AbstractService<Product> implements Prod
     }
 
     @Override
-    public void updateProduct(Product upProduct, MultipartFile file) {
+    public void updateProduct(Product upProduct) {
         if (upProduct.getId() == null){
             throw BasicException.newInstance().error("id不能为空", 500);
         }
@@ -195,23 +195,22 @@ public class ProductServiceImpl extends AbstractService<Product> implements Prod
         if (product == null){
             throw BasicException.newInstance().error("没有找到对应商品信息", 500);
         }
+        User user = SecurityUtils.getAuthenticationUser();
+        if (user == null){
+            throw BasicException.newInstance().error("请先登录", 500);
+        }
+        if (!upProduct.getSku().equals(product.getSku())){
+            throw BasicException.newInstance().error("sku不能修改", 500);
+        }
         trimToNullValue(upProduct);
         Date date = new Date();
-        product.setUpdateDate(date);
-        product.setUpdator(1);
-        product.setAlcoholContent(upProduct.getAlcoholContent());
-        product.setBrandName(upProduct.getBrandName());
-        product.setCost(upProduct.getCost());
-        product.setGeneralGentPrice(upProduct.getGeneralGentPrice());
-        product.setGentPrice(upProduct.getGentPrice());
-        product.setLevel(upProduct.getLevel());
-        product.setRetailPrice(upProduct.getRetailPrice());
-        product.setUnit(upProduct.getUnit());
-        product.setWholesalePrice(upProduct.getWholesalePrice());
-        product.setSpecification(upProduct.getSpecification());
-        product.setProductionArea(upProduct.getProductionArea());
-        product.setProductName(upProduct.getProductName());
-        productMapper.updateByPrimaryKey(product);
+        upProduct.setUpdatorName(user.getAgentName());
+        upProduct.setUpdator(user.getAgentId());
+        upProduct.setUpdateDate(date);
+        upProduct.setCreateDate(product.getCreateDate());
+        upProduct.setCreatorName(product.getCreatorName());
+        upProduct.setCreator(product.getCreator());
+        productMapper.updateByPrimaryKey(upProduct);
     }
 
 //    @Override
