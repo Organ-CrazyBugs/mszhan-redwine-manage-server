@@ -69,13 +69,17 @@
                                 <div class="col-md-12 border-bottom mb-2 text-info">
                                     <h5>商品信息</h5>
                                 </div>
-                                <div class="col-md-12">
-                                    <table id="create-order-product-table"></table>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label>运费</label>
+                                        <input type="text" class="form-control" name="shipAmount" placeholder="运费" />
+                                    </div>
+                                </div>
+                                <div class="col-md-12 text-right form-group">
+                                    <button id="create-order-add-sku-btn" type="button" class="btn btn-primary">添加产品</button>
                                 </div>
                                 <div class="col-md-12">
-                                    <div class="alert alert-info" role="alert">
-                                        应付总额 = 应付货款 + 包装费 + 运费
-                                    </div>
+                                    <table id="create-order-product-table"></table>
                                 </div>
                             </div>
 

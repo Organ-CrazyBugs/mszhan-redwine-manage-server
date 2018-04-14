@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+
+<div th:fragment="payload(title, modalId, callbackEvent)">
+    <div class="modal fade" th:id="${modalId}" tabindex="-1" role="dialog">
+        <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" th:text="${title}"></h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+
+                <div class="modal-body">
+                    <form id="select-product-popup-query-form" action="#">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <div class="input-group-text query-form-label">产品条码</div>
+                                    </div>
+                                    <input name="sku" type="text" class="form-control" placeholder="产品条码" />
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <div class="input-group-text query-form-label">产品名称</div>
+                                    </div>
+                                    <input name="productName" type="text" class="form-control" placeholder="产品名称" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row mt-3">
+                            <div class="col-md-12 text-right">
+                                <button type="submit" class="btn btn-outline-primary">&nbsp;<i class="fa fa-search"></i>&nbsp;查&nbsp;询&nbsp;</button>
+                            </div>
+                        </div>
+                    </form>
+
+                    <div class="row mt-3">
+                        <div class="col-md-12">
+                            <table id="select-product-popup-table"></table>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
+                    <button class="btn btn-primary" th:attr="data-modal-id=${modalId}" th:onclick="${'selectProductPopupSubmitBtnEvent(this,' + callbackEvent + ')'}" ><i class="fa fa-check"></i>&nbsp;确定</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+</html>

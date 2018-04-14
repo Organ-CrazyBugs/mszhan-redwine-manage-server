@@ -42,10 +42,19 @@
     <result column="brand_backgroud" jdbcType="VARCHAR" property="brandBackgroud" />
     <result column="background_path" jdbcType="VARCHAR" property="backgroundPath" />
     <result column="background_file_name" jdbcType="VARCHAR" property="backgroundFileName" />
-
-
-
   </resultMap>
+
+  <resultMap id="fetchProductSelectPopupDataRM" type="com.mszhan.redwine.manage.server.model.mszhanRedwineManage.query.FetchProductSelectPopupDataRMQuery">
+    <id column="product_id" jdbcType="INTEGER" property="productId" />
+    <result column="product_name" jdbcType="VARCHAR" property="productName" />
+    <result column="sku" jdbcType="VARCHAR" property="sku" />
+
+    <result column="general_gent_price" jdbcType="DECIMAL" property="generalGentPrice" />
+    <result column="gent_price" jdbcType="DECIMAL" property="gentPrice" />
+    <result column="wholesale_price" jdbcType="DECIMAL" property="wholesalePrice" />
+    <result column="retail_price" jdbcType="DECIMAL" property="retailPrice" />
+  </resultMap>
+
   <select id="queryForPage" resultMap="BaseResultMap"  parameterType="com.mszhan.redwine.manage.server.model.mszhanRedwineManage.query.ProductQuery">
     SELECT * FROM product
     <where>
@@ -82,6 +91,21 @@
     </if>
   </select>
 
+  <select id="fetchProductSelectPopupData" resultMap="fetchProductSelectPopupDataRM">
+    SELECT
+      id as product_id, product_name, sku, general_gent_price, gent_price,
+      wholesale_price, retail_price
+    FROM
+    product
+    <where>
+      <if test="sku != null and sku !=''">
+        AND sku like #{sku}
+      </if>
+      <if test="productName != null and productName != ''">
+        AND sku like #{productName}
+      </if>
+    </where>
+  </select>
 
   <select id="queryCount"  parameterType="com.mszhan.redwine.manage.server.model.mszhanRedwineManage.query.ProductQuery"  resultType="Integer">
     SELECT COUNT(1) FROM product
