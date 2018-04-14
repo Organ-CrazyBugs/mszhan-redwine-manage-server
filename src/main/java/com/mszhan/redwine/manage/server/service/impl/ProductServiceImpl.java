@@ -257,6 +257,19 @@ public class ProductServiceImpl extends AbstractService<Product> implements Prod
     }
 
     @Override
+    public void removeByIds(String ids) {
+        if (StringUtils.isBlank(ids)){
+            throw BasicException.newInstance().error("请先勾选数据再操作删除", 500);
+        }
+        List<Integer> idList = new ArrayList<>();
+        String str[] = StringUtils.trimToNull(ids).split(",");
+        for (String id : str){
+            idList.add(Integer.parseInt(id));
+        }
+        productMapper.removeByIdList(idList);
+    }
+
+    @Override
     public void removePic(Integer id, Boolean large) {
         productMapper.updatePic(id, null, null, large);
     }

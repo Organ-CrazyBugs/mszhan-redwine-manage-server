@@ -52,17 +52,6 @@ public class ProductController {
         Map<String, String> pathMap = productService.upProductPic(id, sku, file, large);
         return Responses.newInstance().succeed(pathMap);
     }
-//    @PostMapping(value = "/delete_pic")
-//    public Object uploadFile(Integer id) {
-//        productService.upProductPic(id, file);
-//        return Responses.newInstance().succeed();
-//    }
-
-//    @PutMapping(value = "/update_product_pic/{id}")
-//    public Object updateProductPic(@PathVariable("id") Integer id, @RequestParam("file") MultipartFile file) {
-//        productService.upProductPic(id, file);
-//        return Responses.newInstance().succeed();
-//    }
     @GetMapping(value = "/index")
     public ModelAndView productIndex() {
         ModelAndView view = new ModelAndView("product");
@@ -79,6 +68,11 @@ public class ProductController {
         return Responses.newInstance().succeed();
     }
 
+    @DeleteMapping(value = "/delete_by_ids/{ids}")
+    public Object deletePic(@PathVariable("ids") String ids) {
+        productService.removeByIds(ids);
+        return Responses.newInstance().succeed();
+    }
 
     @DeleteMapping(value = "/updateProduct/{id}")
     public Object del(@PathVariable("id") Integer id) {

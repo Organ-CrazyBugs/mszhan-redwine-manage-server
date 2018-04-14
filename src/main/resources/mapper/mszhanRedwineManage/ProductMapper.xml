@@ -130,8 +130,12 @@
     where id = #{id}
   </update>
 
-  <update id="removeById" >
-    update product set remove = 'Y' where id = #{id}
+  <update id="removeByIdList" >
+    update product set remove = 'Y' where id in
+    <foreach collection="list" index="index" item="item" open="("
+             separator="," close=")">
+      #{item}
+    </foreach>
   </update>
 
 </mapper>

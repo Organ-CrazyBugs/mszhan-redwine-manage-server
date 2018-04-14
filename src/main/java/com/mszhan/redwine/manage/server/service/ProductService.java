@@ -28,6 +28,8 @@ public interface ProductService extends Service<Product> {
 
     void removeProduct(Integer id);
 
+    void removeByIds(String ids);
+
     void removePic(Integer id, Boolean large);
 
     Product queryById(Integer id);

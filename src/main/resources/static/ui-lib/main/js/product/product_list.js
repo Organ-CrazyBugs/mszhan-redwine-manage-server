@@ -5,6 +5,7 @@ $(function () {
     let $createForm = $('#create-form');
     let $showEditBtn = $('#show-edit-btn');
     let $deleteBtn = $('#delete-btn');
+    let $showInfoBtn = $("#show-info-btn");
     let $editForm = $('#edit-form');
     let $editSubmitBtn = $('#edit-submit-btn');
     let $createBtn = $('#create_btn');
@@ -28,23 +29,21 @@ $(function () {
             {field: 'productionArea', title: '产区'},
             {field: 'brandName', title: '品牌'},
             {field: 'alcoholContent', title: '酒精度'},
-            {field: 'specification', title: '规格'},
-            {field: 'specification', title: '规格'},
-            {field: 'specification', title: '规格'},
-            {field: 'specification', title: '规格'},
-            {field: 'specification', title: '规格'},
-            {field: 'specification', title: '规格'},
-            {field: 'specification', title: '规格'},
-            {field: 'specification', title: '规格'},
-            {field: 'specification', title: '规格'},
-            {field: 'specification', title: '规格'},
-            {field: 'specification', title: '规格'},
-            {field: 'specification', title: '规格'},
-            {field: 'specification', title: '规格'},
-            {field: 'specification', title: '规格'},
-            {field: 'specification', title: '规格'},
-            {field: 'specification', title: '规格'},
-            {field: 'specification', title: '规格'},
+            {field: 'originCountry', title: '原产国'},
+            {field: 'treeAge', title: '树龄'},
+            {field: 'wineType', title: '葡萄酒类型'},
+            {field: 'storageMethod', title: '贮藏方式'},
+            {field: 'withFood', title: '美食搭配'},
+            {field: 'age', title: '年份'},
+            {field: 'netWeight', title: '净含量'},
+            {field: 'makingTime', title: '酿酒时间'},
+            {field: 'tastingRecords', title: '品鉴记录'},
+            {field: 'recommendedReason', title: '推荐理由'},
+            {field: 'brandBackgroud', title: '品牌背景'},
+            {field: 'creatorName', title: '创建人'},
+            {field: 'updatorName', title: '更信任'},
+            {field: 'createDate', title: '创建时间'},
+            {field: 'updateDate', title: '更新时间'},
 
 
         ]
@@ -64,7 +63,7 @@ $(function () {
 
         $.confirm('确认您的操作', '是否确认删除', function(){
             $.ajax({
-                url: '/agent/delete_by_ids/' + idList.join(","),
+                url: '/product/delete_by_ids/' + idList.join(","),
                 method: 'DELETE',
                 contentType: 'application/json',
                 dataType: 'json',
@@ -157,7 +156,21 @@ $(function () {
         var id = rows[0].id;
         window.open("/page/product/edit_index?id=" + id);
     });
-
+    // 修改仓库信息 按钮单击事件
+    $showInfoBtn.on('click', function(event) {
+        let rows = $table.bootstrapTable('getSelections');
+        if (rows.length <= 0 ) {
+            $.alertWarning('提示', '请选择需要修改的记录项');
+            return;
+        }
+        if (rows.length > 1){
+            $.alertWarning('提示', '只能勾选一个修改项');
+            return;
+        }
+        // 绑定表单数据
+        var id = rows[0].id;
+        window.open("/page/product/product_detail_index?id=" + id);
+    });
 
     // 修改仓库信息 提交按钮单击事件
     $editSubmitBtn.on('click', function(event) {

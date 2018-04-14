@@ -13,6 +13,8 @@ public interface ProductMapper extends Mapper<Product> {
 
     List<Product> queryForPage(ProductQuery query);
 
+    void removeByIdList(List<Integer> idList);
+
     void updatePic(@Param("id") Integer id, @Param("filePath") String filePath, @Param("fileName") String fileName, @Param("large") Boolean large);
 
 

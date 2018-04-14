@@ -22,39 +22,21 @@
         <main class="container">
             <div class="my-3 p-3 bg-white rounded box-shadow">
                 <!-- 页面内容在此处填充 -->
-                <label>产品图片</label>
-                <form enctype="multipart/form-data" >
-                    <div class="form-group">
-                        <div class="file-loading">
-                            <input id="file" name="file" type="file" class="file"  />
-                        </div>
-                    </div>
-
-
-                </form>
-                <label>产品介绍图片</label>
-                <form enctype="multipart/form-data" >
-                    <div class="form-group">
-                        <div class="file-loading">
-                            <input id="largeFile" name="file" type="file" class="file"  />
-                        </div>
-                    </div>
-
-
-                </form>
-
-                <form id="edit-form" action="#">
-                    <input type="hidden" name="productFileName"  />
-                    <input type="hidden" name="filePath" />
-
-                    <input type="hidden" name="backgroundFileName"  />
-                    <input type="hidden" name="backgroundPath" />
+                <div class="form-group">
+                    <label>产品图片</label>
+                    <img src="" id="smFile" style="with:120px; height:120px;" />
+                </div>
+                <div class="form-group">
+                    <label>产品介绍图片</label>
+                    <img src="" id="largeFile" style="with:120px; height:120px;" />
+                </div>
+                <form id="show-info-form" action="#">
                     <input type="hidden" name="id"  th:value="${id}"/>
                     <div class="modal-body">
                         <label style="color:red;">必填属性</label>
                         <div class="form-group">
                             <label>产品名称<span class="text-danger">*</span></label>
-                            <textarea class="form-control" name="productName" rows="1"></textarea>
+                            <textarea class="form-control" name="productName" rows="1" readonly="readonly"></textarea>
                         </div>
                         <div class="row">
                             <div class="col-md-3">
@@ -66,19 +48,19 @@
                             <div class="col-md-3">
                                 <div class="form-group">
                                     <label>总代理价<span class="text-danger">*</span></label>
-                                    <input type="number" class="form-control" name="generalGentPrice" placeholder="总代理价" />
+                                    <input type="number" class="form-control" name="generalGentPrice" readonly="readonly" placeholder="总代理价" />
                                 </div>
                             </div>
                             <div class="col-md-3">
                                 <div class="form-group">
                                     <label>代理价<span class="text-danger">*</span></label>
-                                    <input type="number" class="form-control" name="gentPrice" placeholder="代理价" />
+                                    <input type="number" class="form-control" name="gentPrice" readonly="readonly" placeholder="代理价" />
                                 </div>
                             </div>
                             <div class="col-md-3">
                                 <div class="form-group">
                                     <label>批发价<span class="text-danger">*</span></label>
-                                    <input type="number" class="form-control" name="wholesalePrice" placeholder="批发价" />
+                                    <input type="number" class="form-control" name="wholesalePrice" readonly="readonly" placeholder="批发价" />
                                 </div>
                             </div>
                         </div>
@@ -86,19 +68,19 @@
                             <div class="col-md-3">
                                 <div class="form-group">
                                     <label>零售价<span class="text-danger">*</span></label>
-                                    <input type="number" class="form-control" name="retailPrice" placeholder="零售价" />
+                                    <input type="number" class="form-control" name="retailPrice" readonly="readonly" placeholder="零售价" />
                                 </div>
                             </div>
                             <div class="col-md-3">
                                 <div class="form-group">
                                     <label>成本价<span class="text-danger">*</span></label>
-                                    <input type="number" class="form-control" name="cost" placeholder="成本价" />
+                                    <input type="number" class="form-control" name="cost" readonly="readonly" placeholder="成本价" />
                                 </div>
                             </div>
                             <div class="col-md-3">
                                 <div class="form-group">
                                     <label>单位<span class="text-danger">*</span></label>
-                                    <input type="text" class="form-control" name="unit" placeholder="单位" />
+                                    <input type="text" class="form-control" name="unit" readonly="readonly" placeholder="单位" />
                                 </div>
                             </div>
                         </div>
@@ -108,25 +90,25 @@
                             <div class="col-md-3">
                                 <div class="form-group">
                                     <label>酒精浓度</label>
-                                    <input type="number" class="form-control" name="alcoholContent" placeholder="零售价" />
+                                    <input type="number" class="form-control" name="alcoholContent" readonly="readonly" placeholder="零售价" />
                                 </div>
                             </div>
                             <div class="col-md-3">
                                 <div class="form-group">
                                     <label>规格</label>
-                                    <input type="text" class="form-control" name="specification" placeholder="规格" />
+                                    <input type="text" class="form-control" name="specification" readonly="readonly" placeholder="规格" />
                                 </div>
                             </div>
                             <div class="col-md-3">
                                 <div class="form-group">
                                     <label>级别</label>
-                                    <input type="text" class="form-control" name="level" placeholder="级别" />
+                                    <input type="text" class="form-control" name="level" readonly="readonly" placeholder="级别" />
                                 </div>
                             </div>
                             <div class="col-md-3">
                                 <div class="form-group">
                                     <label>酿酒时间</label>
-                                    <input type="text" class="form-control" name="makingTime" placeholder="酿酒时间" />
+                                    <input type="text" class="form-control" name="makingTime" readonly="readonly" placeholder="酿酒时间" />
                                 </div>
                             </div>
                         </div>
@@ -137,25 +119,25 @@
                             <div class="col-md-3">
                                 <div class="form-group">
                                     <label>原产国</label>
-                                    <input type="text" class="form-control" name="originCountry" placeholder="原产国" />
+                                    <input type="text" class="form-control" name="originCountry" readonly="readonly" placeholder="原产国" />
                                 </div>
                             </div>
                             <div class="col-md-3">
                                 <div class="form-group">
                                     <label>产区</label>
-                                    <input type="text" class="form-control" name="productionArea" placeholder="产区" />
+                                    <input type="text" class="form-control" name="productionArea" readonly="readonly" placeholder="产区" />
                                 </div>
                             </div>
                             <div class="col-md-3">
                                 <div class="form-group">
                                     <label>品牌</label>
-                                    <input type="text" class="form-control" name="brandName" placeholder="品牌" />
+                                    <input type="text" class="form-control" name="brandName" readonly="readonly" placeholder="品牌" />
                                 </div>
                             </div>
                             <div class="col-md-3">
                                 <div class="form-group">
                                     <label>树龄</label>
-                                    <input type="text" class="form-control" name="treeAge" placeholder="树龄" />
+                                    <input type="text" class="form-control" name="treeAge" readonly="readonly" placeholder="树龄" />
                                 </div>
                             </div>
                         </div>
@@ -164,25 +146,25 @@
                             <div class="col-md-3">
                                 <div class="form-group">
                                     <label>葡萄酒类型</label>
-                                    <input type="text" class="form-control" name="wineType" placeholder="葡萄酒类型" />
+                                    <input type="text" class="form-control" name="wineType" readonly="readonly" placeholder="葡萄酒类型" />
                                 </div>
                             </div>
                             <div class="col-md-3">
                                 <div class="form-group">
                                     <label>贮藏方式</label>
-                                    <input type="text" class="form-control" name="storageMethod" placeholder="贮藏方式" />
+                                    <input type="text" class="form-control" name="storageMethod" readonly="readonly" placeholder="贮藏方式" />
                                 </div>
                             </div>
                             <div class="col-md-3">
                                 <div class="form-group">
                                     <label>葡萄酒品种</label>
-                                    <input type="text" class="form-control" name="category" placeholder="葡萄酒品种" />
+                                    <input type="text" class="form-control" name="category" readonly="readonly" placeholder="葡萄酒品种" />
                                 </div>
                             </div>
                             <div class="col-md-3">
                                 <div class="form-group">
                                     <label>年份</label>
-                                    <input type="text" class="form-control" name="age" placeholder="年份" />
+                                    <input type="text" class="form-control" name="age" readonly="readonly" placeholder="年份" />
                                 </div>
                             </div>
                         </div>
@@ -191,30 +173,26 @@
                             <div class="col-md-3">
                                 <div class="form-group">
                                     <label>净含量</label>
-                                    <input type="text" class="form-control" name="netWeight" placeholder="净含量" />
+                                    <input type="text" class="form-control" name="netWeight" readonly="readonly" placeholder="净含量" />
                                 </div>
                             </div>
                         </div>
                     </div>
                     <div class="form-group">
                         <label>美食搭配</label>
-                        <textarea class="form-control" name="withFood" rows="1"></textarea>
+                        <textarea class="form-control" name="withFood" rows="1" readonly="readonly"></textarea>
                     </div>
                     <div class="form-group">
                         <label>品鉴记录</label>
-                        <textarea class="form-control" name="tastingRecords" rows="2"></textarea>
+                        <textarea class="form-control" name="tastingRecords" rows="2" readonly="readonly"></textarea>
                     </div>
                     <div class="form-group">
                         <label>推荐理由</label>
-                        <textarea class="form-control" name="recommendedReason" rows="2"></textarea>
+                        <textarea class="form-control" name="recommendedReason" rows="2" readonly="readonly"></textarea>
                     </div>
                     <div class="form-group">
                         <label>品牌背景</label>
-                        <textarea class="form-control" name="brandBackgroud" rows="2"></textarea>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
-                        <button id="edit-submit-btn" type="submit" class="btn btn-primary">修改</button>
+                        <textarea class="form-control" name="brandBackgroud" rows="2" readonly="readonly"></textarea>
                     </div>
                 </form>
             </div>
@@ -224,8 +202,9 @@
 
 
 
-        var id = $("#edit-form").find("[name='id']").val();
-
+        var id = $("#show-info-form").find("[name='id']").val();
+        var fileName = "";
+        var largeFileName = "";
         $.ajax({
             url: '/product/query_by_id',
             method: 'GET',
@@ -234,7 +213,9 @@
             dataType: 'json',
             data: "id=" + id,
             success: function (data) {
-                $("#edit-form").bindData(data.data, ["productFileName","id","filePath","backgroundFileName","backgroundPath","productName","sku","generalGentPrice"
+                fileName = data.data.productFileName;
+                largeFileName = data.data.backgroundFileName;
+                $("#show-info-form").bindData(data.data, ["productFileName","id","filePath","backgroundFileName","backgroundPath","productName","sku","generalGentPrice"
                 ,"gentPrice","wholesalePrice","retailPrice","cost","unit","alcoholContent","specification","level","makingTime","originCountry","productionArea"
                  ,"brandName","treeAge","wineType","storageMethod","category","age","netWeight","withFood","tastingRecords","recommendedReason","brandBackgroud"
                 ]);
@@ -242,93 +223,15 @@
         });
 
 
-        var fileName = $("#edit-form").find("input[name='productFileName']").val();
-        var largeFileName = $("#edit-form").find("input[name='backgroundFileName']").val();
-        var smCaption ={} ;
-        var largeCaption = {};
         var smFilePath = "";
         var largeFilePath = "";
         if ($.trim(fileName) !=''){
             smFilePath = "/product_img/basic/" + fileName;
-            smCaption = {caption: fileName, size: 1, width: "120px", url: "/product/delete_pic",  extra: {id: id, large: false}};
-            console.log(smFilePath);
+            $("#smFile").attr("src", smFilePath);
         }
         if ($.trim(largeFileName) !=''){
             largeFilePath = "/product_img/large/" + largeFileName;
-            largeCaption = {caption: largeFileName, size: 1, width: "120px", url: "/product/delete_pic",  extra: {id: id, large : true}};
+            $("#largeFile").attr("src", largeFilePath);
         }
-
-            var  mydata;
-            var largeData;
-            //        var filePath = "<img src='product_img/basic/${fileName}' style='width : 120px'  />".replace("${fileName}", "123");
-            $("#file").fileinput({
-                theme: 'fa',
-                language : 'zh',
-                uploadExtraData: function () {
-                    return mydata
-                },
-                uploadUrl: '/product/upload_file',
-                uploadAsync: true,
-                dropZoneTitle: '拖拽文件到这里或者点击选择上传 …',
-                showUpload:false, //是否显示上传按钮
-                showRemove :false, //显示移除按钮
-                allowedFileExtensions: ['jpg', 'gif', 'png', 'jpeg'],
-                initialPreview: [
-                    smFilePath
-                ],
-                initialPreviewAsData: true, // identify if you are sending preview data only and not the raw markup
-                initialPreviewFileType: 'image', // image is the default and can be overridden in config below
-                initialPreviewConfig: [
-                    smCaption
-                ],
-            }).on("filepreajax", function(event, data){
-                var sku = $("#edit-form").find("input[name='sku']").val();
-                mydata ={
-                    sku:sku, large : false, id: id   //此时可以动态获取
-                };
-            }).on("fileuploaded", function(event, data, previewId, index) {
-                $("#edit-form").find("input[name='filePath']").val(data.response.data.path);
-                $("#edit-form").find("input[name='productFileName']").val(data.response.data.fileName);
-            }).on("fileerror", function(){
-                return "error";
-            });
-
-            $("#largeFile").fileinput({
-                theme: 'fa',
-                language : 'zh',
-                uploadExtraData: function () {
-                    return largeData
-                },
-                uploadUrl: '/product/upload_file',
-                uploadAsync: true,
-                dropZoneTitle: '拖拽文件到这里或者点击选择上传 …',
-                showUpload:false, //是否显示上传按钮
-                showRemove :false, //显示移除按钮
-                allowedFileExtensions: ['jpg', 'gif', 'png', 'jpeg'],
-                initialPreview: [
-                    largeFilePath
-                ],
-                initialPreviewAsData: true, // identify if you are sending preview data only and not the raw markup
-                initialPreviewFileType: 'image', // image is the default and can be overridden in config below
-                initialPreviewConfig: [
-                    largeCaption
-                ],
-            }).on("filepreajax", function(event, data){
-                var sku = $("#edit-form").find("input[name='sku']").val();
-                largeData ={
-                    sku:sku, large : true, id : id   //此时可以动态获取
-                };
-            }).on("fileuploaded", function(event, data, previewId, index) {
-                $("#edit-form").find("input[name='backgroundPath']").val(data.response.data.path);
-                $("#edit-form").find("input[name='backgroundFileName']").val(data.response.data.fileName);
-            }).on("fileerror", function(){
-                return "error";
-            });
-
-
-//        $("#fuploadinput").on("fileuploaded",function(event, data, previewId, index) {
-//
-//        })
-
     </script>
 </html>
