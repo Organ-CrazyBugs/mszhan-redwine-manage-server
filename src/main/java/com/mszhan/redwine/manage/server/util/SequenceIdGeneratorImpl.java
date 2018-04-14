@@ -4,66 +4,20 @@ package com.mszhan.redwine.manage.server.util;
 import com.mszhan.redwine.manage.server.dao.mszhanRedwineManage.SequenceMapper;
 import com.mszhan.redwine.manage.server.model.mszhanRedwineManage.Sequence;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
-
+@Component
 public class SequenceIdGeneratorImpl implements SequenceIdGenerator {
-	
+
+	@Autowired
 	private SequenceMapper sequenceMapper;
-//
-//	private BoundHashOperations bho;
 
-	public SequenceIdGeneratorImpl(){
-		this.sequenceMapper =  ApplicationContextUtils.getContext().getBean(SequenceMapper.class);
-
-	}
-
-	public String getNextSeqId(String seqName) {
-		return getSeqValue(seqName, 7);
-	}
-
-
-	public String getNextSeqIdLong(String seqName, int length) {
-		return getSeqValue(seqName, length);
-	}
-
-
-	public String getNextSeqIdByDay(String seqName) {
-		String date = UtilDateTime.nowDateString("yyMMdd");
-		return date + getSeqValue(seqName, 10);
-	}
-
-
-	public String getNextSeqIdByDay(String seqName, int length) {
-		String date = UtilDateTime.nowDateString("yyMMdd");
-		return length <= 0 ? date : date + getSeqValue(seqName, length);
-	}
-
-
-	public String getNextSeqIdByMonth(String seqName) {
-		String date = UtilDateTime.nowDateString("yyyyMM");
-		return date + getSeqValue(seqName, 6);
-	}
-
-
-	public String getNextSeqIdByMonth(String seqName, int length) {
-		String date = UtilDateTime.nowDateString("yyMM");
-		return length <= 0 ? date : date + getSeqValue(seqName, length);
-	}
-
-
-	public String getNextSeqIdByYear(String seqName) {
-		String date = UtilDateTime.nowDateString("yy");
-		return date + getSeqValue(seqName, 8);
-	}
-
-
-	public String getNextSeqIdByYear(String seqName, int length) {
-		String date = UtilDateTime.nowDateString("yy");
-		return length <= 0 ? date : date + getSeqValue(seqName, length);
-	}
-	private String getSeqValue(String seqName, int length){
+	@Override
+	public synchronized String getSeqValue(String seqName, Integer length){
         SimpleDateFormat format = new SimpleDateFormat("yyyyMMdd");
 	    Date nowDate = new Date();
 	    String str = format.format(nowDate);

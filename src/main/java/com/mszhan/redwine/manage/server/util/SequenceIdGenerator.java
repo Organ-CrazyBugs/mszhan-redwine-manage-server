@@ -1,20 +1,9 @@
 package com.mszhan.redwine.manage.server.util;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 public interface SequenceIdGenerator {
 
-	String getNextSeqId(String seqName);
-
-	String getNextSeqIdLong(String seqName, int length);
-
-	String getNextSeqIdByYear(String seqName);
-
-	String getNextSeqIdByYear(String seqName, int length);
-
-	String getNextSeqIdByMonth(String seqName);
-
-	String getNextSeqIdByMonth(String seqName, int length);
-
-	String getNextSeqIdByDay(String seqName);
-
-	String getNextSeqIdByDay(String seqName, int length);
+	 String getSeqValue(String seqName, Integer length);
 }
