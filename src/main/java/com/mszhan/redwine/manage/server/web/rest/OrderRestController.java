@@ -6,6 +6,7 @@ import com.mszhan.redwine.manage.server.core.Requests;
 import com.mszhan.redwine.manage.server.core.Responses;
 import com.mszhan.redwine.manage.server.dao.mszhanRedwineManage.ProductMapper;
 import com.mszhan.redwine.manage.server.model.mszhanRedwineManage.base.PaginateResult;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -28,8 +29,11 @@ public class OrderRestController {
         Integer offset = requests.getInteger("offset", 0);
         Integer limit = requests.getInteger("limit", 10);
 
+        String skuLikeVal = StringUtils.isBlank(sku) ? "" : String.format("%%%s%%", sku);
+        String productNameLikeVal = StringUtils.isBlank(productName) ? "" : String.format("%%%s%%", productName);
+
         Page<Object> page = PageHelper.offsetPage(offset, limit)
-                .doSelectPage(() -> this.productMapper.fetchProductSelectPopupData(sku, productName));
+                .doSelectPage(() -> this.productMapper.fetchProductSelectPopupData(skuLikeVal, productNameLikeVal));
 
         return Responses.newInstance().succeed(PaginateResult.newInstance(page.getTotal(), page));
     }
