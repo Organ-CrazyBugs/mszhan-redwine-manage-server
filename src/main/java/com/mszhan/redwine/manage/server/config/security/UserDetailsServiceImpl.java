@@ -51,10 +51,12 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         // 获取代理信息
         Integer agentId = userLogin.getAgentId();
         String agentName = null;
+        String agentType = null;
         if (agentId != null) {
             Agents agent = this.agentsMapper.selectByPrimaryKey(agentId);
             if (agent != null) {
                 agentName = agent.getName();
+                agentType = agent.getType();
             }
         }
 
@@ -66,6 +68,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
                 .credentialsExpired(false)
                 .agentName(agentName)
                 .agentId(agentId)
+                .agentType(agentType)
                 .build()
                 ;
     }

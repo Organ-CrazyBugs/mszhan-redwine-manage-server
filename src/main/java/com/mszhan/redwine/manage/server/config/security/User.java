@@ -29,6 +29,7 @@ public class User extends org.springframework.security.core.userdetails.User {
     private Integer userLoginId;
     private Integer agentId;
     private String agentName;
+    private String agentType;
 
     public static UserBuilder withUserLogin(UserLogin userLogin) {
         return new UserBuilder()
@@ -49,6 +50,7 @@ public class User extends org.springframework.security.core.userdetails.User {
         private boolean disabled;
         private Integer agentId;
         private String agentName;
+        private String agentType;
 
         /**
          * Creates a new instance
@@ -63,6 +65,11 @@ public class User extends org.springframework.security.core.userdetails.User {
 
         public UserBuilder agentName(String agentName) {
             this.agentName = agentName;
+            return this;
+        }
+
+        public UserBuilder agentType(String agentType) {
+            this.agentType = agentType;
             return this;
         }
 
@@ -132,6 +139,7 @@ public class User extends org.springframework.security.core.userdetails.User {
             user.setUserLoginId(userLoginId);
             user.setAgentId(agentId);
             user.setAgentName(agentName);
+            user.setAgentType(agentType);
             return user;
         }
     }
@@ -158,5 +166,13 @@ public class User extends org.springframework.security.core.userdetails.User {
 
     public void setUserLoginId(Integer userLoginId) {
         this.userLoginId = userLoginId;
+    }
+
+    public String getAgentType() {
+        return agentType;
+    }
+
+    public void setAgentType(String agentType) {
+        this.agentType = agentType;
     }
 }

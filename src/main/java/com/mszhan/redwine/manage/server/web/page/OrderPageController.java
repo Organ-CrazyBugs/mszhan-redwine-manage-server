@@ -1,5 +1,6 @@
 package com.mszhan.redwine.manage.server.web.page;
 
+import com.mszhan.redwine.manage.server.core.SecurityUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
@@ -13,7 +14,9 @@ import org.springframework.web.servlet.ModelAndView;
 public class OrderPageController {
     @RequestMapping("/page/order/order_list")
     public ModelAndView index(){
+        String agentType = SecurityUtils.getAuthenticationUser().getAgentType();
         ModelAndView view = new ModelAndView("order/order_list");
+        view.addObject("agentType", agentType);
         return view;
     }
 
