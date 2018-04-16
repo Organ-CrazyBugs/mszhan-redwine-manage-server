@@ -28,6 +28,11 @@ $(function () {
         formatNoMatches: function (){
             return '没有添加任何产品，请点击右上角的“添加产品”按钮添加产品。';
         },
+        detailView: true,
+        detailFormatter: function (index, record) {
+            console.log(record);
+            return '12345';
+        },
         columns: [
             {field: 'sku', title: 'SKU'},
             {field: 'quantity', title: '数量', align: 'left', width: 110, formatter: function (val, record) {
