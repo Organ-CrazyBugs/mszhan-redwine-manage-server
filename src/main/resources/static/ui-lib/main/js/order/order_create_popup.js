@@ -1,9 +1,14 @@
 let productList = [];
 
+let agentType;
 $(function () {
     let $createOrderProductTable = $('#create-order-product-table');
     let $selectProductPopupModal = $('#select-product-popup-modal');
     let $createOrderAddSkuBtn = $('#create-order-add-sku-btn');
+    let $createOrderSubmitBtn = $('#create-order-submit-btn');
+    let $orderCreatePopupForm = $('#order-create-popup-form');
+
+    agentType = $('#contextAgentType').val();
 
     /*
         {1} field, 如： quantity， unitPrice， packagePrice
@@ -30,8 +35,30 @@ $(function () {
         },
         detailView: true,
         detailFormatter: function (index, record) {
-            console.log(record);
-            return '12345';
+            let tmpl = '<div class="text-right">' +
+                '<a href="#" class="badge badge-info ml-2">总代理价：￥{1}</a>' +
+                '<a href="#" class="badge badge-info ml-2">代理价：￥{2}</a>' +
+                '<a href="#" class="badge badge-info ml-2">批发价：￥{3}</a>' +
+                '<a href="#" class="badge badge-info ml-2">零售价：￥{4}</a>' +
+            '</div>';
+            let generalGentPrice = $.formatMoney(record['generalGentPrice']);
+            let gentPrice = $.formatMoney(record['gentPrice']);
+            let wholesalePrice = $.formatMoney(record['wholesalePrice']);
+            let retailPrice = $.formatMoney(record['retailPrice']);
+
+            switch (agentType) {
+                case 'ADMIN':
+                    return $.formatString(tmpl, generalGentPrice, gentPrice, wholesalePrice, retailPrice);
+                    break;
+                case 'GENERAL_AGENT':
+                    return $.formatString(tmpl, '-', gentPrice, wholesalePrice, retailPrice);
+                    break;
+                case 'AGENT':
+                    return $.formatString(tmpl, '-', '-', wholesalePrice, retailPrice);
+                    break;
+                default:
+                    return $.formatString(tmpl, '-', '-', wholesalePrice, retailPrice);
+            }
         },
         columns: [
             {field: 'sku', title: 'SKU'},
@@ -56,7 +83,37 @@ $(function () {
     $createOrderAddSkuBtn.on('click', function () {
         $selectProductPopupModal.modal('show');
     });
+
+    $('#order-create-popup-form').find('input[name="shipAmount"]').on('blur', function () {
+        refreshAmountTotalInfo();
+    });
+
+    $createOrderSubmitBtn.on('click', function () {
+        //TODO: 提交创建订单
+    });
 });
+
+function refreshAmountTotalInfo() {
+    // 刷新各种小计部分金额
+    let productAmount = 0.0;
+    let packageAmount = 0.0;
+    let shipAmount = parseFloat($('#order-create-popup-form').find('input[name="shipAmount"]').val());
+    if (isNaN(shipAmount)) {
+        shipAmount = 0.00;
+    }
+
+    productList.forEach((item, index) => {
+        productAmount += item.quantity * item.unitPrice;
+        packageAmount += item.packagePrice;
+    });
+    let paymentTotal = productAmount + packageAmount + shipAmount;
+
+    $('#productAmountLabel').text($.formatMoney(productAmount.toFixed(2)));
+    $('#packageAmountLabel').text($.formatMoney(packageAmount.toFixed(2)));
+    $('#shipAmountLabel').text($.formatMoney(shipAmount.toFixed(2)));
+
+    $('#paymentTotalLabel').text($.formatMoney(paymentTotal.toFixed(2)));
+}
 
 function createOrderProductRemoveItem(productId) {
     $.confirm('确认', '确认删除该产品项吗？', function () {
@@ -68,6 +125,7 @@ function createOrderProductRemoveItem(productId) {
         }
         console.log(productList);
         $('#create-order-product-table').bootstrapTable('load', productList);
+        refreshAmountTotalInfo();
     });
 }
 
@@ -98,6 +156,7 @@ function createOrderProductListChange(field, fieldName, recordId, valueInput, ed
     });
 
     $('#create-order-product-table').bootstrapTable('load', productList);
+    refreshAmountTotalInfo();
     // editBox.hide();
     // displayBox.text(value).show();
     // valueInput.val(value);
@@ -124,4 +183,5 @@ function createOrderSelectProductCallback(products) {
         });
     }
     $('#create-order-product-table').bootstrapTable('load', productList);
+    refreshAmountTotalInfo();
 }

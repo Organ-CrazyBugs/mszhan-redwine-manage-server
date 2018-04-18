@@ -18,6 +18,7 @@
 <div th:include="/product/select_product_popup::payload('选择产品', 'select-product-popup-modal', 'createOrderSelectProductCallback')"></div>
 
 <main class="container">
+    <input id="contextAgentType" type="hidden" th:value="${agentType}" />
     <div class="my-3 p-3 bg-white rounded box-shadow">
         <!-- 页面内容在此处填充 -->
         <form id="table-query-form" class="table-query-form" action="#">

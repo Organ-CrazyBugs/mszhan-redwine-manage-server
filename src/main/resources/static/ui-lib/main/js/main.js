@@ -255,6 +255,15 @@ $.extend({
             return data.data;
         }
         return null;
+    },
+    formatMoney: function (num) {
+        let str = (num || 0.00).toString();
+        let strArray = str.split('.');
+        strArray[0] = strArray[0].replace(/(\d)(?=(?:\d{3})+$)/g, '$1,');
+        if (strArray[0].indexOf(',') + 1 == strArray[0].length) {
+            strArray[0] = strArray[0].substring(0, strArray[0].length);
+        }
+        return strArray.join('.');
     }
 });
 

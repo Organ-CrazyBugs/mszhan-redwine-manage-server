@@ -12,7 +12,7 @@
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
-                    <form id="warehouse-input-form" action="#">
+                    <form id="order-create-popup-form" action="#">
                         <div class="modal-body" style="max-height: 500px;overflow-y: scroll;overflow-x:hidden;">
 
                             <div class="row">
@@ -23,14 +23,14 @@
                                     <div class="form-group">
                                         <label>代理</label>
                                         <select class="form-control" name="agentId" required="required">
-                                            <option value="">请选择代理</option>
+                                            <option th:each="agent,record:${agents}" th:value="${agent.get('id')}" th:text="${agent.get('name') + '(' + agent.get('phone') + ')'}"></option>
                                         </select>
                                     </div>
                                 </div>
                                 <div class="col-md-4">
                                     <div class="form-group">
-                                        <label>备注</label>
-                                        <input type="text" class="form-control" name="orderRemark" placeholder="备注" />
+                                        <label>订单备注</label>
+                                        <input type="text" class="form-control" name="orderRemark" placeholder="订单备注" />
                                     </div>
                                 </div>
                             </div>
@@ -81,6 +81,26 @@
                                 <div class="col-md-12">
                                     <table id="create-order-product-table"></table>
                                 </div>
+                                <div class="col-md-12">
+                                    <div class="alert alert-secondary text-right mt-4" role="alert">
+                                        <div class="row">
+                                            <div class="col-md-10">货款小计：</div>
+                                            <div class="col-md-2">￥<span id="productAmountLabel">0.00</span></div>
+                                        </div>
+                                        <div class="row mt-2">
+                                            <div class="col-md-10">包装费小计：</div>
+                                            <div class="col-md-2">￥<span id="packageAmountLabel">0.00</span></div>
+                                        </div>
+                                        <div class="row mt-2">
+                                            <div class="col-md-10">运费金额：</div>
+                                            <div class="col-md-2">￥<span id="shipAmountLabel">0.00</span></div>
+                                        </div>
+                                        <div class="row mt-2 font-weight-bold">
+                                            <div class="col-md-10">应付总额：</div>
+                                            <div class="col-md-2">￥<span id="paymentTotalLabel">0.00</span></div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
 
                             <div class="row">
@@ -91,7 +111,11 @@
                                     <div class="form-group">
                                         <label>支付方式</label>
                                         <select class="form-control" name="paymentTypeId" required="required">
-                                            <option value="">请选择支付方式</option>
+                                            <option value="CASH_PAYMENT">现金支付</option>
+                                            <option value="WECHAT_PAYMENT">微信支付</option>
+                                            <option value="ALIPAY_PAYMENT">支付宝支付</option>
+                                            <option value="BANK_PAYMENT">银行卡支付</option>
+                                            <option value="OTHER">其他</option>
                                         </select>
                                     </div>
                                 </div>
@@ -112,7 +136,7 @@
 
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
-                            <button id="warehouse-input-submit-btn" type="submit" class="btn btn-primary"><i class="fa fa-sign-in"></i>&nbsp;入库</button>
+                            <button id="create-order-submit-btn" type="submit" class="btn btn-primary"><i class="fa fa-save"></i>&nbsp;提交订单</button>
                         </div>
                     </form>
                 </div>
