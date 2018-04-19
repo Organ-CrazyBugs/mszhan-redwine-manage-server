@@ -9,6 +9,7 @@ import com.mszhan.redwine.manage.server.model.mszhanRedwineManage.base.PaginateR
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
@@ -38,4 +39,9 @@ public class OrderRestController {
         return Responses.newInstance().succeed(PaginateResult.newInstance(page.getTotal(), page));
     }
 
+    @PostMapping(value = "/api/order/create")
+    public Object createOrder(){
+        //TODO： 创建订单
+        return Responses.newInstance().succeed();
+    }
 }

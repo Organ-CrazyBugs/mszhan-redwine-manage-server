@@ -88,8 +88,79 @@ $(function () {
         refreshAmountTotalInfo();
     });
 
-    $createOrderSubmitBtn.on('click', function () {
+    $createOrderSubmitBtn.on('click', function (event) {
+        event.preventDefault();
+
         //TODO: 提交创建订单
+        let params = $orderCreatePopupForm.serializeObject();
+        if ($.isBlank(params['agentId'])) {
+            $.alertWarning('提示', '请选择代理');
+            return false;
+        }
+
+        if ($.isBlank(params['customerName'])) {
+            $.alertWarning('提示', '请输入收件人');
+            return false;
+        }
+
+        if ($.isBlank(params['phoneNumber'])) {
+            $.alertWarning('提示', '请输入联系电话');
+            return false;
+        }
+
+        if ($.isBlank(params['postalCode'])) {
+            $.alertWarning('提示', '请输入邮政编码');
+            return false;
+        }
+
+        if ($.isBlank(params['address'])) {
+            $.alertWarning('提示', '请输入详细地址');
+            return false;
+        }
+
+        if ($.isBlank(params['address'])) {
+            $.alertWarning('提示', '请输入详细地址');
+            return false;
+        }
+
+        if (productList.length == 0) {
+            $.alertWarning('提示', '请加入产品项');
+            return false;
+        }
+
+        if (!$.isBlank(params['paymentTypeId']) || !$.isBlank(params['paymentAmount'])) {
+            if ($.isBlank(params['paymentTypeId'])) {
+                $.alertWarning('提示', '请选择支付方式');
+                return false;
+            }
+
+            if ($.isBlank(params['paymentAmount']) || isNaN(parseFloat(params['paymentAmount']))) {
+                $.alertWarning('提示', '请输入正确的支付金额');
+                return false;
+            }
+        }
+
+        let msg = $.formatString('<b>产品个数：{1}  应付总额：{2}</b> 确认提交订单吗？', productList.length, $('#paymentTotalLabel').text());
+        $.confirm('确认', msg, function (){
+            params['productList'] = productList;
+
+            $.ajax({
+                url: '/api/order/create',
+                method: 'POST',
+                contentType: 'application/json',
+                dataType: 'json',
+                data: JSON.stringify(params),
+                targetBtn: $createOrderSubmitBtn,
+                success: function (data) {
+                    if ($.ajaxIsFailure(data)) {
+                        return;
+                    }
+                    $.alertSuccess('提示', '订单创建成功!');
+                    // $table.bootstrapTable('refresh');
+                    $('#order-create-popup-modal').modal('hide');
+                }
+            });
+        });
     });
 });
 
@@ -97,10 +168,12 @@ function refreshAmountTotalInfo() {
     // 刷新各种小计部分金额
     let productAmount = 0.0;
     let packageAmount = 0.0;
-    let shipAmount = parseFloat($('#order-create-popup-form').find('input[name="shipAmount"]').val());
+    let $shipAmount = $('#order-create-popup-form').find('input[name="shipAmount"]');
+    let shipAmount = parseFloat($shipAmount.val());
     if (isNaN(shipAmount)) {
         shipAmount = 0.00;
     }
+    $shipAmount.val(shipAmount);
 
     productList.forEach((item, index) => {
         productAmount += item.quantity * item.unitPrice;
@@ -146,7 +219,6 @@ function createOrderProductListChange(field, fieldName, recordId, valueInput, ed
         }
     }
 
-
     productList.forEach(function (item) {
         if (item.productId == recordId) {
             item[field] = value;
@@ -174,7 +246,7 @@ function createOrderSelectProductCallback(products) {
 
                 // TODO: 获取初始化的价格信息
                 item.packagePrice = 0;
-                item.unitPrice = 0;
+                item.unitPrice = item.retailPrice;
 
                 item.itemTotal = item.quantity * item.unitPrice + item.packagePrice;
 

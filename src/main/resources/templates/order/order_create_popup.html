@@ -22,7 +22,7 @@
                                 <div class="col-md-4">
                                     <div class="form-group">
                                         <label>代理</label>
-                                        <select class="form-control" name="agentId" required="required">
+                                        <select class="form-control" name="agentId">
                                             <option th:each="agent,record:${agents}" th:value="${agent.get('id')}" th:text="${agent.get('name') + '(' + agent.get('phone') + ')'}"></option>
                                         </select>
                                     </div>
@@ -110,7 +110,8 @@
                                 <div class="col-md-4">
                                     <div class="form-group">
                                         <label>支付方式</label>
-                                        <select class="form-control" name="paymentTypeId" required="required">
+                                        <select class="form-control" name="paymentTypeId">
+                                            <option value="">选择支付方式</option>
                                             <option value="CASH_PAYMENT">现金支付</option>
                                             <option value="WECHAT_PAYMENT">微信支付</option>
                                             <option value="ALIPAY_PAYMENT">支付宝支付</option>

@@ -26,19 +26,20 @@
                 <div class="col-md-3">
                     <div class="input-group">
                         <div class="input-group-prepend">
-                            <div class="input-group-text query-form-label">所属仓库</div>
+                            <div class="input-group-text query-form-label">所属代理</div>
                         </div>
                         <select name="warehouseId" class="custom-select">
                             <option selected="selected" value="">全部</option>
+                            <option th:each="agent,record:${agents}" th:value="${agent.get('id')}" th:text="${agent.get('name') + '(' + agent.get('phone') + ')'}"></option>
                         </select>
                     </div>
                 </div>
                 <div class="col-md-3">
                     <div class="input-group">
                         <div class="input-group-prepend">
-                            <div class="input-group-text query-form-label">产品条码</div>
+                            <div class="input-group-text query-form-label">订单编号</div>
                         </div>
-                        <input name="sku" type="text" class="form-control" placeholder="产品条码" />
+                        <input name="orderId" type="text" class="form-control" placeholder="订单编号" />
                     </div>
                 </div>
                 <div class="col-md-3">
