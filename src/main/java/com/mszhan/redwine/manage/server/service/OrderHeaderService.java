@@ -5,6 +5,7 @@ import com.mszhan.redwine.manage.server.core.Service;
 import com.mszhan.redwine.manage.server.model.mszhanRedwineManage.base.PaginateResult;
 import com.mszhan.redwine.manage.server.model.mszhanRedwineManage.query.AddOrderPojo;
 import com.mszhan.redwine.manage.server.model.mszhanRedwineManage.query.OrderQuery;
+import com.mszhan.redwine.manage.server.model.mszhanRedwineManage.vo.CreateOrderVO;
 
 /**
  * @Description:
@@ -14,6 +15,8 @@ import com.mszhan.redwine.manage.server.model.mszhanRedwineManage.query.OrderQue
 public interface OrderHeaderService extends Service<OrderHeader> {
 
     PaginateResult<OrderHeader> queryForPage(OrderQuery query);
+
+    OrderHeader createOrder(CreateOrderVO orderVO);
 
     void addOrder(AddOrderPojo addOrderPojo);
 }

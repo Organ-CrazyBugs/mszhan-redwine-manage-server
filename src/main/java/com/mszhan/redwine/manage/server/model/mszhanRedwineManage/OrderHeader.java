@@ -1,5 +1,6 @@
 package com.mszhan.redwine.manage.server.model.mszhanRedwineManage;
 
+import java.math.BigDecimal;
 import java.util.Date;
 import javax.persistence.*;
 
@@ -16,7 +17,8 @@ public class OrderHeader {
      * 订单总金额
      */
     @Column(name = "total_amount")
-    private Long totalAmount;
+    private BigDecimal totalAmount;
+
 
     /**
      * 创建人
@@ -104,7 +106,7 @@ public class OrderHeader {
      *
      * @return total_amount - 订单总金额
      */
-    public Long getTotalAmount() {
+    public BigDecimal getTotalAmount() {
         return totalAmount;
     }
 
@@ -113,7 +115,7 @@ public class OrderHeader {
      *
      * @param totalAmount 订单总金额
      */
-    public void setTotalAmount(Long totalAmount) {
+    public void setTotalAmount(BigDecimal totalAmount) {
         this.totalAmount = totalAmount;
     }
 

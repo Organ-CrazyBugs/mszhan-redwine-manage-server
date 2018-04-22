@@ -65,7 +65,7 @@ public class OrderItem {
     /**
      * 更新人
      */
-    private Date updator;
+    private Integer updator;
 
     /**
      * 代理id
@@ -304,7 +304,7 @@ public class OrderItem {
      *
      * @return updator - 更新人
      */
-    public Date getUpdator() {
+    public Integer getUpdator() {
         return updator;
     }
 
@@ -313,7 +313,7 @@ public class OrderItem {
      *
      * @param updator 更新人
      */
-    public void setUpdator(Date updator) {
+    public void setUpdator(Integer updator) {
         this.updator = updator;
     }
 

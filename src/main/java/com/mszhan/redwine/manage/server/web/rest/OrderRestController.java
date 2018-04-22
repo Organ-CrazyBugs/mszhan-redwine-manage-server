@@ -6,10 +6,13 @@ import com.mszhan.redwine.manage.server.core.Requests;
 import com.mszhan.redwine.manage.server.core.Responses;
 import com.mszhan.redwine.manage.server.dao.mszhanRedwineManage.ProductMapper;
 import com.mszhan.redwine.manage.server.model.mszhanRedwineManage.base.PaginateResult;
+import com.mszhan.redwine.manage.server.model.mszhanRedwineManage.vo.CreateOrderVO;
+import com.mszhan.redwine.manage.server.service.OrderHeaderService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
@@ -19,7 +22,8 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 public class OrderRestController {
-
+    @Autowired
+    private OrderHeaderService orderHeaderService;
     @Autowired
     private ProductMapper productMapper;
 
@@ -40,8 +44,8 @@ public class OrderRestController {
     }
 
     @PostMapping(value = "/api/order/create")
-    public Object createOrder(){
-        //TODO： 创建订单
+    public Object createOrder(@RequestBody CreateOrderVO vo){
+        this.orderHeaderService.createOrder(vo);
         return Responses.newInstance().succeed();
     }
 }
