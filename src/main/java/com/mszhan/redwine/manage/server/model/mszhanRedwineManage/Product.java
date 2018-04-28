@@ -23,7 +23,7 @@ public class Product {
     /**
      * 总代理价
      */
-    @Column(name = "`general_gent_ price`")
+    @Column(name = "`general_gent_price`")
     private BigDecimal generalGentPrice;
 
     /**
