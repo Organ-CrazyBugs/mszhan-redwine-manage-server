@@ -36,6 +36,16 @@
             </nav>
         </div>
 
+        <div th:if="${moduleCode} eq 'PRODUCT_MODEL'" class="nav-scroller bg-white box-shadow">
+            <nav class="nav nav-underline container">
+                <a th:classappend="${activeNav eq 'PRODUCT_INDEX'} ? 'active'" class="nav-link" th:href="@{/page/product/index}">产品列表</a>
+                <!--<a th:classappend="${activeNav eq 'xxxx1'} ? 'active'" class="nav-link" href="#">
+                    子功能2
+                    <span class="badge badge-pill bg-light align-text-bottom">27</span>
+                </a>-->
+            </nav>
+        </div>
+
         <!--/*  订单模块二级导航栏  */-->
         <div th:if="${moduleCode} eq 'ORDER'" class="nav-scroller bg-white box-shadow">
             <nav class="nav nav-underline container">
@@ -47,6 +57,14 @@
         <div th:if="${moduleCode} eq 'PRODUCT'" class="nav-scroller bg-white box-shadow">
             <nav class="nav nav-underline container">
                 <a th:classappend="${activeNav eq 'PRODUCT_LIST'} ? 'active'" class="nav-link" th:href="@{/page/product/index}">产品列表</a>
+            </nav>
+        </div>
+
+
+        <!--/*  代理模块二级导航栏  */-->
+        <div th:if="${moduleCode} eq 'AGENT'" class="nav-scroller bg-white box-shadow">
+            <nav class="nav nav-underline container">
+                <a th:classappend="${activeNav eq 'AGENT_INDEX'} ? 'active'" class="nav-link" th:href="@{/page/agent/index}">代理列表</a>
             </nav>
         </div>
 

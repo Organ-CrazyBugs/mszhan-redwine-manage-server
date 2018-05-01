@@ -17,6 +17,7 @@
         <!-- 一级导航菜单 -->
         <div th:include="/includes/nav_bar::payload('PRODUCT')">
         <!-- 二级导航菜单 --></div>
+        <div th:include="/includes/nav_bar_level2::payload('PRODUCT_MODEL','PRODUCT_INDEX')"></div>
 
 
         <main class="container">
@@ -194,6 +195,12 @@
                                     <input type="text" class="form-control" name="netWeight" placeholder="净含量" />
                                 </div>
                             </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label>培育期</label>
+                                    <input type="text" class="form-control" name="incubationPeriod" placeholder="培育期" />
+                                </div>
+                            </div>
                         </div>
                     </div>
                     <div class="form-group">
@@ -213,7 +220,6 @@
                         <textarea class="form-control" name="brandBackgroud" rows="2"></textarea>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
                         <button id="edit-submit-btn" type="submit" class="btn btn-primary">修改</button>
                     </div>
                 </form>
@@ -237,6 +243,7 @@
                 $("#edit-form").bindData(data.data, ["productFileName","id","filePath","backgroundFileName","backgroundPath","productName","sku","generalGentPrice"
                 ,"gentPrice","wholesalePrice","retailPrice","cost","unit","alcoholContent","specification","level","makingTime","originCountry","productionArea"
                  ,"brandName","treeAge","wineType","storageMethod","category","age","netWeight","withFood","tastingRecords","recommendedReason","brandBackgroud"
+                 ,"incubationPeriod"
                 ]);
             }
         });

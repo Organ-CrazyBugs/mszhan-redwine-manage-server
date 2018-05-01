@@ -2,40 +2,185 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
-<head>
-    <link href="/ui-lib/font-awesome-4.7.0/css/font-awesome.min.css" rel="stylesheet" />
-    <link href="/ui-lib/animate-v3.5.2/animate.css" rel="stylesheet" />
-    <script type="text/javascript" src="/ui-lib/jquery-3.3.1/jquery.min.js"></script>
-    <script type="text/javascript" src="/ui-lib/popper.js-1.14.2/popper.min.js"></script>
 
-    <link href="/ui-lib/bootstrap-4.1.0/css/bootstrap.min.css" rel="stylesheet" />
-    <script type="text/javascript" src="/ui-lib/bootstrap-4.1.0/js/bootstrap.min.js"></script>
+<head th:include="/includes/ui_libs::payload('产品管理')"></head>
+<script type="text/javascript" src="/ui-lib/main/js/product/product_list.js"></script>
+<style>
+    .bk{
+        background-image: url(/ui-lib/image/backgroud.png);
+        background-repeat: repeat;
+        margin-top:50px;
+    }
+    .font-size{
+        font-size: 10px;
+    }
+    .div-border{
+        border:3px solid #FFCC99;
+        border-radius:20px;
+         border-radius:20px;
+         border-radius:20px;
+         border-radius:20px;
+         border-radius:20px;
+        width:70%
+    }
+    .tuijian{
+        margin-left:8px;
+        margin-top:2px;
+    }
+    .tuijianp{
+        width:80%;
+        margin-left:8px;
+    }
+    .productName{
+        color:#FFCC99;
+        font-size:20px;
 
-    <link href="/ui-lib/bootstrap-table-1.12.1/bootstrap-table.min.css" rel="stylesheet" />
-    <script type="text/javascript" src="/ui-lib/bootstrap-table-1.12.1/bootstrap-table.js"></script>
-    <script type="text/javascript" src="/ui-lib/bootstrap-table-1.12.1/locale/bootstrap-table-zh-CN.js"></script>
+    }
+    .productNameDiv{
+        margin-top:50px;
+    }
 
-    <link href="/ui-lib/pnotify-v3.0/pnotify.custom.min.css" rel="stylesheet" />
-    <script type="text/javascript" src="/ui-lib/pnotify-v3.0/pnotify.custom.min.js"></script>
+</style>
 
-    <!-- http://manos.malihu.gr/jquery-custom-content-scroller/ -->
-    <link href="/ui-lib/malihu-custom-scrollbar-plugin-3.1.5/jquery.mCustomScrollbar.css" rel="stylesheet" />
-    <script type="text/javascript" src="/ui-lib/malihu-custom-scrollbar-plugin-3.1.5/jquery.mCustomScrollbar.concat.min.js"></script>
+<body>
+<!-- 一级导航菜单 -->
+<div th:include="/includes/nav_bar::payload('PRODUCT')">
+    <!-- 二级导航菜单 --></div>
+<!-- 二级导航菜单 -->
+<div th:include="/includes/nav_bar_level2::payload('PRODUCT_MODEL','PRODUCT_INDEX')"></div>
 
-    <link href="/ui-lib/main/css/offcanvas.css" rel="stylesheet" />
-    <link href="/ui-lib/main/css/main.css" rel="stylesheet" />
-    <script type="text/javascript" src="/ui-lib/main/js/main.js"></script>
-    <script type="text/javascript" src="/ui-lib/main/js/product/product_list.js"></script>
-</head>
-    <body>
-        <main class="container">
-            <div class="row-fluid" >
-                <div class="span7">
-                    <img src="/product_img/basic/UA005W_P.png" style="width:400px;height:400px;" /></div>
-            <div class="span5">
-                13213123
+<main class="container container-fluid">
+    <div class="my-3 p-3 bg-white rounded box-shadow bk" >
+        <div class="row" >
+            <div class="col-md-5"  >
+               <img id="largeFile" name="largeFile"  src="/ui-lib/image/404.png"  style="width:100%; height:700px;"/>
             </div>
+            <div class="col-md-7">
+                <form id="show-intro-form">
+                    <input type="hidden"  id="id" name="id" th:value="${id}" />
+                    <div class="modal-body">
+
+                        <div class="productNameDiv">
+                            <div class="form-group">
+                                <p name="productName" class="productName" id="productName"></p>
+                            </div>
+                        </div>
+
+                        <div>
+                        <label style="color:red;" >品鉴记录:</label>
+                        <div class="form-group">
+                        <p name="tastingRecords" class="font-size" id="tastingRecords"></p>
+                        </div>
+                        </div>
+
+
+                        <div class="div-border">
+                            <label style="color:red;" class="tuijian">推荐理由:</label>
+                            <div class="form-group">
+                                <p name="recommendedReason"  class="font-size tuijianp" id="recommendedReason"></p>
+                            </div>
+                        </div>
+
+                        <div>
+                            <label style="color:red;">品牌背景:</label>
+                            <div class="form-group">
+                                <p name="brandBackgroud" class="font-size" id="brandBackgroud"></p>
+                            </div>
+                        </div>
+
+                        <div class="font-size">
+                            <label style="color:red;">酒标信息:</label>
+                            <div class="row">
+                            <div class="form-group col-md-8" >
+                                <table>
+                                    <tr >
+                                        <td align="left" style="width:200px;"><span>原产国：</span><span name="originCountry" id="originCountry"></span></td><td align="left"><span>产区：</span><span id="productionArea" name="productionArea"></span></td>
+                                    </tr>
+                                    <tr>
+                                        <td align="left"><span>等级：</span><span id="level" name="level"></span></td><td align="left"><span>葡萄品种：</span><span id="category" name="category"></span></td>
+                                    </tr>
+                                    <tr>
+                                        <td align="left"><span>树龄：</span><span id="treeAge" name="treeAge"></span></td><td align="left"><span>培育期：</span><span id="incubationPeriod"  name="incubationPeriod"></span></td>
+                                    </tr>
+                                    <tr>
+                                        <td align="left"><span>类型：</span><span id="wineType" name="wineType"></span></td><td align="left"><span>年份：</span><span id="age" name="age"></span></td>
+                                    </tr>
+                                    <tr>
+                                        <td align="left"><span>酒精度：</span><span id="alcoholContent" name="alcoholContent"></span></td><td align="left"><span>净含量：</span><span id="netWeight" name="netWeight"></span></td>
+                                    </tr>
+                                    <tr>
+                                        <td align="left"><span>贮藏方式：</span><span id="storageMethod" name="storageMethod"></span></td><td align="left"><span>酿酒时间：</span><span id="makingTime" name="makingTime"></span></td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2" align="left"><span>搭配美食：</span><span id="withFood" name="withFood"></span></td>
+                                    </tr>
+                                </table>
+                            </div>
+                            <div class="form-group col-md-4" >
+                                <div>
+                                 <img  src="/ui-lib/image/ewm.png" style="width:100px;height:100px; float:right;"/>
+                                    <span style="font-size:12px;color:#FFCC99; float:right; margin-right:6px;" >询价格，扫一扫</span>
+                                </div>
+                            </div>
+                        </div>
+                            </div>
+                    </div>
+
+
+
+                </form>
+
+
             </div>
-        </main>
-    </body>
+
+        </div>
+    </div>
+</main>
+</body>
+
+<script>
+
+
+
+    var id = $("#show-intro-form").find("[name='id']").val();
+    var largeFileName = "";
+    $.ajax({
+        url: '/product/query_by_id',
+        method: 'GET',
+        async: false,
+        contentType: 'application/json',
+        dataType: 'json',
+        data: "id=" + id,
+        success: function (data) {
+            console.log(data);
+            largeFileName = data.data.backgroundFileName;
+            $("#tastingRecords").text(data.data.tastingRecords);
+            $("#recommendedReason").text(data.data.recommendedReason);
+            $("#brandBackgroud").text(data.data.brandBackgroud);
+            $("#productName").text(data.data.productName);
+            $("#originCountry").text(data.data.originCountry);
+
+            $("#originCountry").text(data.data.originCountry);
+            $("#productionArea").text(data.data.productionArea);
+            $("#level").text(data.data.level);
+            $("#category").text(data.data.category);
+            $("#treeAge").text(data.data.treeAge);
+            $("#incubationPeriod").text(data.data.incubationPeriod);
+            $("#wineType").text(data.data.wineType);
+            $("#age").text(data.data.age);
+            $("#alcoholContent").text(data.data.alcoholContent);
+            $("#netWeight").text(data.data.netWeight);
+            $("#storageMethod").text(data.data.storageMethod);
+            $("#makingTime").text(data.data.makingTime);
+            $("#withFood").text(data.data.withFood);
+        }
+    });
+
+
+    var largeFilePath = "";
+    if ($.trim(largeFileName) !=''){
+        largeFilePath = "/product_img/large/" + largeFileName;
+        $("#largeFile").attr("src", largeFilePath);
+    }
+</script>
 </html>

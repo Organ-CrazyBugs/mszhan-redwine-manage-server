@@ -88,7 +88,7 @@ public class AgentsServiceImpl extends AbstractService<Agents> implements Agents
         queryAgent.setAddress(agents.getAddress());
         queryAgent.setType(agents.getType());
         queryAgent.setUpdateDate(nowDate);
-        queryAgent.setUpdatorName(user.getUsername());
+        queryAgent.setUpdatorName(user.getAgentName());
         queryAgent.setUpdator(user.getUserLoginId());
         agentsMapper.updateAgents(queryAgent);
     }
@@ -132,7 +132,7 @@ public class AgentsServiceImpl extends AbstractService<Agents> implements Agents
         history.setPrice(agentsUpdatePojo.getBalance());
         history.setCreateDate(nowDate);
         history.setRemark(agentsUpdatePojo.getRemark());
-        history.setCreatorName(user.getUsername());
+        history.setCreatorName(user.getAgentName());
         history.setCreator(user.getUserLoginId());
         history.setAgentId(agentsUpdatePojo.getId());
         Agents agents = agentsMapper.selectByPrimaryKey(agentsUpdatePojo.getId());
@@ -202,9 +202,9 @@ public class AgentsServiceImpl extends AbstractService<Agents> implements Agents
         agents.setCreateDate(nowDate);
         agents.setUpdateDate(nowDate);
         agents.setCreator(user.getUserLoginId());
-        agents.setCreatorName(user.getUsername());
+        agents.setCreatorName(user.getAgentName());
         agents.setUpdator(user.getUserLoginId());
-        agents.setUpdatorName(user.getUsername());
+        agents.setUpdatorName(user.getAgentName());
         agents.setBalance(BigDecimal.ZERO);
         agentsMapper.insert(agents);
     }

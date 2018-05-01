@@ -20,6 +20,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.annotation.Resource;
 import java.io.File;
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.util.*;
 
 
@@ -49,6 +50,16 @@ public class ProductServiceImpl extends AbstractService<Product> implements Prod
             PaginateResult.newInstance(0, new ArrayList<>());
         }
         List<Product> list = productMapper.queryForPage(query);
+        User user = SecurityUtils.getAuthenticationUser();
+        if (user == null){
+            throw BasicException.newInstance().error("请先登录", 500);
+        }
+        String type = user.getAgentType();
+        for (Product pro : list){
+            if ("AGENT".equals(type)){
+                pro.setGeneralGentPrice(BigDecimal.ZERO);
+            }
+        }
         return PaginateResult.newInstance(count, list);
     }
 
@@ -210,6 +221,7 @@ public class ProductServiceImpl extends AbstractService<Product> implements Prod
         upProduct.setCreateDate(product.getCreateDate());
         upProduct.setCreatorName(product.getCreatorName());
         upProduct.setCreator(product.getCreator());
+        upProduct.setRemove(product.getRemove());
         productMapper.updateByPrimaryKey(upProduct);
     }
 
