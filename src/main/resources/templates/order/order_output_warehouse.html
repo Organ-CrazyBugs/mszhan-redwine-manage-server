@@ -1,0 +1,89 @@
+<!doctype html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <head th:include="/includes/ui_libs::payload('出库单')"></head>
+    <style>
+        .border-left{
+            border-left: solid 1px #666!important;
+        }
+        .border-top{
+            border-top: solid 1px #666!important;
+        }
+        .border{
+            border: solid 1px #666!important;
+        }
+    </style>
+</head>
+<body>
+    <div class="container border">
+        <div class="row">
+            <div class="col-12 text-center py-2">
+                <h4 class="font-weight-bold">深圳市汇纳酒业有限公司</h4>
+            </div>
+        </div>
+        <div class="row border-top text-center">
+            <div class="col-2 py-2 font-weight-bold">订单编号：</div>
+            <div class="col-4 py-2 border-left">203923900011</div>
+            <div class="col-2 py-2 border-left font-weight-bold">购买日期：</div>
+            <div class="col-2 py-2 border-left">2015-05-22</div>
+        </div>
+        <div class="row border-top">
+            <div class="col-2 text-center font-weight-bold">
+                <div style="margin-top: 35px;" class="py-2">购货单位：</div>
+            </div>
+            <div class="col-10 border-left">
+                <div class="row">
+                    <div class="col-3 py-2 text-right font-weight-bold">名称：</div>
+                    <div class="col-9 py-2 border-left">名称信息</div>
+                </div>
+                <div class="row border-top">
+                    <div class="col-3 py-2 text-right font-weight-bold">电话：</div>
+                    <div class="col-9 py-2 border-left">电话信息</div>
+                </div>
+                <div class="row border-top">
+                    <div class="col-3 py-2 text-right font-weight-bold">收货地址：</div>
+                    <div class="col-9 py-2 border-left">地址信息</div>
+                </div>
+            </div>
+        </div>
+        <div class="row border-top text-center font-weight-bold">
+            <div class="col-2 py-2">序号</div>
+            <div class="col-4 py-2 border-left">品名规格</div>
+            <div class="col-1 py-2 border-left">数量</div>
+            <div class="col-1 py-2 border-left">单位</div>
+            <div class="col-2 py-2 border-left">单价</div>
+            <div class="col-2 py-2 border-left">金额</div>
+        </div>
+        <div class="row border-top text-center">
+            <div class="col-2 py-2">1</div>
+            <div class="col-4 py-2 border-left">xxxxx商品</div>
+            <div class="col-1 py-2 border-left">6</div>
+            <div class="col-1 py-2 border-left">支</div>
+            <div class="col-2 py-2 border-left text-right">￥150.00</div>
+            <div class="col-2 py-2 border-left text-right">￥900.00</div>
+        </div>
+        <div class="row border-top text-center font-weight-bold">
+            <div class="col-2 py-2">合计：</div>
+            <div class="col-10 py-2 text-right border-left">￥1,900.00</div>
+        </div>
+        <div class="row border-top text-center">
+            <div class="col-2 py-2 font-weight-bold">备注：</div>
+            <div class="col-10 py-2 border-left"></div>
+        </div>
+        <div class="row border-top text-center">
+            <div class="col-2 py-2 font-weight-bold">经手人(签名)：</div>
+            <div class="col-2 py-2 border-left"></div>
+            <div class="col-2 py-2 font-weight-bold border-left">送货人(签名)：</div>
+            <div class="col-2 py-2 border-left"></div>
+            <div class="col-2 py-2 font-weight-bold border-left">收货人(签名)：</div>
+            <div class="col-2 py-2 border-left"></div>
+        </div>
+    </div>
+</body>
+</html>

@@ -6,6 +6,7 @@ import com.mszhan.redwine.manage.server.enums.AgentTypeEnum;
 import com.mszhan.redwine.manage.server.model.mszhanRedwineManage.Agents;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -23,6 +24,16 @@ import java.util.Map;
 public class OrderPageController {
     @Autowired
     private AgentsMapper agentsMapper;
+
+    /**
+     * 订单打印出库单
+     */
+    @PostMapping("/page/order/print_output")
+    public ModelAndView orderPrintOutputOrder(){
+        ModelAndView view = new ModelAndView("order/order_output_warehouse");
+
+        return view;
+    }
 
     @RequestMapping("/page/order/order_list")
     public ModelAndView index(){

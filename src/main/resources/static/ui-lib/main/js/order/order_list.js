@@ -1,14 +1,13 @@
 $(function () {
     let $table = $('#table');
-
+    let $orderMarkPaymentBtn = $('#order-mark-payment-btn');
+    let $orderPrintOutputBtn = $('#order-print-output-btn');
 
     $table.bootstrapTable({
         url: '/api/order/list',
         tableQueryForm: '#table-query-form',
         detailView: true,
         detailFormatter: function (index, record) {
-            console.log(record);
-
             let rowTmpl = function(){
                 let orderItems = record.orderItems;
                 let html = '';
@@ -76,5 +75,35 @@ $(function () {
             {field: 'createDate', title: '创建时间'},
             {field: 'updateDate', title: '最近更新时间'}
         ]
+    });
+
+    $orderMarkPaymentBtn.on('click', function(btn) {
+        let rows = $table.bootstrapTable('getSelections');
+        if (rows.length <= 0) {
+            $.alertWarning('提示', '请选择需要进行标账的记录项');
+            return;
+        }
+        if (rows.length > 1) {
+            $.alertWarning('提示', '不能同时对多个订单标账，请选择单条记录。');
+            return;
+        }
+        let data = rows[0];
+        if (data['paymentStatus'] != 'UNPAID') {
+            $.alertWarning('提示', '只能对未付款的订单进行标帐操作');
+            return;
+        }
+        // TODO: 标帐操作
+
+    });
+
+    $orderPrintOutputBtn.on('click', function(btn) {
+        let rows = $table.bootstrapTable('getSelections');
+        if (rows.length <= 0) {
+            $.alertWarning('提示', '请选择需要进行打印出库单的记录项');
+            return;
+        }
+        $.confirm('确认', `确认打印<b>${rows.length}张订单</b>的出库单吗？<b>首次打印出库单的订单将扣减相应产品的库存数</b>。`, function(){
+            $('#print-output-warehouse-form').submit();
+        });
     });
 });
