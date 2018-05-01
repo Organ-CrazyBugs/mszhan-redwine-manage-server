@@ -1,11 +1,27 @@
 package com.mszhan.redwine.manage.server.model.mszhanRedwineManage;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import javax.persistence.*;
 
 @Table(name = "order_header")
 public class OrderHeader {
+
+    @Transient
+    private List<OrderItem> orderItems = new ArrayList<>();
+
+    public List<OrderItem> getOrderItems() {
+        return orderItems;
+    }
+
+    public void setOrderItems(List<OrderItem> orderItems) {
+        this.orderItems = orderItems;
+    }
+
     /**
      * 订单号
      */
@@ -28,6 +44,7 @@ public class OrderHeader {
     /**
      * 创建时间
      */
+    @JsonFormat(pattern = "yyyy-MM-dd")
     @Column(name = "create_date")
     private Date createDate;
 
@@ -39,6 +56,7 @@ public class OrderHeader {
     /**
      * 更新时间
      */
+    @JsonFormat(pattern = "yyyy-MM-dd")
     @Column(name = "update_date")
     private Date updateDate;
 
@@ -82,6 +100,17 @@ public class OrderHeader {
      * 备注
      */
     private String remark;
+
+    @Column(name = "shipping_fee")
+    private BigDecimal shippingFee;
+
+    public BigDecimal getShippingFee() {
+        return shippingFee;
+    }
+
+    public void setShippingFee(BigDecimal shippingFee) {
+        this.shippingFee = shippingFee;
+    }
 
     /**
      * 获取订单号

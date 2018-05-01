@@ -4,16 +4,27 @@ import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.mszhan.redwine.manage.server.core.Requests;
 import com.mszhan.redwine.manage.server.core.Responses;
+import com.mszhan.redwine.manage.server.dao.mszhanRedwineManage.OrderHeaderMapper;
+import com.mszhan.redwine.manage.server.dao.mszhanRedwineManage.OrderItemMapper;
 import com.mszhan.redwine.manage.server.dao.mszhanRedwineManage.ProductMapper;
+import com.mszhan.redwine.manage.server.model.mszhanRedwineManage.OrderHeader;
+import com.mszhan.redwine.manage.server.model.mszhanRedwineManage.OrderItem;
 import com.mszhan.redwine.manage.server.model.mszhanRedwineManage.base.PaginateResult;
 import com.mszhan.redwine.manage.server.model.mszhanRedwineManage.vo.CreateOrderVO;
 import com.mszhan.redwine.manage.server.service.OrderHeaderService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+import tk.mybatis.mapper.entity.Condition;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * @Description:
@@ -26,6 +37,10 @@ public class OrderRestController {
     private OrderHeaderService orderHeaderService;
     @Autowired
     private ProductMapper productMapper;
+    @Autowired
+    private OrderHeaderMapper orderHeaderMapper;
+    @Autowired
+    private OrderItemMapper orderItemMapper;
 
     @GetMapping(value = "/api/product/selectPopupList")
     public Object selectProductDataList(Requests requests){
@@ -43,9 +58,41 @@ public class OrderRestController {
         return Responses.newInstance().succeed(PaginateResult.newInstance(page.getTotal(), page));
     }
 
+    @GetMapping(value = "/api/order/list")
+    public Object orderList(Requests requests) {
+        Integer offset = requests.getInteger("offset", 0);
+        Integer limit = requests.getInteger("limit", 10);
+
+        Integer agentId = requests.getInteger("agentId", null);
+        String orderId = requests.getString("orderId", null);
+        String sku = requests.getString("sku", null);
+        String productName = requests.getString("productName", null);
+        String brandName = requests.getString("brandName", null);
+
+        String orderStatus = requests.getString("orderStatus", null);
+        String paymentStatus = requests.getString("paymentStatus", null);
+
+        String brandNameLikeVal = StringUtils.isBlank(brandName) ? "" : String.format("%%%s%%", brandName);
+        String productNameLikeVal = StringUtils.isBlank(productName) ? "" : String.format("%%%s%%", productName);
+
+        Page<OrderHeader> page = PageHelper.offsetPage(offset, limit)
+                .doSelectPage(() -> this.orderHeaderMapper.fetchOrders(agentId, orderId, productNameLikeVal, sku, brandNameLikeVal, orderStatus, paymentStatus));
+
+        if (!CollectionUtils.isEmpty(page)) {
+            List<String> orderIds = page.stream().map(OrderHeader::getOrderId).collect(Collectors.toList());
+            Condition fetchOrderItemCon = new Condition(OrderItem.class);
+            fetchOrderItemCon.createCriteria().andIn("orderId", orderIds);
+            List<OrderItem> orderItems = orderItemMapper.selectByCondition(fetchOrderItemCon);
+            Map<String, List<OrderItem>> orderItemGroup = orderItems.stream().collect(Collectors.groupingBy(OrderItem::getOrderId));
+            page.forEach(orderHeader -> orderHeader.setOrderItems(orderItemGroup.get(orderHeader.getOrderId())));
+        }
+
+        return Responses.newInstance().succeed(PaginateResult.newInstance(page.getTotal(), page));
+    }
+
     @PostMapping(value = "/api/order/create")
     public Object createOrder(@RequestBody CreateOrderVO vo){
-        this.orderHeaderService.createOrder(vo);
-        return Responses.newInstance().succeed();
+        OrderHeader order = this.orderHeaderService.createOrder(vo);
+        return Responses.newInstance().succeed(order);
     }
 }

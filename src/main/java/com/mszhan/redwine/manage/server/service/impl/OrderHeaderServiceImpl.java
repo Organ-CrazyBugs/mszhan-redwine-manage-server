@@ -95,6 +95,7 @@ public class OrderHeaderServiceImpl extends AbstractService<OrderHeader> impleme
         orderHeader.setAddress(orderVO.getAddress());
         orderHeader.setClientName(orderVO.getCustomerName());
         orderHeader.setAgentName(agentInfo.getName());
+        orderHeader.setShippingFee(orderVO.getShipAmount() == null ? BigDecimal.ZERO : orderVO.getShipAmount());
 
         orderHeader.setPostalCode(orderVO.getPostalCode());
         orderHeader.setRemark(orderVO.getOrderRemark());

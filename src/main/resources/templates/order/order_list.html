@@ -28,9 +28,34 @@
                         <div class="input-group-prepend">
                             <div class="input-group-text query-form-label">所属代理</div>
                         </div>
-                        <select name="warehouseId" class="custom-select">
+                        <select name="agentId" class="custom-select">
                             <option selected="selected" value="">全部</option>
                             <option th:each="agent,record:${agents}" th:value="${agent.get('id')}" th:text="${agent.get('name') + '(' + agent.get('phone') + ')'}"></option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <div class="input-group-text query-form-label">订单状态</div>
+                        </div>
+                        <select name="orderStatus" class="custom-select">
+                            <option selected="selected" value="">全部</option>
+                            <option value="WAIT_DEAL">待处理</option>
+                            <option value="SHIPPED">已发货</option>
+                            <option value="REMOVED">已删除</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <div class="input-group-text query-form-label">付款状态</div>
+                        </div>
+                        <select name="paymentStatus" class="custom-select">
+                            <option selected="selected" value="">全部</option>
+                            <option value="UNPAID">未付款</option>
+                            <option value="PAID">已付款</option>
                         </select>
                     </div>
                 </div>
@@ -40,6 +65,16 @@
                             <div class="input-group-text query-form-label">订单编号</div>
                         </div>
                         <input name="orderId" type="text" class="form-control" placeholder="订单编号" />
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-3">
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <div class="input-group-text query-form-label">产品条码</div>
+                        </div>
+                        <input name="sku" type="text" class="form-control" placeholder="产品条码" />
                     </div>
                 </div>
                 <div class="col-md-3">
@@ -64,6 +99,8 @@
                 <div class="col-md-6">
                     <div class="btn-group mr-2">
                         <button type="button" class="btn btn-outline-primary" data-toggle="modal" data-target="#order-create-popup-modal">&nbsp;新建&nbsp;</button>
+                        <button type="button" class="btn btn-outline-primary">&nbsp;标账&nbsp;</button>
+                        <button type="button" class="btn btn-outline-primary">&nbsp;销单&nbsp;</button>
                     </div>
                 </div>
                 <div class="col-md-6 text-right">

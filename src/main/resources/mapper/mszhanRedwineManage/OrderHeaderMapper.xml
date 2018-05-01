@@ -12,13 +12,45 @@
     <result column="updator" jdbcType="INTEGER" property="updator" />
     <result column="update_date" jdbcType="TIMESTAMP" property="updateDate" />
     <result column="client_name" jdbcType="VARCHAR" property="clientName" />
-    <result column="agtent_id" jdbcType="INTEGER" property="agtentId" />
+    <result column="agent_id" jdbcType="INTEGER" property="agentId" />
+    <result column="agent_name" jdbcType="VARCHAR" property="agentName" />
     <result column="address" jdbcType="VARCHAR" property="address" />
     <result column="postal_code" jdbcType="VARCHAR" property="postalCode" />
     <result column="status" jdbcType="VARCHAR" property="status" />
     <result column="payment_status" jdbcType="VARCHAR" property="paymentStatus" />
     <result column="remark" jdbcType="VARCHAR" property="remark" />
+    <result column="shipping_fee" jdbcType="DECIMAL" property="shippingFee" />
   </resultMap>
+
+  <select id="fetchOrders" resultMap="BaseResultMap">
+    SELECT oh.* FROM order_header oh
+    LEFT JOIN order_item oi ON (oh.order_id = oi.order_id)
+    LEFT JOIN product p ON (oi.sku = p.sku)
+    <where>
+      <if test="agentId != null">
+        AND oh.agent_id = #{agentId}
+      </if>
+      <if test="orderId != null and orderId !=''">
+        AND oh.order_id = #{orderId}
+      </if>
+      <if test="orderStatus != null and orderStatus !=''">
+        AND oh.status = #{orderStatus}
+      </if>
+      <if test="paymentStatus != null and paymentStatus !=''">
+        AND oh.payment_status = #{paymentStatus}
+      </if>
+      <if test="sku != null and sku !=''">
+        AND oi.sku = #{sku}
+      </if>
+      <if test="productName != null and productName !=''">
+        AND p.product_name like #{productName}
+      </if>
+      <if test="brandName != null and brandName !=''">
+        AND p.brand_name like #{brandName}
+      </if>
+    </where>
+    group by oh.order_id
+  </select>
 
   <select id="queryForPage" resultMap="BaseResultMap"  parameterType="com.mszhan.redwine.manage.server.model.mszhanRedwineManage.query.OrderQuery">
     SELECT h.* FROM order_header h
