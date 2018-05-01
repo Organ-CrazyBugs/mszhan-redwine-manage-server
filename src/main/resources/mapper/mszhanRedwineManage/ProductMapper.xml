@@ -8,7 +8,7 @@
     <id column="id" jdbcType="INTEGER" property="id" />
     <result column="product_name" jdbcType="VARCHAR" property="productName" />
     <result column="cost" jdbcType="DECIMAL" property="cost" />
-    <result column="general_gent_ price" jdbcType="DECIMAL" property="generalGentPrice" />
+    <result column="general_gent_price" jdbcType="DECIMAL" property="generalGentPrice" />
     <result column="gent_price" jdbcType="DECIMAL" property="gentPrice" />
     <result column="wholesale_price" jdbcType="DECIMAL" property="wholesalePrice" />
     <result column="retail_price" jdbcType="DECIMAL" property="retailPrice" />

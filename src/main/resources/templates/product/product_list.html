@@ -5,7 +5,30 @@
 
     <head th:include="/includes/ui_libs::payload('产品管理')"></head>
     <script type="text/javascript" src="/ui-lib/main/js/product/product_list.js"></script>
-
+    <style>
+        /*.table tr td {*/
+            /*text-overflow: ellipsis; !* for IE *!*/
+            /*-moz-text-overflow: ellipsis; !* for Firefox,mozilla *!*/
+            /*overflow: hidden;*/
+            /*white-space: nowrap;*/
+            /*border: 1px solid;*/
+            /*text-align: left*/
+        /*}*/
+        .hiddenOverFlowCoverShow:hover
+        {
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            text-decoration:underline;
+            cursor:pointer;
+        }
+        .hiddenOverFlowCoverShow{
+            width: 150px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+    </style>
     <body>
         <!-- 一级导航菜单 -->
         <div th:include="/includes/nav_bar::payload('PRODUCT')">
@@ -66,7 +89,7 @@
                 </form>
                 <div class="row">
                     <div class="col-md-12">
-                        <table id="table"></table>
+                        <table id="table" style="table-layout: fixed;" class=".table"></table>
                     </div>
                 </div>
             </div>

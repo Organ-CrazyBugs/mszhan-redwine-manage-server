@@ -16,38 +16,53 @@ $(function () {
         tableQueryForm: '#table-query-form',
         columns: [
             {checkbox: true},
-            {field: 'productName', title: '产品名称'},
-            {field: 'sku', title: 'SKU'},
-            {field: 'generalGentPrice', title: '总代理价'},
-            {field: 'gentPrice', title: '代理价'},
-            {field: 'wholesalePrice', title: '批发价'},
-            {field: 'retailPrice', title: '零售价'},
-            {field: 'cost', title: '成本'},
-            {field: 'unit', title: '单位'},
-            {field: 'specification', title: '规格'},
-            {field: 'level', title: '级别'},
-            {field: 'productionArea', title: '产区'},
-            {field: 'brandName', title: '品牌'},
-            {field: 'alcoholContent', title: '酒精度'},
-            {field: 'originCountry', title: '原产国'},
-            {field: 'treeAge', title: '树龄'},
-            {field: 'wineType', title: '葡萄酒类型'},
-            {field: 'storageMethod', title: '贮藏方式'},
-            {field: 'withFood', title: '美食搭配'},
-            {field: 'age', title: '年份'},
-            {field: 'netWeight', title: '净含量'},
-            {field: 'makingTime', title: '酿酒时间'},
-            {field: 'tastingRecords', title: '品鉴记录'},
-            {field: 'recommendedReason', title: '推荐理由'},
-            {field: 'brandBackgroud', title: '品牌背景'},
-            {field: 'creatorName', title: '创建人'},
-            {field: 'updatorName', title: '更信任'},
-            {field: 'createDate', title: '创建时间'},
-            {field: 'updateDate', title: '更新时间'},
+            {field: '',
+                title: '产品图片',
+                formatter: img,
+                width:100
+            },
+            {field: 'productName', title: '产品名称',  width:160, formatter : textShow},
+            {field: 'sku', title: 'SKU', width:100},
+            {field: 'generalGentPrice', title: '总代理价',width:100},
+            {field: 'gentPrice', title: '代理价',width:100},
+            {field: 'wholesalePrice', title: '批发价',width:100},
+            {field: 'retailPrice', title: '零售价',width:100},
+            {field: 'cost', title: '成本',width:100},
+            {field: 'unit', title: '单位',width:100},
+            {field: 'specification', title: '规格',width:100},
+            {field: 'level', title: '级别',width:100},
+            {field: 'productionArea', title: '产区',width:160, formatter : textShow},
+            {field: 'brandName', title: '品牌',width:100},
+            {field: 'alcoholContent', title: '酒精度',width:100},
+            {field: 'originCountry', title: '原产国',width:160, formatter : textShow},
+            {field: 'treeAge', title: '树龄', width:100},
+            {field: 'wineType', title: '葡萄酒类型', width:150},
+            {field: 'storageMethod', title: '贮藏方式', width:150},
+            {field: 'withFood', title: '美食搭配', width:150, formatter : textShow},
+            {field: 'age', title: '年份', width:100},
+            {field: 'netWeight', title: '净含量', width:100},
+            {field: 'makingTime', title: '酿酒时间', width:100},
+            {field: 'tastingRecords', title: '品鉴记录', width:150, formatter : textShow},
+            {field: 'recommendedReason', title: '推荐理由', width:150, formatter : textShow},
+            {field: 'brandBackgroud', title: '品牌背景', width:150, formatter : textShow},
+            {field: 'creatorName', title: '创建人', width:100},
+            {field: 'updatorName', title: '更新人', width:100},
+            {field: 'createDate', title: '创建时间', width:150},
+            {field: 'updateDate', title: '更新时间', width:150},
 
 
         ]
     });
+    function textShow(value,row,index){
+        var a = "<div class='hiddenOverFlowCoverShow' title='"+value+"'> "+ value +"</div>";
+        return a;
+    }
+
+
+    function img(e, v){
+        var str = "/product_img/basic/" + v.productFileName;
+        return "<img style='width:80px; height:80px;' src='"+str+"' />";
+    }
 
 
     $deleteBtn.on('click', function (e){

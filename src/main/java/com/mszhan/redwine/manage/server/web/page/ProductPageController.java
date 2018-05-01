@@ -42,5 +42,11 @@ public class ProductPageController {
         return view;
     }
 
+    @GetMapping("/page/product/product_introduce_index")
+    public ModelAndView productIntroduceIndex(Integer id) {
+        ModelAndView view = new ModelAndView("product/show_product_introduce");
+        view.addObject("id", id);
+        return view;
+    }
 
 }
