@@ -16,6 +16,8 @@ public interface OrderHeaderService extends Service<OrderHeader> {
 
     PaginateResult<OrderHeader> queryForPage(OrderQuery query);
 
+    OrderHeader orderOutputWarehouse(String orderId);
+
     OrderHeader createOrder(CreateOrderVO orderVO);
 
     void addOrder(AddOrderPojo addOrderPojo);

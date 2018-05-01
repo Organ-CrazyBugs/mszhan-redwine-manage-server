@@ -22,6 +22,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
+import tk.mybatis.mapper.entity.Condition;
 
 import javax.annotation.Resource;
 import java.io.IOException;
@@ -58,6 +59,28 @@ public class OrderHeaderServiceImpl extends AbstractService<OrderHeader> impleme
         }
         List<OrderHeader> list = orderHeaderMapper.queryForPage(query);
         return PaginateResult.newInstance(Long.valueOf(count), list);
+    }
+
+    @Transactional
+    public OrderHeader orderOutputWarehouse(String orderId) {
+        OrderHeader orderHeader = this.orderHeaderMapper.selectByPrimaryKey(orderId);
+        if (orderHeader == null) {
+            return null;
+        }
+
+        // 获取订单项信息
+        Condition fetchOrderItemCon = new Condition(OrderItem.class);
+        fetchOrderItemCon.createCriteria().andEqualTo("orderId", orderId);
+        List<OrderItem> orderItems = this.orderItemMapper.selectByCondition(fetchOrderItemCon);
+
+        if ("WAIT_DEAL".equals(orderHeader.getStatus())) {
+            // 待处理订单项出库
+            orderItems.forEach(orderItem -> {
+
+            });
+        }
+        // TODO: 处理出库
+        return null;
     }
 
     @Transactional

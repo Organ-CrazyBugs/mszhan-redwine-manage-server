@@ -7,6 +7,7 @@ $(function () {
     let $createOrderAddSkuBtn = $('#create-order-add-sku-btn');
     let $createOrderSubmitBtn = $('#create-order-submit-btn');
     let $orderCreatePopupForm = $('#order-create-popup-form');
+    let $warehouseTmplBox = $('#warehouse-tmpl-box');
 
     agentType = $('#contextAgentType').val();
 
@@ -61,18 +62,32 @@ $(function () {
             }
         },
         columns: [
-            {field: 'sku', title: 'SKU'},
-            {field: 'quantity', title: '数量', align: 'left', width: 110, formatter: function (val, record) {
+            {field: 'sku', width: 150, title: 'SKU'},
+            {field: 'quantity', title: '数量', align: 'left', width: 100, formatter: function (val, record) {
                 return $.formatString(editTempl, 'quantity', record.productId, val, '数量');
             }},
-            {field: 'unitPrice', title: '单价', align: 'left', width: 130, formatter: function (val, record) {
+            {field: 'warehouseId', title: '仓库', width: 120, formatter: function (val, record) {
+                let options = $warehouseTmplBox.find('select option');
+                options.removeAttr('selected');
+                if (val != '') {
+                    options.each(function (index, option) {
+                        if ($(option).attr('value') == val) {
+                            $(option).attr('selected', 'selected');
+                            return false;
+                        }
+                    });
+                }
+                $warehouseTmplBox.find('select').attr('data-sku', record['sku']);
+                return $warehouseTmplBox.html();
+            }},
+            {field: 'unitPrice', title: '单价', align: 'left', width: 120, formatter: function (val, record) {
                 return $.formatString(editTempl, 'unitPrice', record.productId, val, '单价');
             }},
             {field: 'packagePrice', title: '包装费', align: 'left', width: 110, formatter: function (val, record) {
                 return $.formatString(editTempl, 'packagePrice', record.productId, val, '包装费');
             }},
-            {field: 'itemTotal', title: '小计'},
-            {field: 'productName', title: '产品名称'},
+            {field: 'itemTotal', width: 150, title: '小计'},
+            {field: 'productName', width: 200, title: '产品名称'},
             {field: 'productId', width: 50, align: 'center', title: '操作', formatter: function (val, record) {
                 return '<button type="button" class="btn btn-outline-secondary btn-sm" onclick="createOrderProductRemoveItem(\''+val+'\')">删除</button>';
             }}
@@ -249,11 +264,26 @@ function createOrderSelectProductCallback(products) {
                 item.unitPrice = item.retailPrice;
 
                 item.itemTotal = item.quantity * item.unitPrice + item.packagePrice;
-
+                item.warehouseId = '';
                 productList.push(item);
             }
         });
     }
     $('#create-order-product-table').bootstrapTable('load', productList);
     refreshAmountTotalInfo();
+}
+
+function orderItemWarehouseOnChange(select) {
+    let $warehouseSelect = $(select);
+    let sku = $warehouseSelect.attr('data-sku');
+    console.log($warehouseSelect.val());
+
+    productList.forEach(function (product) {
+        if (product.sku == sku) {
+            console.log('sku:' + sku + '改变');
+            product.warehouseId = $warehouseSelect.val();
+            return false;
+        }
+    });
+    console.log(productList);
 }

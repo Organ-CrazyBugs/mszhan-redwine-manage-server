@@ -79,7 +79,7 @@
                                     <button id="create-order-add-sku-btn" type="button" class="btn btn-primary">添加产品</button>
                                 </div>
                                 <div class="col-md-12">
-                                    <table id="create-order-product-table"></table>
+                                    <table id="create-order-product-table" style="table-layout: fixed;"></table>
                                 </div>
                                 <div class="col-md-12">
                                     <div class="alert alert-secondary text-right mt-4" role="alert">
@@ -143,6 +143,14 @@
                 </div>
             </div>
         </div>
+
+        <div id="warehouse-tmpl-box">
+            <select class="form-control" onchange="orderItemWarehouseOnChange(this)">
+                <option value="">选择仓库</option>
+                <option th:each="warehouse,record:${warehouses}" th:value="${warehouse.getId()}" th:text="${warehouse.getName()}"></option>
+            </select>
+        </div>
     </div>
+
 
 </html>
