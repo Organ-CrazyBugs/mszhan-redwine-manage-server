@@ -183,6 +183,12 @@ public class Product {
     private String brandBackgroud;
 
     /**
+     * 培育期
+     */
+    @Column(name= "incubation_period")
+    private String incubationPeriod;
+
+    /**
      * 介绍图片
      */
     @Column(name = "background_file_name")
@@ -197,6 +203,14 @@ public class Product {
 
     public void setUpdatorName(String updatorName) {
         this.updatorName = updatorName;
+    }
+
+    public String getIncubationPeriod() {
+        return incubationPeriod;
+    }
+
+    public void setIncubationPeriod(String incubationPeriod) {
+        this.incubationPeriod = incubationPeriod;
     }
 
     public String getCreatorName() {

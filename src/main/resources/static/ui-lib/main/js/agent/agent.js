@@ -22,7 +22,7 @@ $(function () {
         tableQueryForm: '#table-query-form',
         columns: [
             {checkbox: true},
-            {field: 'name', title: '代理名称'},
+            {field: 'name', title: '代理名称', width:160, formatter:textShow},
             {field: 'type', title: '代理类型', formatter: function(val, record){
                     if (val === 'ADMIN') {
                         return '<span class="badge badge-success">管理员</span>'
@@ -31,17 +31,22 @@ $(function () {
                     } else if (val == 'AGENT'){
                         return '<span class="badge badge-success">代理</span>'
                     }
-                }},
-            {field: 'tel', title: '座机号码'},
-            {field: 'phone', title: '联系电话'},
-            {field: 'balance', title: '余额'},
-            {field: 'address', title: '地址'},
-            {field: 'creatorName', title: '创建人'},
-            {field: 'createDate', title: '创建时间'},
-            {field: 'updatorName', title: '更新人'},
-            {field: 'updateDate', title: '更新时间'}
+                },width:100},
+            {field: 'tel', title: '座机号码', width:160, formatter:textShow},
+            {field: 'phone', title: '联系电话',width:160,formatter:textShow},
+            {field: 'balance', title: '余额',width:100},
+            {field: 'address', title: '地址',width:160, formatter:textShow},
+            {field: 'creatorName', title: '创建人',width:100},
+            {field: 'createDate', title: '创建时间',width:160},
+            {field: 'updatorName', title: '更新人',width:160},
+            {field: 'updateDate', title: '更新时间',width:160}
         ]
     });
+
+    function textShow(value,row,index){
+        var a = "<div class='hiddenOverFlowCoverShow' title='"+value+"'> "+ value +"</div>";
+        return a;
+    }
 
     // 绑定创建仓库Modal隐藏事件， 隐藏时候清空表单内容
     $createModal.on('hide.bs.modal', function (e) {

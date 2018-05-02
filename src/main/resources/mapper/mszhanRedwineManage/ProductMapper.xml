@@ -42,6 +42,7 @@
     <result column="brand_backgroud" jdbcType="VARCHAR" property="brandBackgroud" />
     <result column="background_path" jdbcType="VARCHAR" property="backgroundPath" />
     <result column="background_file_name" jdbcType="VARCHAR" property="backgroundFileName" />
+    <result column="incubation_period" jdbcType="VARCHAR" property="incubationPeriod" />
   </resultMap>
 
   <resultMap id="fetchProductSelectPopupDataRM" type="com.mszhan.redwine.manage.server.model.mszhanRedwineManage.query.FetchProductSelectPopupDataRMQuery">

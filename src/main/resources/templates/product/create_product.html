@@ -18,6 +18,7 @@
         <div th:include="/includes/nav_bar::payload('PRODUCT')">
         <!-- 二级导航菜单 --></div>
 
+        <div th:include="/includes/nav_bar_level2::payload('PRODUCT_MODEL','PRODUCT_INDEX')"></div>
 
         <main class="container">
             <div class="my-3 p-3 bg-white rounded box-shadow">
@@ -107,7 +108,7 @@
                             <div class="col-md-3">
                                 <div class="form-group">
                                     <label>酒精浓度</label>
-                                    <input type="number" class="form-control" name="alcoholContent" placeholder="零售价" />
+                                    <input type="number" class="form-control" name="alcoholContent" placeholder="酒精浓度" />
                                 </div>
                             </div>
                             <div class="col-md-3">
@@ -193,6 +194,12 @@
                                     <input type="text" class="form-control" name="netWeight" placeholder="净含量" />
                                 </div>
                             </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label>培育期</label>
+                                    <input type="text" class="form-control" name="incubationPeriod" placeholder="培育期" />
+                                </div>
+                            </div>
                         </div>
                     </div>
                     <div class="form-group">
@@ -212,7 +219,6 @@
                         <textarea class="form-control" name="brandBackgroud" rows="2"></textarea>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
                         <button id="create-submit-btn" type="submit" class="btn btn-primary">创建</button>
                     </div>
                 </form>

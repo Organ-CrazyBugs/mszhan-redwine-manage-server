@@ -9,6 +9,7 @@ $(function () {
     let $editForm = $('#edit-form');
     let $editSubmitBtn = $('#edit-submit-btn');
     let $createBtn = $('#create_btn');
+    let $showIntrBtn = $('#show_intr_btn');
 
 
     $table.bootstrapTable({
@@ -40,6 +41,7 @@ $(function () {
             {field: 'storageMethod', title: '贮藏方式', width:150},
             {field: 'withFood', title: '美食搭配', width:150, formatter : textShow},
             {field: 'age', title: '年份', width:100},
+            {field: 'incubationPeriod', title: '培育期', width:100},
             {field: 'netWeight', title: '净含量', width:100},
             {field: 'makingTime', title: '酿酒时间', width:100},
             {field: 'tastingRecords', title: '品鉴记录', width:150, formatter : textShow},
@@ -184,7 +186,22 @@ $(function () {
         }
         // 绑定表单数据
         var id = rows[0].id;
-        window.open("/page/product/product_detail_index?id=" + id);
+        window.location.href="/page/product/product_detail_index?id=" + id;
+    });
+
+    $showIntrBtn.on('click', function(event) {
+        let rows = $table.bootstrapTable('getSelections');
+        if (rows.length <= 0 ) {
+            $.alertWarning('提示', '请选择需要修改的记录项');
+            return;
+        }
+        if (rows.length > 1){
+            $.alertWarning('提示', '只能勾选一个修改项');
+            return;
+        }
+        // 绑定表单数据
+        var id = rows[0].id;
+        window.location.href="/page/product/product_introduce_index?id=" + id;
     });
 
     // 修改仓库信息 提交按钮单击事件
@@ -245,6 +262,6 @@ $(function () {
     });
 
     $createBtn.on('click', function (){
-        window.open("/page/product/create_index");
+        window.location.href="/page/product/create_index";
     });
 });
