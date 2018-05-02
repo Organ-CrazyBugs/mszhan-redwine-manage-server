@@ -7,6 +7,8 @@ import com.mszhan.redwine.manage.server.model.mszhanRedwineManage.query.AddOrder
 import com.mszhan.redwine.manage.server.model.mszhanRedwineManage.query.OrderQuery;
 import com.mszhan.redwine.manage.server.model.mszhanRedwineManage.vo.CreateOrderVO;
 
+import java.util.List;
+
 /**
  * @Description:
  * @Author: iblilife@163.com
@@ -16,9 +18,9 @@ public interface OrderHeaderService extends Service<OrderHeader> {
 
     PaginateResult<OrderHeader> queryForPage(OrderQuery query);
 
-    OrderHeader orderOutputWarehouse(String orderId);
-
     OrderHeader createOrder(CreateOrderVO orderVO);
+
+    void orderMarkShipped(List<String> orderIds);
 
     void addOrder(AddOrderPojo addOrderPojo);
 }

@@ -18,6 +18,7 @@
     <result column="postal_code" jdbcType="VARCHAR" property="postalCode" />
     <result column="status" jdbcType="VARCHAR" property="status" />
     <result column="payment_status" jdbcType="VARCHAR" property="paymentStatus" />
+    <result column="phone_number" jdbcType="VARCHAR" property="phoneNumber" />
     <result column="remark" jdbcType="VARCHAR" property="remark" />
     <result column="shipping_fee" jdbcType="DECIMAL" property="shippingFee" />
   </resultMap>

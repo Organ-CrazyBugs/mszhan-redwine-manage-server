@@ -90,6 +90,24 @@ public class OrderItem {
     @Column(name = "warehouse_name")
     private String warehouseName;
 
+    @Transient
+    private String productName;
+
+    public String getProductName() {
+        return productName;
+    }
+
+    public void setProductName(String productName) {
+        this.productName = productName;
+    }
+
+    public BigDecimal fetchAmountTotal(){
+        if (this.shippingFee == null) {
+            this.shippingFee = BigDecimal.ZERO;
+        }
+        return this.unitPrice.multiply(new BigDecimal(this.quantity)).add(this.shippingFee).setScale(2, BigDecimal.ROUND_HALF_UP);
+    }
+
     public String getWarehouseName() {
         return warehouseName;
     }

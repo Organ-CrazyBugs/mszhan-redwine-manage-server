@@ -23,6 +23,15 @@ public class CreateOrderVO {
         private String sku;
         private Integer quantity;
         private BigDecimal packagePrice;
+        private Integer warehouseId;
+
+        public Integer getWarehouseId() {
+            return warehouseId;
+        }
+
+        public void setWarehouseId(Integer warehouseId) {
+            this.warehouseId = warehouseId;
+        }
 
         public BigDecimal getUnitPrice() {
             return unitPrice;

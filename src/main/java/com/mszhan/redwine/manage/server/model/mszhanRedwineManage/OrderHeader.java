@@ -35,6 +35,16 @@ public class OrderHeader {
     @Column(name = "total_amount")
     private BigDecimal totalAmount;
 
+    @Column(name = "phone_number")
+    private String phoneNumber;
+
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
 
     /**
      * 创建人

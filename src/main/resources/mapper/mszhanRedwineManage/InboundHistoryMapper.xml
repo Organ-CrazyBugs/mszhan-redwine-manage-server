@@ -15,5 +15,6 @@
     <result column="creator_name" jdbcType="VARCHAR" property="creatorName" />
     <result column="order_id" jdbcType="VARCHAR" property="orderId" />
     <result column="order_item_id" jdbcType="INTEGER" property="orderItemId" />
+    <result column="warehouse_id" jdbcType="INTEGER" property="warehouseId" />
   </resultMap>
 </mapper>

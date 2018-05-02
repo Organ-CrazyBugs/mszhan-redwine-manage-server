@@ -21,7 +21,7 @@
     </style>
 </head>
 <body>
-    <div class="container border">
+    <div th:each="oh,record:${orderHeaders}" class="container border mb-5">
         <div class="row">
             <div class="col-12 text-center py-2">
                 <h4 class="font-weight-bold">深圳市汇纳酒业有限公司</h4>
@@ -29,9 +29,9 @@
         </div>
         <div class="row border-top text-center">
             <div class="col-2 py-2 font-weight-bold">订单编号：</div>
-            <div class="col-4 py-2 border-left">203923900011</div>
+            <div class="col-4 py-2 border-left" th:text="${oh.getOrderId()}"></div>
             <div class="col-2 py-2 border-left font-weight-bold">购买日期：</div>
-            <div class="col-2 py-2 border-left">2015-05-22</div>
+            <div class="col-2 py-2 border-left" th:text="${#dates.format(oh.getCreateDate(), 'yyyy-MM-dd')}"></div>
         </div>
         <div class="row border-top">
             <div class="col-2 text-center font-weight-bold">
@@ -40,15 +40,15 @@
             <div class="col-10 border-left">
                 <div class="row">
                     <div class="col-3 py-2 text-right font-weight-bold">名称：</div>
-                    <div class="col-9 py-2 border-left">名称信息</div>
+                    <div class="col-9 py-2 border-left" th:text="${oh.getClientName()}"></div>
                 </div>
                 <div class="row border-top">
                     <div class="col-3 py-2 text-right font-weight-bold">电话：</div>
-                    <div class="col-9 py-2 border-left">电话信息</div>
+                    <div class="col-9 py-2 border-left" th:text="${oh.getPhoneNumber()}"></div>
                 </div>
                 <div class="row border-top">
                     <div class="col-3 py-2 text-right font-weight-bold">收货地址：</div>
-                    <div class="col-9 py-2 border-left">地址信息</div>
+                    <div class="col-9 py-2 border-left" th:text="${oh.getAddress()}"></div>
                 </div>
             </div>
         </div>
@@ -60,27 +60,27 @@
             <div class="col-2 py-2 border-left">单价</div>
             <div class="col-2 py-2 border-left">金额</div>
         </div>
-        <div class="row border-top text-center">
-            <div class="col-2 py-2">1</div>
-            <div class="col-3 py-2 border-left">xxxxx商品 地方受到法律士大夫阿斯顿浪费骄傲的开发 佛山库房撒开发商的领导首府拉萨打算看撒啊发</div>
-            <div class="col-1 py-2 border-left">6</div>
-            <div class="col-2 py-2 border-left">￥150.00</div>
-            <div class="col-2 py-2 border-left text-right">￥150.00</div>
-            <div class="col-2 py-2 border-left text-right">￥900.00</div>
+        <div th:each="oi,record:${oh.getOrderItems()}" class="row border-top text-center">
+            <div class="col-2 py-2" th:text="${record.index + 1}"></div>
+            <div class="col-3 py-2 border-left" th:text="${oi.getProductName()}"></div>
+            <div class="col-1 py-2 border-left" th:text="${oi.getQuantity()}"></div>
+            <div class="col-2 py-2 border-left text-right" th:text="${'￥' + oi.getPackagingFee().setScale(2, 4)}"></div>
+            <div class="col-2 py-2 border-left" th:text="${'￥' + oi.getUnitPrice().setScale(2, 4)}"></div>
+            <div class="col-2 py-2 border-left text-right" th:text="${'￥' + oi.fetchAmountTotal()}"></div>
         </div>
         <div class="row border-top text-center">
             <div class="col-8 py-2"></div>
             <div class="col-2 py-2 border-left text-right font-weight-bold">运费：</div>
-            <div class="col-2 py-2 border-left text-right">￥900.00</div>
+            <div class="col-2 py-2 border-left text-right" th:text="${'￥' + oh.getShippingFee().setScale(2, 4)}"></div>
         </div>
         <div class="row border-top text-center">
             <div class="col-8 py-2"></div>
             <div class="col-2 py-2 border-left text-right font-weight-bold">合计：</div>
-            <div class="col-2 py-2 border-left text-right">￥1,900.00</div>
+            <div class="col-2 py-2 border-left text-right" th:text="${'￥' + oh.getTotalAmount().setScale(2, 4)}"></div>
         </div>
         <div class="row border-top text-center">
             <div class="col-2 py-2 font-weight-bold">备注：</div>
-            <div class="col-10 py-2 border-left"></div>
+            <div class="col-10 py-2 border-left text-left" th:text="${oh.getRemark()}"></div>
         </div>
         <div class="row border-top text-center">
             <div class="col-2 py-2 font-weight-bold">经手人(签名)：</div>

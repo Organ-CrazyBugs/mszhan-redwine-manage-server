@@ -173,6 +173,9 @@ $(function () {
                     $.alertSuccess('提示', '订单创建成功!');
                     // $table.bootstrapTable('refresh');
                     $('#order-create-popup-modal').modal('hide');
+
+                    // 刷新订单列表
+                    $('#table').bootstrapTable('refresh');
                 }
             });
         });

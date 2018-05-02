@@ -3,15 +3,14 @@ package com.mszhan.redwine.manage.server.web.page;
 import com.mszhan.redwine.manage.server.core.BasicException;
 import com.mszhan.redwine.manage.server.core.Requests;
 import com.mszhan.redwine.manage.server.core.SecurityUtils;
-import com.mszhan.redwine.manage.server.dao.mszhanRedwineManage.AgentsMapper;
-import com.mszhan.redwine.manage.server.dao.mszhanRedwineManage.WarehouseMapper;
+import com.mszhan.redwine.manage.server.dao.mszhanRedwineManage.*;
 import com.mszhan.redwine.manage.server.enums.AgentTypeEnum;
-import com.mszhan.redwine.manage.server.model.mszhanRedwineManage.Agents;
-import com.mszhan.redwine.manage.server.model.mszhanRedwineManage.OrderHeader;
-import com.mszhan.redwine.manage.server.model.mszhanRedwineManage.Warehouse;
+import com.mszhan.redwine.manage.server.model.mszhanRedwineManage.*;
 import com.mszhan.redwine.manage.server.service.OrderHeaderService;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
@@ -29,9 +28,13 @@ public class OrderPageController {
     @Autowired
     private AgentsMapper agentsMapper;
     @Autowired
-    private OrderHeaderService orderHeaderService;
+    private OrderHeaderMapper orderHeaderMapper;
+    @Autowired
+    private OrderItemMapper orderItemMapper;
     @Autowired
     private WarehouseMapper warehouseMapper;
+    @Autowired
+    private ProductMapper productMapper;
 
     /**
      * 订单打印出库单
@@ -40,17 +43,27 @@ public class OrderPageController {
     public ModelAndView orderPrintOutputOrder(Requests requests){
         List<String> orderIds = requests.getStringArray("orderIds", ",", new ArrayList<>());
         List<OrderHeader> orderHeaders = new ArrayList<>();
-        for (int i = 0; i < orderIds.size(); i++) {
-            try {
-                OrderHeader orderHeader = this.orderHeaderService.orderOutputWarehouse(orderIds.get(i));
-                if (orderHeader != null) {
-                    orderHeaders.add(orderHeader);
-                }
-            } catch (BasicException e) {
-                e.printStackTrace();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+        if (!orderIds.isEmpty()) {
+            Condition ohCon = new Condition(OrderHeader.class);
+            ohCon.createCriteria().andEqualTo("status", "SHIPPED")
+                    .andIn("orderId", orderIds);
+            orderHeaders = this.orderHeaderMapper.selectByCondition(ohCon);
+            orderHeaders.forEach(oh -> {
+                Condition oiCon = new Condition(OrderItem.class);
+                oiCon.createCriteria().andEqualTo("orderId", oh.getOrderId());
+                oh.setOrderItems(this.orderItemMapper.selectByCondition(oiCon));
+
+                oh.getOrderItems().forEach(oi -> {
+                    Condition proCon = new Condition(Product.class);
+                    proCon.createCriteria().andEqualTo("sku", oi.getSku());
+                    List<Product> products = this.productMapper.selectByCondition(proCon);
+                    String productName = "";
+                    if (!CollectionUtils.isEmpty(products)) {
+                        productName = StringUtils.defaultString(products.get(0).getProductName());
+                    }
+                    oi.setProductName(productName);
+                });
+            });
         }
         ModelAndView view = new ModelAndView("order/order_output_warehouse");
         view.addObject("orderHeaders", orderHeaders);

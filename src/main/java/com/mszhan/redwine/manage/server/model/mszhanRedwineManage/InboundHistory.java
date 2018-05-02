@@ -35,6 +35,17 @@ public class InboundHistory {
     @Column(name = "order_item_id")
     private Integer orderItemId;
 
+    @Column(name = "warehouse_id")
+    private Integer warehouseId;
+
+    public Integer getWarehouseId() {
+        return warehouseId;
+    }
+
+    public void setWarehouseId(Integer warehouseId) {
+        this.warehouseId = warehouseId;
+    }
+
     /**
      * @return id
      */

@@ -90,6 +90,17 @@ public class OrderRestController {
         return Responses.newInstance().succeed(PaginateResult.newInstance(page.getTotal(), page));
     }
 
+    /**
+     * 订单标记已发货
+     */
+    @PostMapping(value = "/api/order/mark_shipped")
+    public Object orderMarkShipped(Requests requests){
+        List<String> orderIds = requests.getStringArray("orderIds", ",", new ArrayList<>());
+        this.orderHeaderService.orderMarkShipped(orderIds);
+        return Responses.newInstance().succeed();
+    }
+
+
     @PostMapping(value = "/api/order/create")
     public Object createOrder(@RequestBody CreateOrderVO vo){
         OrderHeader order = this.orderHeaderService.createOrder(vo);

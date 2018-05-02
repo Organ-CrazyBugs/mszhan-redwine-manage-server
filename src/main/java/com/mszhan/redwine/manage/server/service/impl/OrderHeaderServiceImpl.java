@@ -4,12 +4,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mszhan.redwine.manage.server.config.security.User;
 import com.mszhan.redwine.manage.server.core.BasicException;
 import com.mszhan.redwine.manage.server.core.SecurityUtils;
-import com.mszhan.redwine.manage.server.dao.mszhanRedwineManage.AgentsMapper;
-import com.mszhan.redwine.manage.server.dao.mszhanRedwineManage.OrderHeaderMapper;
-import com.mszhan.redwine.manage.server.dao.mszhanRedwineManage.OrderItemMapper;
-import com.mszhan.redwine.manage.server.model.mszhanRedwineManage.Agents;
-import com.mszhan.redwine.manage.server.model.mszhanRedwineManage.OrderHeader;
-import com.mszhan.redwine.manage.server.model.mszhanRedwineManage.OrderItem;
+import com.mszhan.redwine.manage.server.dao.mszhanRedwineManage.*;
+import com.mszhan.redwine.manage.server.model.mszhanRedwineManage.*;
 import com.mszhan.redwine.manage.server.model.mszhanRedwineManage.base.PaginateResult;
 import com.mszhan.redwine.manage.server.model.mszhanRedwineManage.query.AddOrderPojo;
 import com.mszhan.redwine.manage.server.model.mszhanRedwineManage.query.OrderQuery;
@@ -22,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
+import org.springframework.util.CollectionUtils;
 import tk.mybatis.mapper.entity.Condition;
 
 import javax.annotation.Resource;
@@ -50,6 +47,12 @@ public class OrderHeaderServiceImpl extends AbstractService<OrderHeader> impleme
     private AgentsMapper agentsMapper;
     @Autowired
     private SequenceIdGenerator sequenceIdGenerator;
+    @Autowired
+    private WarehouseMapper warehouseMapper;
+    @Autowired
+    private InventoryMapper inventoryMapper;
+    @Autowired
+    private InboundHistoryMapper inboundHistoryMapper;
 
     @Override
     public PaginateResult<OrderHeader> queryForPage(OrderQuery query) {
@@ -59,28 +62,6 @@ public class OrderHeaderServiceImpl extends AbstractService<OrderHeader> impleme
         }
         List<OrderHeader> list = orderHeaderMapper.queryForPage(query);
         return PaginateResult.newInstance(Long.valueOf(count), list);
-    }
-
-    @Transactional
-    public OrderHeader orderOutputWarehouse(String orderId) {
-        OrderHeader orderHeader = this.orderHeaderMapper.selectByPrimaryKey(orderId);
-        if (orderHeader == null) {
-            return null;
-        }
-
-        // 获取订单项信息
-        Condition fetchOrderItemCon = new Condition(OrderItem.class);
-        fetchOrderItemCon.createCriteria().andEqualTo("orderId", orderId);
-        List<OrderItem> orderItems = this.orderItemMapper.selectByCondition(fetchOrderItemCon);
-
-        if ("WAIT_DEAL".equals(orderHeader.getStatus())) {
-            // 待处理订单项出库
-            orderItems.forEach(orderItem -> {
-
-            });
-        }
-        // TODO: 处理出库
-        return null;
     }
 
     @Transactional
@@ -127,12 +108,17 @@ public class OrderHeaderServiceImpl extends AbstractService<OrderHeader> impleme
         orderHeader.setUpdateDate(new Date());
 
         orderHeader.setUpdator(createAgentId);
+        orderHeader.setPhoneNumber(orderVO.getPhoneNumber());
 
         // 校验订单项信息
         List<OrderItem> items = orderVO.getProductList().stream().map(proItem -> {
             Assert.hasLength(proItem.getSku(), "商品SKU不能为空");
             Assert.notNull(proItem.getQuantity(), "请指定商品数量");
             Assert.isTrue(proItem.getQuantity() > 0, "请指定正确的商品数量(正整数)");
+            Assert.notNull(proItem.getWarehouseId(), "商品发货仓不能为空");
+
+            Warehouse warehouse = warehouseMapper.selectByPrimaryKey(proItem.getWarehouseId());
+            Assert.notNull(warehouse, "商品发货仓信息未找到");
 
             BigDecimal unitPrice = Optional.ofNullable(proItem.getUnitPrice()).orElse(BigDecimal.ZERO);
             BigDecimal packPrice = Optional.ofNullable(proItem.getPackagePrice()).orElse(BigDecimal.ZERO);
@@ -150,6 +136,9 @@ public class OrderHeaderServiceImpl extends AbstractService<OrderHeader> impleme
             item.setCreator(createAgentId);
             item.setUpdateDate(new Date());
             item.setUpdator(createAgentId);
+
+            item.setWarehouseId(warehouse.getId());
+            item.setWarehouseName(warehouse.getName());
             return item;
         }).collect(Collectors.toList());
 
@@ -177,6 +166,78 @@ public class OrderHeaderServiceImpl extends AbstractService<OrderHeader> impleme
         }
         this.orderItemMapper.insertList(items);
         return orderHeader;
+    }
+
+    /**
+     * 订单标记已发货
+     */
+    @Transactional
+    @Override
+    public void orderMarkShipped(List<String> orderIds) {
+        User user = SecurityUtils.getAuthenticationUser();
+        Assert.notNull(user, "未登录，请先登陆");
+        if (CollectionUtils.isEmpty(orderIds)) {
+            return;
+        }
+        Condition con = new Condition(OrderHeader.class);
+        con.createCriteria().andIn("orderId", orderIds);
+        List<OrderHeader> orderHeaders = this.orderHeaderMapper.selectByCondition(con);
+        if (CollectionUtils.isEmpty(orderHeaders)) {
+            return;
+        }
+        orderHeaders.forEach(orderHeader -> {
+            // 判断订单状态, 待处理的订单状态才能出库
+            if (!"WAIT_DEAL".equals(orderHeader.getStatus())) {
+                return;
+            }
+
+            Condition itemCon = new Condition(OrderItem.class);
+            List<OrderItem> orderItems = this.orderItemMapper.selectByCondition(itemCon);
+            if (CollectionUtils.isEmpty(orderItems)) {
+                return;
+            }
+            orderItems.forEach(orderItem -> {
+                Condition inventoryCon = new Condition(Inventory.class);
+                inventoryCon.createCriteria().andEqualTo("sku", orderItem.getSku())
+                        .andEqualTo("wareHouseId", orderItem.getWarehouseId());
+                List<Inventory> inventories = this.inventoryMapper.selectByCondition(inventoryCon);
+                if (CollectionUtils.isEmpty(inventories)) {
+                    throw BasicException.newInstance().error(String.format("订单[%s]中SKU[%s]发货仓库[%s]没有找到库存信息",
+                            orderHeader.getOrderId(), orderItem.getSku(), orderItem.getWarehouseName()), 500);
+                }
+                Inventory inventory = inventories.get(0);
+                Integer invQty = inventory.getQuantity() == null ? 0 : inventory.getQuantity();
+                if (invQty < orderItem.getQuantity()) {
+                    throw BasicException.newInstance().error(String.format("订单[%s]中SKU[%s]发货仓库[%s]库存不足",
+                            orderHeader.getOrderId(), orderItem.getSku(), orderItem.getWarehouseName()), 500);
+                }
+                // 扣减库存
+                Inventory updateInv = new Inventory();
+                updateInv.setId(inventory.getId());
+                updateInv.setQuantity(invQty - orderItem.getQuantity() );
+                this.inventoryMapper.updateByPrimaryKeySelective(updateInv);
+
+                // 插入出入库记录信息
+                InboundHistory history = new InboundHistory();
+                history.setCreateDate(new Date());
+                history.setOrderId(orderHeader.getOrderId());
+                history.setOrderItemId(orderItem.getId());
+                history.setSku(orderItem.getSku());
+                history.setType("SALES_INBOUND");
+                history.setCreator(user.getAgentId());
+                history.setCreatorName(user.getAgentName());
+                history.setQuantity(orderItem.getQuantity());
+                history.setWarehouseId(orderItem.getWarehouseId());
+
+                this.inboundHistoryMapper.insert(history);
+            });
+
+            // 更新订单状态为已发货
+            OrderHeader updateOH = new OrderHeader();
+            updateOH.setOrderId(orderHeader.getOrderId());
+            updateOH.setStatus("SHIPPED");
+            this.orderHeaderMapper.updateByPrimaryKeySelective(updateOH);
+        });
     }
 
     @Override

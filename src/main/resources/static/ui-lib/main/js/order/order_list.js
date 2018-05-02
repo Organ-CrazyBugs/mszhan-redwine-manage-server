@@ -19,13 +19,26 @@ $(function () {
                       <td class="text-right">${oi.quantity}</td>
                       <td class="text-right">￥${$.formatMoney(parseFloat(oi.unitPrice).toFixed(2))}</td>
                       <td class="text-right">￥${$.formatMoney(parseFloat(oi.packagingFee).toFixed(2))}</td>
+                      <td class="text-center">${oi.warehouseName}</td>
                     </tr>
                     `;
                 });
                 return html;
             };
             let tmpl = `
-                <table class="table table-bordered">
+                <div class="container border-top border-left border-right bg-white">
+                    <div class="row border-bottom">
+                        <div class="col-2 py-2 font-weight-bold">收件人：</div>
+                        <div class="col-3 py-2 text-left border-right">${record.clientName}</div>
+                        <div class="col-2 py-2 font-weight-bold">联系电话：</div>
+                        <div class="col-3 py-2 text-left">${record.phoneNumber}</div>
+                    </div>
+                    <div class="row">
+                        <div class="col-2 py-2 font-weight-bold">详细地址：</div>
+                        <div class="col-10 py-2 text-left">${record.address}</div>
+                    </div>
+                </div>
+                <table class="table table-bordered bg-white">
                   <thead>
                     <tr>
                       <th class="text-center py-2">#</th>
@@ -33,6 +46,7 @@ $(function () {
                       <th class="text-center py-2">数量</th>
                       <th class="text-center py-2">售价（单价）</th>
                       <th class="text-center py-2">包装费</th>
+                      <th class="text-center py-2">发货仓</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -102,8 +116,31 @@ $(function () {
             $.alertWarning('提示', '请选择需要进行打印出库单的记录项');
             return;
         }
+        let orderIds = rows.map(record => record.orderId);
         $.confirm('确认', `确认打印<b>${rows.length}张订单</b>的出库单吗？<b>首次打印出库单的订单将扣减相应产品的库存数</b>。`, function(){
-            $('#print-output-warehouse-form').submit();
+            // 标记订单已发货
+            $.ajax({
+                url: '/api/order/mark_shipped',
+                method: 'POST',
+                dataType: 'json',
+                data: {orderIds: orderIds.join(',')},
+                targetBtn: $orderPrintOutputBtn,
+                success: function (data) {
+                    if ($.ajaxIsFailure(data)) {
+                        return;
+                    }
+                    $.alertSuccess('提示', '订单出库成功!');
+                    // 刷新订单列表
+                    $('#table').bootstrapTable('refresh');
+
+                    // 提交支打印界面
+                    let $printForm = $('#print-output-warehouse-form');
+                    $printForm.find('input[name="orderIds"]').val(orderIds.join(','));
+                    $printForm.submit();
+                }
+            });
         });
     });
+
+
 });

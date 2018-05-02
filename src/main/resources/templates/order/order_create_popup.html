@@ -144,7 +144,7 @@
             </div>
         </div>
 
-        <div id="warehouse-tmpl-box">
+        <div id="warehouse-tmpl-box" class="d-none">
             <select class="form-control" onchange="orderItemWarehouseOnChange(this)">
                 <option value="">选择仓库</option>
                 <option th:each="warehouse,record:${warehouses}" th:value="${warehouse.getId()}" th:text="${warehouse.getName()}"></option>
