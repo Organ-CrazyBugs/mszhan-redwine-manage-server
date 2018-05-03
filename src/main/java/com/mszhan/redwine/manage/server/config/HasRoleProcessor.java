@@ -5,6 +5,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.mszhan.redwine.manage.server.config.security.User;
+import com.mszhan.redwine.manage.server.core.BasicException;
+import com.mszhan.redwine.manage.server.core.SecurityUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.thymeleaf.Arguments;
@@ -51,35 +54,23 @@ public class HasRoleProcessor extends AbstractAttributeModifierAttrProcessor {
 		List<String> attrList = attrList(attributeValue);
 //		Map<String, Object> map = (Map<String, Object>) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		ObjectMapper objMapper = new ObjectMapper();
-		Map<String, Object> map = null;
+		User user = null;
 		try{
-			map = (Map<String, Object>) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+			user = SecurityUtils.getAuthenticationUser();
 		} catch (Exception ex){
-          try {
-        	  map = objMapper.readValue(objMapper.writeValueAsString(SecurityContextHolder.getContext().getAuthentication().getPrincipal()), HashMap.class);
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} 			
+          ex.printStackTrace();
+          return values;
 		}
-		if (map.get("authList") == null) {
+
+		if (user.getAgentType() == null) {
 			return values;
 		}
-		List<String> authList = new ArrayList<>();
-		 
-		try {
-			authList = (List<String>) map.get("authList");
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		if (authList == null || authList.size() == 0) {
+		if (attrList == null){
 			return values;
 		}
-		for (String attr : attrList) {
-			if (authList.contains(attr)) {
-				values.clear();
-				return values;
-			}
+		if (attrList.contains(user.getAgentType())) {
+			values.clear();
+			return values;
 		}
 		return values;
 	}

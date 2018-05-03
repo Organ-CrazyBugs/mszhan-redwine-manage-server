@@ -12,26 +12,23 @@
 
             <div class="navbar-collapse offcanvas-collapse">
                 <ul class="navbar-nav mr-auto">
-                    <li th:classappend="${activeNav eq 'HOME'} ? 'active'" class="nav-item">
+                    <li  th:classappend="${activeNav eq 'HOME'} ? 'active'" class="nav-item">
                         <a class="nav-link" th:href="@{/page/index}">首页</a>
                     </li>
-                    <li th:classappend="${activeNav eq 'ORDER'} ? 'active'" class="nav-item">
+                    <li  th:classappend="${activeNav eq 'ORDER'} ? 'active'" class="nav-item">
                         <a class="nav-link" th:href="@{/page/order/order_list}">订单管理</a>
                     </li>
-                    <li th:classappend="${activeNav eq 'AGENT'} ? 'active'" class="nav-item">
+                    <li role:secRole="ADMIN,GENERAL_AGENT" th:classappend="${activeNav eq 'AGENT'} ? 'active'" class="nav-item">
                         <a class="nav-link" th:href="@{/page/agent/index}">代理管理</a>
                     </li>
-                    <li th:classappend="${activeNav eq 'WAREHOUSE'} ? 'active'" class="nav-item">
+                    <li role:secRole="ADMIN,GENERAL_AGENT" th:classappend="${activeNav eq 'WAREHOUSE'} ? 'active'" class="nav-item">
                         <a class="nav-link" th:href="@{/page/warehouse/index}">仓储管理</a>
                     </li>
-                    <li th:classappend="${activeNav eq 'PRODUCT'} ? 'active'" class="nav-item">
+                    <li   th:classappend="${activeNav eq 'PRODUCT'} ? 'active'" class="nav-item">
                         <a class="nav-link" th:href="@{/page/product/index}">产品管理</a>
                     </li>
 
-                    <li class="nav-item">
-                        <a class="nav-link" href="javascript:void(0);">模块002</a>
-                    </li>
-                    <li th:classappend="${activeNav eq 'SYS_SETTING'} ? 'active'" class="nav-item">
+                    <li role:secRole="ADMIN,GENERAL_AGENT" th:classappend="${activeNav eq 'SYS_SETTING'} ? 'active'" class="nav-item">
                         <a class="nav-link" th:href="@{/page/sys_setting/login_account_list}">系统设置</a>
                     </li>
                     <li class="nav-item dropdown">

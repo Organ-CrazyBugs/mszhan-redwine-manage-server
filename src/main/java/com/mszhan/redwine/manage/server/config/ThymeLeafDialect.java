@@ -42,8 +42,6 @@ public class ThymeLeafDialect extends AbstractDialect   implements ApplicationCo
 		  @Override
 		  public Set<IProcessor> getProcessors() {
 		    final Set<IProcessor> processor = new HashSet<IProcessor>();
-		    processor.add(new HasResnameProcessor());
-		    processor.add(new HasResIdProcessor());
 		    processor.add(new HasRoleProcessor());
 		    return processor;
 		  }
