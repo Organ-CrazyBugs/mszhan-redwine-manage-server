@@ -13,5 +13,6 @@
     <result column="payment_type" jdbcType="VARCHAR" property="paymentType" />
     <result column="remark" jdbcType="VARCHAR" property="remark" />
     <result column="creator_name" jdbcType="VARCHAR" property="creatorName" />
+    <result column="order_id" jdbcType="VARCHAR" property="orderId" />
   </resultMap>
 </mapper>

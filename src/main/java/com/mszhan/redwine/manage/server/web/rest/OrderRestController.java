@@ -11,6 +11,7 @@ import com.mszhan.redwine.manage.server.model.mszhanRedwineManage.OrderHeader;
 import com.mszhan.redwine.manage.server.model.mszhanRedwineManage.OrderItem;
 import com.mszhan.redwine.manage.server.model.mszhanRedwineManage.base.PaginateResult;
 import com.mszhan.redwine.manage.server.model.mszhanRedwineManage.vo.CreateOrderVO;
+import com.mszhan.redwine.manage.server.model.mszhanRedwineManage.vo.OrderMarkPaymentVO;
 import com.mszhan.redwine.manage.server.service.OrderHeaderService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -100,6 +101,16 @@ public class OrderRestController {
         return Responses.newInstance().succeed();
     }
 
+    /**
+     * 订单标记已付款
+     * @param paymentVO
+     * @return
+     */
+    @PostMapping(value = "/api/order/mark_payment")
+    public Object orderMarkPayment(@RequestBody OrderMarkPaymentVO paymentVO){
+        this.orderHeaderService.orderMarkPayment(paymentVO);
+        return Responses.newInstance().succeed();
+    }
 
     @PostMapping(value = "/api/order/create")
     public Object createOrder(@RequestBody CreateOrderVO vo){

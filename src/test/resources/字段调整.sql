@@ -10,3 +10,6 @@ ADD COLUMN `warehouse_id` int(11) AFTER `order_item_id`;
 
 ALTER TABLE `mszhan_redwine_manage`.`order_header`
 ADD COLUMN `phone_number` varchar(50) COMMENT '电话号码' AFTER `shipping_fee`;
+
+ALTER TABLE `mszhan_redwine_manage`.`agent_price_history`
+ADD COLUMN `order_id` varchar(20) AFTER `creator_name`;

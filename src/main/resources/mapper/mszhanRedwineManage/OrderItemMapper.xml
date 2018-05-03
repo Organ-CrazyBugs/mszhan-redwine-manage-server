@@ -19,5 +19,7 @@
     <result column="updator" jdbcType="INTEGER" property="updator" />
     <result column="agent_id" jdbcType="INTEGER" property="agentId" />
     <result column="type" jdbcType="VARCHAR" property="type" />
+    <result column="warehouse_name" jdbcType="VARCHAR" property="warehouseName" />
+    <result column="warehouse_id" jdbcType="INTEGER" property="warehouseId" />
   </resultMap>
 </mapper>

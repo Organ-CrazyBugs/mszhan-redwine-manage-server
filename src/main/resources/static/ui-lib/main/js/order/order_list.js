@@ -2,6 +2,8 @@ $(function () {
     let $table = $('#table');
     let $orderMarkPaymentBtn = $('#order-mark-payment-btn');
     let $orderPrintOutputBtn = $('#order-print-output-btn');
+    let $orderPaymentPopupModal = $('#order-payment-popup-modal');
+    let $orderMarkPaymentForm = $('#order-mark-payment-form');
 
     $table.bootstrapTable({
         url: '/api/order/list',
@@ -106,8 +108,61 @@ $(function () {
             $.alertWarning('提示', '只能对未付款的订单进行标帐操作');
             return;
         }
-        // TODO: 标帐操作
+        if (data['status'] == 'REMOVED') {
+            $.alertWarning('提示', '订单已经被删除无法进行标帐');
+            return;
+        }
+        // 标帐操作
+        let orderId = data['orderId'];
+        let agentName = data['agentName'];
+        let personName = data['clientName'];
+        let totalAmount = data['totalAmount'];
+        let paymentAmount = totalAmount;
+        $orderMarkPaymentForm.reset();
+        $orderMarkPaymentForm.bindData({orderId, agentName, personName,
+            totalAmount, paymentAmount}, ['agentName', 'orderId', 'personName', 'totalAmount', 'paymentAmount']);
 
+        $orderPaymentPopupModal.modal('show');
+    });
+
+    $orderMarkPaymentForm.on('submit', function (event) {
+        event.preventDefault();
+        let params = $orderMarkPaymentForm.serializeObject();
+        console.log(params);
+        let totalAmount = parseFloat(params['totalAmount']);
+        let paymentAmount = parseFloat(params['paymentAmount']);
+        if ($.isBlank(params['paymentTypeId'])) {
+            $.alertWarning('提示', '请选择支付方式');
+            return false;
+        }
+        if (isNaN(paymentAmount) || paymentAmount <= 0) {
+            $.alertWarning('提示', '请输入正确的支付金额');
+            return false;
+        }
+        if (paymentAmount != totalAmount) {
+            $.alertWarning('提示', '支付金额必须等于应付总额');
+            return false;
+        }
+        $.confirm('确认', `确认对订单：<b>${params['orderId']}</b>，支付金额：<b>￥${paymentAmount.toFixed(2)}</b> 确认进行标帐操作吗？`, function(){
+            $.ajax({
+                url: '/api/order/mark_payment',
+                method: 'POST',
+                dataType: 'json',
+                contentType: 'application/json',
+                data: JSON.stringify(params),
+                targetBtn: $('#order-mark-payment-submit-btn'),
+                success: function (data) {
+                    if ($.ajaxIsFailure(data)) {
+                        return;
+                    }
+                    $.alertSuccess('提示', '订单标帐成功!');
+                    $orderPaymentPopupModal.modal('hide');
+                    // 刷新订单列表
+                    $table.bootstrapTable('refresh');
+                }
+            });
+        });
+        return false;
     });
 
     $orderPrintOutputBtn.on('click', function(btn) {

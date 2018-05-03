@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+
+<div th:fragment="payload(title, modalId)">
+    <div class="modal fade" th:id="${modalId}" tabindex="-1" role="dialog">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" th:text="${title}"></h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form id="order-mark-payment-form" action="#">
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label>订单编号</label>
+                            <input type="text" class="form-control" name="orderId" readonly="readonly" />
+                        </div>
+                        <div class="form-group">
+                            <label>所属代理</label>
+                            <input type="text" class="form-control" name="agentName" readonly="readonly" />
+                        </div>
+                        <div class="form-group">
+                            <label>收件人名</label>
+                            <input type="text" class="form-control" name="personName" readonly="readonly" />
+                        </div>
+                        <div class="form-group">
+                            <label>应付总额</label>
+                            <input type="text" class="form-control" name="totalAmount" readonly="readonly" />
+                        </div>
+                        <div class="form-group">
+                            <label>支付方式</label>
+                            <select class="form-control" name="paymentTypeId">
+                                <option value="">选择支付方式</option>
+                                <option value="AGENT_PAYMENT">代理余额支付</option>
+                                <option value="CASH_PAYMENT">现金支付</option>
+                                <option value="WECHAT_PAYMENT">微信支付</option>
+                                <option value="ALIPAY_PAYMENT">支付宝支付</option>
+                                <option value="BANK_PAYMENT">银行卡支付</option>
+                                <option value="OTHER">其他</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>支付总额</label>
+                            <input type="number" class="form-control" name="paymentAmount" placeholder="支付总额"/>
+                        </div>
+                        <div class="form-group">
+                            <label>支付备注</label>
+                            <textarea class="form-control" name="remark" rows="2" placeholder="支付备注"></textarea>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
+                        <button id="order-mark-payment-submit-btn" type="submit" class="btn btn-primary"><i class="fa fa-save"></i>&nbsp;保存</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+</html>

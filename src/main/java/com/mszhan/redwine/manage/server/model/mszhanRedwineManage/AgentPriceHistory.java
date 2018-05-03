@@ -34,6 +34,16 @@ public class AgentPriceHistory {
     @Column(name = "creator_name")
     private String creatorName;
 
+    @Column(name = "order_id")
+    private String orderId;
+
+    public String getOrderId() {
+        return orderId;
+    }
+
+    public void setOrderId(String orderId) {
+        this.orderId = orderId;
+    }
 
     public String getCreatorName() {
         return creatorName;

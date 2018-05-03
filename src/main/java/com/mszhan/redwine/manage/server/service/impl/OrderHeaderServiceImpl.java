@@ -10,6 +10,7 @@ import com.mszhan.redwine.manage.server.model.mszhanRedwineManage.base.PaginateR
 import com.mszhan.redwine.manage.server.model.mszhanRedwineManage.query.AddOrderPojo;
 import com.mszhan.redwine.manage.server.model.mszhanRedwineManage.query.OrderQuery;
 import com.mszhan.redwine.manage.server.model.mszhanRedwineManage.vo.CreateOrderVO;
+import com.mszhan.redwine.manage.server.model.mszhanRedwineManage.vo.OrderMarkPaymentVO;
 import com.mszhan.redwine.manage.server.service.OrderHeaderService;
 import com.mszhan.redwine.manage.server.core.AbstractService;
 import com.mszhan.redwine.manage.server.util.SequenceIdGenerator;
@@ -53,6 +54,8 @@ public class OrderHeaderServiceImpl extends AbstractService<OrderHeader> impleme
     private InventoryMapper inventoryMapper;
     @Autowired
     private InboundHistoryMapper inboundHistoryMapper;
+    @Autowired
+    private AgentPriceHistoryMapper agentPriceHistoryMapper;
 
     @Override
     public PaginateResult<OrderHeader> queryForPage(OrderQuery query) {
@@ -149,18 +152,23 @@ public class OrderHeaderServiceImpl extends AbstractService<OrderHeader> impleme
         orderHeader.setTotalAmount(orderTotal);
         orderHeader.setStatus("WAIT_DEAL");
 
-        // 计算订单支付状态
-        String orderPaymentStatus = "UNPAID";
-        if (paymentAmount.compareTo(BigDecimal.ZERO) != 0) {    //存在支付金额
-            Assert.isTrue(paymentAmount.compareTo(orderTotal) == 0, "支付金额必须等于应付总额");
-            orderPaymentStatus = "PAID";
-        }
-
         // 创建订单号
         String orderId = sequenceIdGenerator.getSeqValue("OrderId", 4);// 创建订单号
         orderHeader.setOrderId(orderId);
-        orderHeader.setPaymentStatus(orderPaymentStatus);
+        orderHeader.setPaymentStatus("UNPAID");
         this.orderHeaderMapper.insert(orderHeader);
+
+        // 计算订单支付状态
+        if (paymentAmount.compareTo(BigDecimal.ZERO) != 0) {    //存在支付金额
+            OrderMarkPaymentVO paymentVO = new OrderMarkPaymentVO();
+            paymentVO.setOrderId(orderHeader.getOrderId());
+            paymentVO.setPaymentAmount(paymentAmount);
+            paymentVO.setPaymentTypeId(orderVO.getPaymentTypeId());
+            paymentVO.setRemark(orderVO.getPaymentRemark());
+
+            orderMarkPayment(paymentVO);
+        }
+
         for (OrderItem item : items) {
             item.setOrderId(orderId);
         }
@@ -192,6 +200,7 @@ public class OrderHeaderServiceImpl extends AbstractService<OrderHeader> impleme
             }
 
             Condition itemCon = new Condition(OrderItem.class);
+            itemCon.createCriteria().andEqualTo("orderId", orderHeader.getOrderId());
             List<OrderItem> orderItems = this.orderItemMapper.selectByCondition(itemCon);
             if (CollectionUtils.isEmpty(orderItems)) {
                 return;
@@ -238,6 +247,58 @@ public class OrderHeaderServiceImpl extends AbstractService<OrderHeader> impleme
             updateOH.setStatus("SHIPPED");
             this.orderHeaderMapper.updateByPrimaryKeySelective(updateOH);
         });
+    }
+
+    @Transactional
+    @Override
+    public void orderMarkPayment(OrderMarkPaymentVO paymentVO) {
+        User user = SecurityUtils.getAuthenticationUser();
+        Assert.notNull(user, "缺少登陆信息");
+        Assert.notNull(paymentVO, "缺少参数信息");
+        Assert.hasLength(paymentVO.getOrderId(), "订单号参数不能为空");
+        Assert.hasLength(paymentVO.getPaymentTypeId(), "支付方式不能为空");
+        Assert.notNull(paymentVO.getPaymentAmount(), "支付金额不能为空");
+
+        OrderHeader orderHeader = this.orderHeaderMapper.selectByPrimaryKey(paymentVO.getOrderId());
+        Assert.notNull(orderHeader, "订单号：" + paymentVO.getOrderId() + "订单信息未找到");
+        Assert.isTrue("UNPAID".equals(orderHeader.getPaymentStatus()), "未付款订单才能标帐操作");
+        Assert.isTrue(!"REMOVED".equals(orderHeader.getStatus()), "已删除的订单无法标帐操作");
+
+        BigDecimal totalAmount = orderHeader.getTotalAmount();
+        Assert.isTrue(totalAmount.compareTo(paymentVO.getPaymentAmount()) == 0, "支付金额必须等于应付总额");
+
+        // 改变订单支付状态
+        OrderHeader updateOh = new OrderHeader();
+        updateOh.setOrderId(paymentVO.getOrderId());
+        updateOh.setPaymentStatus("PAID");
+        this.orderHeaderMapper.updateByPrimaryKeySelective(updateOh);
+
+        // 如果是 扣除AGENT_PAYMENT支付类型，扣除代理商余额
+        if ("AGENT_PAYMENT".equals(paymentVO.getPaymentTypeId())) {
+            Agents agents = this.agentsMapper.selectByPrimaryKey(orderHeader.getAgentId());
+            Assert.notNull(agents, "订单所属代理信息未找到");
+            BigDecimal balance = agents.getBalance() == null ? BigDecimal.ZERO : agents.getBalance();
+            Assert.isTrue(balance.compareTo(paymentVO.getPaymentAmount()) >= 0, "代理余额不足以支付订单应付总额，当前代理余额：" + balance.setScale(2, BigDecimal.ROUND_HALF_UP));
+
+            Agents updateAgents = new Agents();
+            updateAgents.setId(agents.getId());
+            updateAgents.setBalance(balance.subtract(orderHeader.getTotalAmount()));
+            this.agentsMapper.updateByPrimaryKeySelective(updateAgents);
+        }
+
+        // 记录支付日志
+        AgentPriceHistory history = new AgentPriceHistory();
+        history.setCreateDate(new Date());
+        history.setCreator(user.getAgentId());
+        history.setCreatorName(user.getAgentName());
+        history.setAgentId(orderHeader.getAgentId());
+        history.setPaymentType(paymentVO.getPaymentTypeId());
+
+        history.setPrice(paymentVO.getPaymentAmount());
+        history.setType("SPEND");
+        history.setRemark(paymentVO.getRemark());
+        history.setOrderId(paymentVO.getOrderId());
+        this.agentPriceHistoryMapper.insert(history);
     }
 
     @Override
