@@ -15,13 +15,14 @@ public class IndexPageController {
 
     @GetMapping(value = "/")
     public ModelAndView indexRootDirectory() {
-        return new ModelAndView("redirect:/page/index");
+        return new ModelAndView("redirect:/page/order/order_list");
     }
 
     @GetMapping(value = "/page/index")
     public ModelAndView index() {
-        ModelAndView view = new ModelAndView("index");
-        return view;
+        return new ModelAndView("redirect:/page/order/order_list");
+//        ModelAndView view = new ModelAndView("index");
+//        return view;
     }
 
 
