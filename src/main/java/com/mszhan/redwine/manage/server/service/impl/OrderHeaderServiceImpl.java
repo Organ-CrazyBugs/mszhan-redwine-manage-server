@@ -55,6 +55,8 @@ public class OrderHeaderServiceImpl extends AbstractService<OrderHeader> impleme
     @Autowired
     private InboundHistoryMapper inboundHistoryMapper;
     @Autowired
+    private OutboundHistoryMapper outboundHistoryMapper;
+    @Autowired
     private AgentPriceHistoryMapper agentPriceHistoryMapper;
 
     @Override
@@ -227,7 +229,7 @@ public class OrderHeaderServiceImpl extends AbstractService<OrderHeader> impleme
                 this.inventoryMapper.updateByPrimaryKeySelective(updateInv);
 
                 // 插入出入库记录信息
-                InboundHistory history = new InboundHistory();
+                OutboundHistory history = new OutboundHistory();
                 history.setCreateDate(new Date());
                 history.setOrderId(orderHeader.getOrderId());
                 history.setOrderItemId(orderItem.getId());
@@ -238,7 +240,7 @@ public class OrderHeaderServiceImpl extends AbstractService<OrderHeader> impleme
                 history.setQuantity(orderItem.getQuantity());
                 history.setWarehouseId(orderItem.getWarehouseId());
 
-                this.inboundHistoryMapper.insert(history);
+                this.outboundHistoryMapper.insert(history);
             });
 
             // 更新订单状态为已发货

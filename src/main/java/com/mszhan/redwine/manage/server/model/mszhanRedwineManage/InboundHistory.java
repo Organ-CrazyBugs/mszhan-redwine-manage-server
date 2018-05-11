@@ -19,6 +19,8 @@ public class InboundHistory {
 
     private String sku;
 
+    private String remark;
+
     private Integer quantity;
 
     @Column(name = "create_date")
@@ -44,6 +46,14 @@ public class InboundHistory {
 
     public void setWarehouseId(Integer warehouseId) {
         this.warehouseId = warehouseId;
+    }
+
+    public String getRemark() {
+        return remark;
+    }
+
+    public void setRemark(String remark) {
+        this.remark = remark;
     }
 
     /**

@@ -13,3 +13,10 @@ ADD COLUMN `phone_number` varchar(50) COMMENT '电话号码' AFTER `shipping_fee
 
 ALTER TABLE `mszhan_redwine_manage`.`agent_price_history`
 ADD COLUMN `order_id` varchar(20) AFTER `creator_name`;
+
+ALTER TABLE `mszhan_redwine_manage`.`inbound_history`
+  ADD COLUMN `remark` varchar(255) NULL COMMENT '备注' AFTER `warehouse_id`;
+
+ALTER TABLE `mszhan_redwine_manage`.`outbound_history`
+  ADD COLUMN `remark` varchar(255) NULL ,
+  ADD COLUMN `warehouse_id` int(11) NULL ;

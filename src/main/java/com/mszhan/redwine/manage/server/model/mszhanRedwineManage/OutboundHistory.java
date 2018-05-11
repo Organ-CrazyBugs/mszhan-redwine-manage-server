@@ -35,6 +35,27 @@ public class OutboundHistory {
     @Column(name = "order_item_id")
     private Integer orderItemId;
 
+    @Column(name = "warehouse_id")
+    private Integer warehouseId;
+
+    private String remark;
+
+    public Integer getWarehouseId() {
+        return warehouseId;
+    }
+
+    public void setWarehouseId(Integer warehouseId) {
+        this.warehouseId = warehouseId;
+    }
+
+    public String getRemark() {
+        return remark;
+    }
+
+    public void setRemark(String remark) {
+        this.remark = remark;
+    }
+
     /**
      * @return id
      */

@@ -7,10 +7,14 @@ import com.mszhan.redwine.manage.server.core.Responses;
 import com.mszhan.redwine.manage.server.dao.mszhanRedwineManage.InventoryMapper;
 import com.mszhan.redwine.manage.server.model.mszhanRedwineManage.base.PaginateResult;
 import com.mszhan.redwine.manage.server.model.mszhanRedwineManage.vo.FetchInventoryVO;
+import com.mszhan.redwine.manage.server.model.mszhanRedwineManage.vo.InventoryInputVO;
+import com.mszhan.redwine.manage.server.model.mszhanRedwineManage.vo.InventoryOutputVO;
+import com.mszhan.redwine.manage.server.service.InventoryService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
@@ -20,6 +24,8 @@ public class InventoryRestController {
 
     @Autowired
     private InventoryMapper inventoryMapper;
+    @Autowired
+    private InventoryService inventoryService;
 
     @GetMapping("/api/inventory/list")
     public Object list(HttpServletRequest request) {
@@ -44,10 +50,14 @@ public class InventoryRestController {
     }
 
     @PostMapping("/api/inventory/input")
-    public Object inventoryInput(HttpServletRequest request) {
-        //TODO: 入库操作
+    public Object inventoryInput(@RequestBody InventoryInputVO vo) {
+        this.inventoryService.inventoryInput(vo);
+        return Responses.newInstance().succeed();
+    }
 
-
+    @PostMapping("/api/inventory/output")
+    public Object inventoryOutput(@RequestBody InventoryOutputVO vo) {
+        this.inventoryService.inventoryOutput(vo);
         return Responses.newInstance().succeed();
     }
 

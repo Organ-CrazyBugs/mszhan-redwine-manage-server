@@ -1,5 +1,6 @@
 package com.mszhan.redwine.manage.server.config.security;
 
+import com.mszhan.redwine.manage.server.core.BasicException;
 import com.mszhan.redwine.manage.server.dao.mszhanRedwineManage.AgentsMapper;
 import com.mszhan.redwine.manage.server.dao.mszhanRedwineManage.UserLoginMapper;
 import com.mszhan.redwine.manage.server.model.mszhanRedwineManage.Agents;
@@ -15,7 +16,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 import tk.mybatis.mapper.entity.Condition;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -36,6 +39,13 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         if (StringUtils.isBlank(userName)) {
             throw new UsernameNotFoundException("UserName is blank.");
         }
+
+        // TODO: 限制使用时间
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd");
+        if (Integer.valueOf(dateFormat.format(new Date())) >= 20180618) {
+            throw BasicException.newInstance().error("有效期超时，请联系开发人员", 500);
+        }
+
         Condition fetchUserInfo = new Condition(UserLogin.class);
         fetchUserInfo.createCriteria().andEqualTo("userName", userName);
         List<UserLogin> userLogins = this.userLoginMapper.selectByCondition(fetchUserInfo);

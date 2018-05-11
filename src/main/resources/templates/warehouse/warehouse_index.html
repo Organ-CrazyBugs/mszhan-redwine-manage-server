@@ -14,6 +14,8 @@
 
         <div th:include="/warehouse/warehouse_input_popup::payload('商品入库', 'warehouse-input-popup-modal')"></div>
 
+        <div th:include="/warehouse/warehouse_output_popup::payload('商品出库', 'warehouse-output-popup-modal')"></div>
+
         <main class="container">
             <div class="my-3 p-3 bg-white rounded box-shadow">
                 <!-- 页面内容在此处填充 -->
@@ -60,7 +62,7 @@
                         <div class="col-md-6">
                             <div class="btn-group mr-2">
                                 <button role:secRole="ADMIN,GENERAL_AGENT" type="button" class="btn btn-outline-primary" data-toggle="modal" data-target="#warehouse-input-popup-modal">&nbsp;入库&nbsp;</button>
-                                <button role:secRole="ADMIN,GENERAL_AGENT" type="button" class="btn btn-outline-primary">&nbsp;出库&nbsp;</button>
+                                <button role:secRole="ADMIN,GENERAL_AGENT" type="button" class="btn btn-outline-primary" data-toggle="modal" data-target="#warehouse-output-popup-modal">&nbsp;出库&nbsp;</button>
                             </div>
                         </div>
                         <div class="col-md-6 text-right">
