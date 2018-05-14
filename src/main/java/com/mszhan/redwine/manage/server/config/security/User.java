@@ -30,6 +30,7 @@ public class User extends org.springframework.security.core.userdetails.User {
     private Integer agentId;
     private String agentName;
     private String agentType;
+    private String sysUser;
 
     public static UserBuilder withUserLogin(UserLogin userLogin) {
         return new UserBuilder()
@@ -51,6 +52,16 @@ public class User extends org.springframework.security.core.userdetails.User {
         private Integer agentId;
         private String agentName;
         private String agentType;
+        private String sysUser;
+
+        public String getSysUser() {
+            return sysUser;
+        }
+
+        public UserBuilder sysUser(String sysUser) {
+            this.sysUser = sysUser;
+            return this;
+        }
 
         /**
          * Creates a new instance
@@ -140,6 +151,7 @@ public class User extends org.springframework.security.core.userdetails.User {
             user.setAgentId(agentId);
             user.setAgentName(agentName);
             user.setAgentType(agentType);
+            user.setSysUser(sysUser);
             return user;
         }
     }
@@ -174,5 +186,13 @@ public class User extends org.springframework.security.core.userdetails.User {
 
     public void setAgentType(String agentType) {
         this.agentType = agentType;
+    }
+
+    public String getSysUser() {
+        return sysUser;
+    }
+
+    public void setSysUser(String sysUser) {
+        this.sysUser = sysUser;
     }
 }

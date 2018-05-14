@@ -106,7 +106,7 @@ $(function () {
     $createOrderSubmitBtn.on('click', function (event) {
         event.preventDefault();
 
-        //TODO: 提交创建订单
+        // 提交创建订单
         let params = $orderCreatePopupForm.serializeObject();
         if ($.isBlank(params['agentId'])) {
             $.alertWarning('提示', '请选择代理');
@@ -289,4 +289,10 @@ function orderItemWarehouseOnChange(select) {
         }
     });
     console.log(productList);
+}
+
+function resetCreateOrderProductList() {
+    productList = [];
+    $('#create-order-product-table').bootstrapTable('load', productList);
+    refreshAmountTotalInfo();
 }

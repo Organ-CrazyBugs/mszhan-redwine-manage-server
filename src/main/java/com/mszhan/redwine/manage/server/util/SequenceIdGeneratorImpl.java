@@ -7,15 +7,18 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
-@Component
+@Service
 public class SequenceIdGeneratorImpl implements SequenceIdGenerator {
 
 	@Autowired
 	private SequenceMapper sequenceMapper;
 
+	@Transactional(propagation = Propagation.REQUIRES_NEW)
 	@Override
 	public synchronized String getSeqValue(String seqName, Integer length){
         SimpleDateFormat format = new SimpleDateFormat("yyyyMMdd");

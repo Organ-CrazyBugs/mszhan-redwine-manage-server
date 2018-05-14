@@ -79,6 +79,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
                 .agentName(agentName)
                 .agentId(agentId)
                 .agentType(agentType)
+                .sysUser(userLogin.getSysUser())
                 .build()
                 ;
     }

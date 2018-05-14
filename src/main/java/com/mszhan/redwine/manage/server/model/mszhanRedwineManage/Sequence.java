@@ -14,6 +14,7 @@ import java.util.Date;
 @Table(name="sequence")
 public class Sequence {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     @Column(name="type")
     private String type;

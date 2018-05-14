@@ -23,6 +23,7 @@
                                     <div class="form-group">
                                         <label>代理</label>
                                         <select class="form-control" name="agentId">
+                                            <option value="">请选择所属代理</option>
                                             <option th:each="agent,record:${agents}" th:value="${agent.get('id')}" th:text="${agent.get('name') + '(' + agent.get('phone') + ')'}"></option>
                                         </select>
                                     </div>

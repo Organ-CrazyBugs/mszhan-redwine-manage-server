@@ -6,13 +6,13 @@
       WARNING - @mbg.generated
     -->
 
-    <id column="id" jdbcType="INTEGER" property="type" />
+    <id column="id" jdbcType="INTEGER" property="id" />
     <result column="type" jdbcType="VARCHAR" property="type" />
     <result column="value" jdbcType="VARCHAR" property="value" />
     <result column="date" jdbcType="VARCHAR" property="date" />
   </resultMap>
 
   <select id="queryByTypeAndDate" resultMap="BaseResultMap">
-    select * from sequence where type = #{type} and date = #{date}
+    select * from sequence where type = #{type} and `date` = #{date}
   </select>
 </mapper>

@@ -2,8 +2,10 @@ package com.mszhan.redwine.manage.server.web.rest;
 
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
+import com.mszhan.redwine.manage.server.config.security.User;
 import com.mszhan.redwine.manage.server.core.Requests;
 import com.mszhan.redwine.manage.server.core.Responses;
+import com.mszhan.redwine.manage.server.core.SecurityUtils;
 import com.mszhan.redwine.manage.server.dao.mszhanRedwineManage.OrderHeaderMapper;
 import com.mszhan.redwine.manage.server.dao.mszhanRedwineManage.OrderItemMapper;
 import com.mszhan.redwine.manage.server.dao.mszhanRedwineManage.ProductMapper;
@@ -75,6 +77,8 @@ public class OrderRestController {
 
         String brandNameLikeVal = StringUtils.isBlank(brandName) ? "" : String.format("%%%s%%", brandName);
         String productNameLikeVal = StringUtils.isBlank(productName) ? "" : String.format("%%%s%%", productName);
+
+        User user = SecurityUtils.getAuthenticationUser();
 
         Page<OrderHeader> page = PageHelper.offsetPage(offset, limit)
                 .doSelectPage(() -> this.orderHeaderMapper.fetchOrders(agentId, orderId, productNameLikeVal, sku, brandNameLikeVal, orderStatus, paymentStatus));

@@ -4,6 +4,14 @@ $(function () {
     let $orderPrintOutputBtn = $('#order-print-output-btn');
     let $orderPaymentPopupModal = $('#order-payment-popup-modal');
     let $orderMarkPaymentForm = $('#order-mark-payment-form');
+    let $orderCreatePopupModal = $('#order-create-popup-modal');
+    let $orderCreatePopupForm = $('#order-create-popup-form');
+
+    // 绑定创建仓库Modal隐藏事件， 隐藏时候清空表单内容
+    $orderCreatePopupModal.on('hide.bs.modal', function (e) {
+        $orderCreatePopupForm.reset();       // 清空模态框内表单数据
+        resetCreateOrderProductList();
+    });
 
     $table.bootstrapTable({
         url: '/api/order/list',
