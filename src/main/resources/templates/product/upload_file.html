@@ -3,7 +3,7 @@
       xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
 
-    <head th:include="/includes/ui_libs::payload('产品管理')"></head>
+    <head th:include="includes/ui_libs::payload('产品管理')"></head>
     <script type="text/javascript" src="/ui-lib/main/js/product/product_list.js"></script>
     <link href="/ui-lib/fileInput/css/fileinput.css" media="all" rel="stylesheet" type="text/css"/>
 
@@ -14,7 +14,7 @@
     <script src="/ui-lib/themes/fa/theme.js" type="text/javascript"></script>
     <body>
         <!-- 一级导航菜单 -->
-        <div th:include="/includes/nav_bar::payload('PRODUCT')">
+        <div th:include="includes/nav_bar::payload('PRODUCT')">
         <!-- 二级导航菜单 --></div>
 
         <input type="hidden" id="idValue" th:value="${id}" />

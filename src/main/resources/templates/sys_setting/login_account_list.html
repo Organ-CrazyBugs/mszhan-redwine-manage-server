@@ -3,17 +3,17 @@
       xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
 
-<head th:include="/includes/ui_libs::payload('系统账号')"></head>
+<head th:include="includes/ui_libs::payload('系统账号')"></head>
 
 <script type="text/javascript" src="/ui-lib/main/js/sys_setting/login_account_list.js"></script>
 <body>
 <!-- 一级导航菜单 -->
-<div th:include="/includes/nav_bar::payload('SYS_SETTING')"></div>
+<div th:include="includes/nav_bar::payload('SYS_SETTING')"></div>
 <!-- 二级导航菜单 -->
-<div th:include="/includes/nav_bar_level2::payload('SYS_SETTING', 'SYS_SETTING_LOGIN_ACCOUNT_LIST')"></div>
+<div th:include="includes/nav_bar_level2::payload('SYS_SETTING', 'SYS_SETTING_LOGIN_ACCOUNT_LIST')"></div>
 
-<div th:include="/sys_setting/login_account_create_popup::payload('创建系统账号', 'login-account-create-modal')"></div>
-<div th:include="/sys_setting/login_acount_change_password_popup::payload('修改登陆密码', 'login-account-chang-password-modal')"></div>
+<div th:include="sys_setting/login_account_create_popup::payload('创建系统账号', 'login-account-create-modal')"></div>
+<div th:include="sys_setting/login_acount_change_password_popup::payload('修改登陆密码', 'login-account-chang-password-modal')"></div>
 
 <main class="container">
     <div class="my-3 p-3 bg-white rounded box-shadow">

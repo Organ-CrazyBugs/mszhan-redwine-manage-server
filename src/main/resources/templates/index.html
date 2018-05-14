@@ -3,13 +3,13 @@
       xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
 
-    <head th:include="/includes/ui_libs::payload('首页')"></head>
+    <head th:include="includes/ui_libs::payload('首页')"></head>
 
     <body>
         <!-- 一级导航菜单 -->
-        <div th:include="/includes/nav_bar::payload('HOME')"></div>
+        <div th:include="includes/nav_bar::payload('HOME')"></div>
         <!-- 二级导航菜单 -->
-        <div th:include="/includes/nav_bar_level2::payload('HOME', 'DASHBOARD')"></div>
+        <div th:include="includes/nav_bar_level2::payload('HOME', 'DASHBOARD')"></div>
 
         <main class=" container">
             <div class="my-3 p-3 bg-white rounded box-shadow">

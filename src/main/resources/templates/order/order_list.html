@@ -3,20 +3,20 @@
       xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
 
-<head th:include="/includes/ui_libs::payload('订单管理')"></head>
+<head th:include="includes/ui_libs::payload('订单管理')"></head>
 
 <script type="text/javascript" src="/ui-lib/main/js/order/order_list.js"></script>
 <script type="text/javascript" src="/ui-lib/main/js/order/order_create_popup.js"></script>
 <script type="text/javascript" src="/ui-lib/main/js/product/select_product_popup.js"></script>
 <body>
 <!-- 一级导航菜单 -->
-<div th:include="/includes/nav_bar::payload('ORDER')"></div>
+<div th:include="includes/nav_bar::payload('ORDER')"></div>
 <!-- 二级导航菜单 -->
-<div th:include="/includes/nav_bar_level2::payload('ORDER', 'ORDER_LIST')"></div>
+<div th:include="includes/nav_bar_level2::payload('ORDER', 'ORDER_LIST')"></div>
 
-<div th:include="/order/order_create_popup::payload('创建订单', 'order-create-popup-modal')"></div>
-<div th:include="/product/select_product_popup::payload('选择产品', 'select-product-popup-modal', 'createOrderSelectProductCallback')"></div>
-<div th:include="/order/order_payment_popup::payload('订单标帐', 'order-payment-popup-modal')"></div>
+<div th:include="order/order_create_popup::payload('创建订单', 'order-create-popup-modal')"></div>
+<div th:include="product/select_product_popup::payload('选择产品', 'select-product-popup-modal', 'createOrderSelectProductCallback')"></div>
+<div th:include="order/order_payment_popup::payload('订单标帐', 'order-payment-popup-modal')"></div>
 
 <main class="container">
     <input id="contextAgentType" type="hidden" th:value="${agentType}" />

@@ -3,7 +3,7 @@
       xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
 
-    <head th:include="/includes/ui_libs::payload('产品管理')"></head>
+    <head th:include="includes/ui_libs::payload('产品管理')"></head>
     <script type="text/javascript" src="/ui-lib/main/js/product/product_list.js"></script>
     <style>
         /*.table tr td {*/
@@ -31,13 +31,13 @@
     </style>
     <body>
         <!-- 一级导航菜单 -->
-        <div th:include="/includes/nav_bar::payload('PRODUCT')">
+        <div th:include="includes/nav_bar::payload('PRODUCT')">
         <!-- 二级导航菜单 --></div>
         <!-- 二级导航菜单 -->
-        <div th:include="/includes/nav_bar_level2::payload('PRODUCT_MODEL','PRODUCT_INDEX')"></div>
+        <div th:include="includes/nav_bar_level2::payload('PRODUCT_MODEL','PRODUCT_INDEX')"></div>
 
 
-        <div th:include="/product/product_create_popup::payload('新建产品', 'create-modal')"></div>
+        <div th:include="product/product_create_popup::payload('新建产品', 'create-modal')"></div>
         <main class="container">
             <div class="my-3 p-3 bg-white rounded box-shadow">
                 <!-- 页面内容在此处填充 -->

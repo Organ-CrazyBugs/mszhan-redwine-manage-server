@@ -3,17 +3,17 @@
       xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
 
-    <head th:include="/includes/ui_libs::payload('仓库管理')"></head>
+    <head th:include="includes/ui_libs::payload('仓库管理')"></head>
     <script type="text/javascript" src="/ui-lib/main/js/warehouse/warehouse_manage.js"></script>
 
     <body>
         <!-- 一级导航菜单 -->
-        <div th:include="/includes/nav_bar::payload('WAREHOUSE')"></div>
+        <div th:include="includes/nav_bar::payload('WAREHOUSE')"></div>
         <!-- 二级导航菜单 -->
-        <div th:include="/includes/nav_bar_level2::payload('WAREHOUSE', 'WAREHOUSE_MANAGE')"></div>
+        <div th:include="includes/nav_bar_level2::payload('WAREHOUSE', 'WAREHOUSE_MANAGE')"></div>
 
-        <div th:include="/warehouse/warehouse_manage_create_popup::payload('新建仓库', 'warehouse-create-modal')"></div>
-        <div th:include="/warehouse/warehouse_manage_edit_popup::payload('修改仓库', 'warehouse-edit-modal')"></div>
+        <div th:include="warehouse/warehouse_manage_create_popup::payload('新建仓库', 'warehouse-create-modal')"></div>
+        <div th:include="warehouse/warehouse_manage_edit_popup::payload('修改仓库', 'warehouse-edit-modal')"></div>
 
         <main class="container">
             <div class="my-3 p-3 bg-white rounded box-shadow">
