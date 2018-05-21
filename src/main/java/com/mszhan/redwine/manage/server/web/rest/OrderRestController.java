@@ -9,6 +9,8 @@ import com.mszhan.redwine.manage.server.core.SecurityUtils;
 import com.mszhan.redwine.manage.server.dao.mszhanRedwineManage.OrderHeaderMapper;
 import com.mszhan.redwine.manage.server.dao.mszhanRedwineManage.OrderItemMapper;
 import com.mszhan.redwine.manage.server.dao.mszhanRedwineManage.ProductMapper;
+import com.mszhan.redwine.manage.server.enums.AgentOperationTypeEnum;
+import com.mszhan.redwine.manage.server.enums.AgentTypeEnum;
 import com.mszhan.redwine.manage.server.model.mszhanRedwineManage.OrderHeader;
 import com.mszhan.redwine.manage.server.model.mszhanRedwineManage.OrderItem;
 import com.mszhan.redwine.manage.server.model.mszhanRedwineManage.base.PaginateResult;
@@ -79,9 +81,12 @@ public class OrderRestController {
         String productNameLikeVal = StringUtils.isBlank(productName) ? "" : String.format("%%%s%%", productName);
 
         User user = SecurityUtils.getAuthenticationUser();
-
+        if (AgentTypeEnum.AGENT.toString().equals(user.getAgentType())){
+            agentId = user.getAgentId();
+        }
+        Integer finalAgentId = agentId;
         Page<OrderHeader> page = PageHelper.offsetPage(offset, limit)
-                .doSelectPage(() -> this.orderHeaderMapper.fetchOrders(agentId, orderId, productNameLikeVal, sku, brandNameLikeVal, orderStatus, paymentStatus));
+                .doSelectPage(() -> this.orderHeaderMapper.fetchOrders(finalAgentId, orderId, productNameLikeVal, sku, brandNameLikeVal, orderStatus, paymentStatus));
 
         if (!CollectionUtils.isEmpty(page)) {
             List<String> orderIds = page.stream().map(OrderHeader::getOrderId).collect(Collectors.toList());
