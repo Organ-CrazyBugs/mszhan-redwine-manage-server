@@ -17,6 +17,9 @@ $(function () {
     let $editBalanceSubmitBtn = $("#edit-balance-submit-btn");
     let $editSubmitBtn = $('#edit-submit-btn');
 
+    let $printUnpayBtn = $('#print-unpay-btn');
+    let $printUnpayForm = $('#print-unpay-form');
+
     $table.bootstrapTable({
         url: '/agent/search',
         tableQueryForm: '#table-query-form',
@@ -147,7 +150,24 @@ $(function () {
 
         $editModal.modal('show');
     });
-    $editbalanceBtn.on('click', function(event){
+
+    // 打印未付款订单
+    $printUnpayBtn.on('click', function (event) {
+        let rows = $table.bootstrapTable('getSelections');
+        if (rows.length <= 0 ) {
+            $.alertWarning('提示', '请选择需要进行打印未付款单的记录项');
+            return;
+        }
+        if (rows.length > 1){
+            $.alertWarning('提示', '只能勾选一个进行打印未付款单');
+            return;
+        }
+        let agentId = rows[0].id;
+        $printUnpayForm.find('input[name="agentId"]').val(agentId);
+        $printUnpayForm.submit();
+    });
+
+   $editbalanceBtn.on('click', function(event){
         let rows = $table.bootstrapTable('getSelections');
         if (rows.length <= 0 ) {
             $.alertWarning('提示', '请选择需要修改的记录项');

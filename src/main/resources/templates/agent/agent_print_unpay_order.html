@@ -1,0 +1,98 @@
+<!doctype html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <head th:include="includes/ui_libs::payload('未付款单')"></head>
+    <style>
+        .border-left{
+            border-left: solid 1px #666!important;
+        }
+        .border-top{
+            border-top: solid 1px #666!important;
+        }
+        .border{
+            border: solid 1px #666!important;
+        }
+    </style>
+</head>
+<body>
+    <div class="container border mb-5">
+        <div class="text-center py-1">
+            <h5><strong>深圳市汇纳酒业有限公司</strong></h5>
+        </div>
+        <div class="row border-top py-1">
+            <strong><div class="col-md-12" th:text="${agent.name} + '未付款明细表（已发货未付款的订单）'"></div></strong>
+        </div>
+        <div class="row border-top">
+            <div class="col-md-1 py-1 text-center"><strong>序号</strong></div>
+            <div class="col-md-1 py-1 text-center border-left"><strong>日期</strong></div>
+            <div class="col-md-4 py-1 text-center border-left"><strong>品名</strong></div>
+            <div class="col-md-1 py-1 text-center border-left"><strong>数量</strong></div>
+            <div class="col-md-1 py-1 text-center border-left"><strong>单位</strong></div>
+            <div class="col-md-1 py-1 text-center border-left"><strong>包装费</strong></div>
+            <div class="col-md-1 py-1 text-center border-left"><strong>单价</strong></div>
+            <div class="col-md-2 py-1 text-center border-left"><strong>金额</strong></div>
+        </div>
+        <div th:each="oh,record:${orderHeaders}">
+            <div class="row border-top">
+                <div class="col-md-12 py-1"><strong th:text="${'订单号: ' + oh.getOrderId()}"></strong></div>
+            </div>
+            <div class="row border-top">
+                <div class="col-md-1 py-1 text-center" th:text="${record.index} + 1"></div>
+                <div class="col-md-1 py-1 text-center border-left" th:text="${#dates.format(oh.getCreateDate(), 'yyyy/MM/dd')}"></div>
+                <div class="col-md-4 py-1 border-left" style="padding-top: 0 !important; padding-bottom: 0 !important;">
+                    <div th:each="oi,oiRecord:${oh.getOrderItems()}" th:classappend="${oiRecord.index == 0 ? '' : 'border-top'}" class="row py-1">
+                        <div class="col-md-12" th:text="${oi.getProductName()}"></div>
+                    </div>
+                </div>
+                <div class="col-md-1 py-1 border-left" style="padding-top: 0 !important; padding-bottom: 0 !important;">
+                    <div th:each="oi,oiRecord:${oh.getOrderItems()}" th:classappend="${oiRecord.index == 0 ? '' : 'border-top'}" class="row py-1">
+                        <div class="col-md-12 text-center" th:text="${oi.getQuantity()}"></div>
+                    </div>
+                </div>
+                <div class="col-md-1 py-1 border-left" style="padding-top: 0 !important; padding-bottom: 0 !important;">
+                    <div th:each="oi,oiRecord:${oh.getOrderItems()}" th:classappend="${oiRecord.index == 0 ? '' : 'border-top'}" class="row py-1">
+                        <div class="col-md-12 text-center">支</div>
+                    </div>
+                </div>
+                <div class="col-md-1 py-1 border-left" style="padding-top: 0 !important; padding-bottom: 0 !important;">
+                    <div th:each="oi,oiRecord:${oh.getOrderItems()}" th:classappend="${oiRecord.index == 0 ? '' : 'border-top'}" class="row py-1">
+                        <div class="col-md-12 text-center" th:text="'￥' + ${oi.getPackagingFee().setScale(2, 4)}"></div>
+                    </div>
+                </div>
+                <div class="col-md-1 py-1 border-left" style="padding-top: 0 !important; padding-bottom: 0 !important;">
+                    <div th:each="oi,oiRecord:${oh.getOrderItems()}" th:classappend="${oiRecord.index == 0 ? '' : 'border-top'}" class="row py-1">
+                        <div class="col-md-12 text-right" th:text="'￥' + ${oi.getUnitPrice().setScale(2, 4)}"></div>
+                    </div>
+                </div>
+                <div class="col-md-2 py-1 border-left" style="padding-top: 0 !important; padding-bottom: 0 !important;">
+                    <div th:each="oi,oiRecord:${oh.getOrderItems()}" th:classappend="${oiRecord.index == 0 ? '' : 'border-top'}" class="row py-1">
+                        <div class="col-md-12 text-right" th:text="'￥' + ${oi.getUnitPrice().multiply(oi.getQuantity()).add(oi.getPackagingFee()).setScale(2, 4)}"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="row border-top">
+                <div class="col-md-2 py-1"></div>
+                <div class="col-md-8 py-1 border-left text-right">订单运费</div>
+                <div class="col-md-2 py-1 border-left text-right" th:text="'￥' + ${oh.getShippingFee().setScale(2, 4)}"></div>
+            </div>
+            <div class="row border-top" style="background-color: #ddd;">
+                <div class="col-md-2 py-1"></div>
+                <div class="col-md-8 py-1 border-left text-right"><strong>订单总计</strong></div>
+                <div class="col-md-2 py-1 border-left text-right"><strong th:text="'￥' + ${oh.getTotalAmount().setScale(2, 4)}"></strong></div>
+            </div>
+        </div>
+        <div class="row py-1 border-top">
+            <div class="col-md-12 text-right">
+                <div style="color: #333;"><span th:text="${agent.name}"></span>&nbsp;剩余余额：￥<span th:text="${agent.getBalance().setScale(2, 4)}"></span></div>
+                <h5><strong>总计：￥<span th:text="${allTotal.setScale(2, 4)}"></span></strong></h5>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

@@ -81,7 +81,7 @@
                                 <button role:secRole="ADMIN,GENERAL_AGENT" id="show-edit-btn" type="button" class="btn btn-outline-primary">&nbsp;修改&nbsp;</button>
                                 <button role:secRole="ADMIN,GENERAL_AGENT" id="show-editBalance-btn" type="button" class="btn btn-outline-primary">&nbsp;修改余额&nbsp;</button>
                                 <button role:secRole="ADMIN,GENERAL_AGENT" id="excel-single-btn" type="button" class="btn btn-outline-primary">&nbsp;excel导出收支记录&nbsp;</button>
-                                <button role:secRole="ADMIN,GENERAL_AGENT" id="excel-unpay-btn" type="button" class="btn btn-outline-primary">&nbsp;excel导出未付款&nbsp;</button>
+                                <button role:secRole="ADMIN,GENERAL_AGENT" id="print-unpay-btn" type="button" class="btn btn-outline-primary">&nbsp;打印未付款单&nbsp;</button>
                                 <button role:secRole="ADMIN,GENERAL_AGENT" id="delete-btn" type="button" class="btn btn-outline-primary">&nbsp;删除&nbsp;</button>
                             </div>
                         </div>
@@ -96,6 +96,10 @@
                     </div>
                 </div>
             </div>
+
+            <form id="print-unpay-form" target="_blank" action="/page/agent/print_unpay" method="post">
+                <input type="hidden" name="agentId" />
+            </form>
         </main>
     </body>
 </html>
