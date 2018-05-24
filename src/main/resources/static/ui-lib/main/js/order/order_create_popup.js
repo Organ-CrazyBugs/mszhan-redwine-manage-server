@@ -122,12 +122,12 @@ $(function () {
             $.alertWarning('提示', '请输入联系电话');
             return false;
         }
-
+        /*
         if ($.isBlank(params['postalCode'])) {
             $.alertWarning('提示', '请输入邮政编码');
             return false;
         }
-
+        */
         if ($.isBlank(params['address'])) {
             $.alertWarning('提示', '请输入详细地址');
             return false;

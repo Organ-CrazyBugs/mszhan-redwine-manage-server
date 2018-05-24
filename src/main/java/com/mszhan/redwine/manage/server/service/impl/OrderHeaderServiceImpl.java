@@ -76,7 +76,7 @@ public class OrderHeaderServiceImpl extends AbstractService<OrderHeader> impleme
         Assert.notNull(orderVO.getAgentId(), "所属代理不能为空");
         Assert.hasLength(orderVO.getCustomerName(), "收件人不能为空");
         Assert.hasLength(orderVO.getPhoneNumber(), "联系电话不能为空");
-        Assert.hasLength(orderVO.getPostalCode(), "邮政编码不能为空");
+//        Assert.hasLength(orderVO.getPostalCode(), "邮政编码不能为空");
 
         Assert.hasLength(orderVO.getAddress(), "收件人地址不能为空");
         Assert.notEmpty(orderVO.getProductList(), "商品项信息不能为空");
