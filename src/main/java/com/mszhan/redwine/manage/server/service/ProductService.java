@@ -33,4 +33,8 @@ public interface ProductService extends Service<Product> {
     void removePic(Integer id, Boolean large);
 
     Product queryById(Integer id);
+
+    Object queryForAll();
+
+
 }

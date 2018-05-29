@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head th:include="includes/ui_libs::payload('产品管理')"></head>
+<script type="text/javascript" src="/ui-lib/main/js/product/product_list.js"></script>
+<style>
+    .redblock{
+        text-align: center;
+        display: table-cell;
+        vertical-align: middle;
+        width:400px;
+        height: 400px;
+        background-color: red;
+
+    }
+    .head_table_title{
+        width:100%;
+        text-align:center;
+        background-color: #E8E8E8;
+        font-style:italic;
+        font-size:17px;
+        font-weight: 700;
+        letter-spacing:10px;
+    }
+    .table_title{
+        text-align:center;
+        background-color: #000000;
+        color:#FFFFFF;
+
+    }
+    table, th, td
+    {
+        border: 1px solid #CC9900;
+    }
+    table th{
+        text-align:center;
+        font-weight:400;
+        font-size: 13px;
+    }
+    .productNameClass {
+        font-size:10px;
+        font-weight:600;
+        text-align:center;
+        width:100px;
+    }
+    .imgClass {
+        height:60px;
+        width:200px;
+    }
+    .table_td {
+        text-align:center;
+        width:80px;
+    }
+    .table_font{
+        font-size:12px;
+        font-weight:700;
+
+    }
+    .table_money{
+        font-size:12px;
+        font-weight:700;
+    }
+</style>
+
+<body>
+<main class="container container-fluid">
+    <div class="my-3 p-3 bg-white rounded box-shadow bk" >
+        <div style="text-align:center"><img src="/ui-lib/image/company_title.png"  /></div>
+
+        <div class="head_table_title">全国招商价格表</div>
+
+        <div>
+        <table id="dataTable" style="width:100%">
+            <thead class="table_title">
+            <th colspan="2">产品名称</th>
+            <th>产区</th>
+            <th>级别</th>
+            <th>酒精度</th>
+            <th>规格</th>
+            <th>单位</th>
+            <th>总代理</th>
+            <th>代理价</th>
+            <th>批发价</th>
+            <th>零售价</th>
+            </thead>
+        </table>
+        </div>
+
+        <div>
+
+            <div style="heigh:auto; text-align:center" >
+                <div style="height:100px;"><img  src="/ui-lib/image/ewm.png" style="width:100px;height:100px;"/></div>
+                <div><span style="font-size:12px;color:#FFCC99; " >询价格，扫一扫</span></div></div>
+            <div  style="text-align:center">
+            <p>地址：深圳市南山区科技园中区科技中一路48号<br/>
+               电话：0755-2678 9222  钟生：18688833440
+            </p>
+           </div>
+
+        </div>
+
+    </div>
+</main>
+</body>
+
+<script>
+
+
+
+    $.ajax({
+        url: '/product/query_for_all',
+        method: 'GET',
+        async: false,
+        contentType: 'application/json',
+        dataType: 'json',
+        success: function (data) {
+            var tableVa = $("#dataTable");
+            if (data.success){
+                $.each( data.data, function(i, val){
+                    var filePath = "/product_img/basic/" + val.productFileName;
+                    var value = '<tr><td style="100px;"><p class="productNameClass">[productName]</p></td><td style="width:180px;"><img  class="imgClass"  /></td><td class="table_td"><span class="table_font">[productionArea]</span></td><td class="table_td"><span class="table_font">[level]</span></td><td class="table_td"><span class="table_font">[alcoholContent]%vol</span></td><td class="table_td"><span class="table_font">[specification]</span></td><td class="table_td"><span class="table_font">[unit]</span></td><td class="table_td"><span class="table_money">[generalGentPrice]</span><span class="table_font">元</span></td><td class="table_td"><span class="table_money">[gentPrice]</span><span clas="table_font">元</span></td><td class="table_td"><span class="table_money">[wholesalePrice]</span><span class="table_font">元</span></td><td class="table_td"><span class="table_money">[retailPrice]</span><span class="table_font">元</span></td></tr>';
+                    value = value.replace("[productName]", val.productName == null?"":val.productName).replace("[productFileName]", filePath == null ?"" : filePath).replace("[productionArea]", val.productionArea == null?"":val.productionArea).replace("[level]", val.level == null? "":val.level).replace("[alcoholContent]", val.alcoholContent == null?"": val.alcoholContent)
+                        .replace("[specification]", val.specification == null?"":val.specification).replace("[unit]", val.unit == null?"":val.unit).replace("[generalGentPrice]", val.generalGentPrice == null?"": val.generalGentPrice).replace("[gentPrice]", val.gentPrice == null?"": val.gentPrice).replace("[wholesalePrice]", val.wholesalePrice == null ?"" : val.wholesalePrice).replace("[retailPrice]", val.retailPrice == null ? "": val.retailPrice);
+                   var jqData = $.parseHTML(value);
+                   $(jqData).find("img").attr("src", filePath);
+                    tableVa.append(jqData);
+                });
+            }
+
+        }
+    });
+
+
+</script>
+</html>

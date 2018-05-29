@@ -4,8 +4,7 @@ public enum AgentTypeEnum {
 
     ADMIN("超级管理员"),
     GENERAL_AGENT("总代理"),
-    AGENT("代理")
-    ;
+    AGENT("代理");
 
     private String value;
 

@@ -27,5 +27,7 @@ public interface ProductMapper extends Mapper<Product> {
 
     List<Product> queryProductBySku(@Param("sku") String sku);
 
+    List<Product> queryForAll();
+
 
 }

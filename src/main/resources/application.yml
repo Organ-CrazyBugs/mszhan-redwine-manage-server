@@ -39,6 +39,7 @@ server:
 
 productPath: /productPicture/basic
 largePath: /productPicture/large
+fileLocation: D:/workspace
 
 
-productResoucePath: file:E:/workSoft/workspace/productPicture/
+productResoucePath: file:D:/workspace/productPicture/

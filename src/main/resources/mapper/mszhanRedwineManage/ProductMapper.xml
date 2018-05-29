@@ -163,4 +163,9 @@
     </foreach>
   </update>
 
+  <select id="queryForAll" resultMap="BaseResultMap">
+    select * from product
+    where remove = 'N'
+  </select>
+
 </mapper>

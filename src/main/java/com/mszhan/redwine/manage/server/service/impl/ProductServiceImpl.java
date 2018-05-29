@@ -41,6 +41,8 @@ public class ProductServiceImpl extends AbstractService<Product> implements Prod
     @Value("${largePath}")
     private String largePath;
 
+    @Value("${fileLocation}")
+    private String fileLocation;
 
 
     @Override
@@ -293,19 +295,36 @@ public class ProductServiceImpl extends AbstractService<Product> implements Prod
         return product;
     }
 
+    @Override
+    public Object queryForAll() {
+
+        List<Product> productList = productMapper.queryForAll();
+        User user = SecurityUtils.getAuthenticationUser();
+        if (user == null){
+            throw BasicException.newInstance().error("请先登录", 500);
+        }
+        String type = user.getAgentType();
+        for (Product pro : productList){
+            if ("AGENT".equals(type)){
+                pro.setGeneralGentPrice(BigDecimal.ZERO);
+            }
+        }
+        return Responses.newInstance().data(productList);
+    }
+
     private String checkPath(Boolean large){
         File directory = new File("..");
         try {
             String path = null;
             if (large){
-                path = String.format("%s%s", directory.getCanonicalPath(), largePath);
+                path = String.format("%s%s", fileLocation, largePath);
             } else {
-                path = String.format("%s%s", directory.getCanonicalPath(), picturePath);
+                path = String.format("%s%s", fileLocation, picturePath);
             }
             File file = new File(path);
             file.mkdirs();
             return path;
-        } catch (IOException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return null;

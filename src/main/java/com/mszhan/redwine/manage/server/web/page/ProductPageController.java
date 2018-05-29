@@ -37,6 +37,12 @@ public class ProductPageController {
         return view;
     }
 
+    @GetMapping("/page/product/show_product_price_index")
+    public ModelAndView showProductPriceIndex() {
+        ModelAndView view = new ModelAndView("product/show_product_price");
+        return view;
+    }
+
     @GetMapping("/page/product/product_detail_index")
     public ModelAndView productDetailIndex(Integer id) {
         ModelAndView view = new ModelAndView("product/show_product_detail_info");

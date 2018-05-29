@@ -32,8 +32,9 @@
         margin-left:8px;
     }
     .productName{
-        color:#FFCC99;
-        font-size:20px;
+        color:#CC9900;
+        font-weight:700;
+        font-size:25px;
 
     }
     .productNameDiv{
@@ -43,17 +44,12 @@
 </style>
 
 <body>
-<!-- 一级导航菜单 -->
-<div th:include="includes/nav_bar::payload('PRODUCT')">
-    <!-- 二级导航菜单 --></div>
-<!-- 二级导航菜单 -->
-<div th:include="includes/nav_bar_level2::payload('PRODUCT_MODEL','PRODUCT_INDEX')"></div>
 
 <main class="container container-fluid">
     <div class="my-3 p-3 bg-white rounded box-shadow bk" >
         <div class="row" >
             <div class="col-md-5"  >
-               <img id="largeFile" name="largeFile"  src="/ui-lib/image/404.png"  style="width:100%; height:700px;"/>
+               <img id="largeFile" name="largeFile"  src="/ui-lib/image/404.png"  />
             </div>
             <div class="col-md-7">
                 <form id="show-intro-form">
@@ -106,7 +102,7 @@
                                         <td align="left"><span>类型：</span><span id="wineType" name="wineType"></span></td><td align="left"><span>年份：</span><span id="age" name="age"></span></td>
                                     </tr>
                                     <tr>
-                                        <td align="left"><span>酒精度：</span><span id="alcoholContent" name="alcoholContent"></span></td><td align="left"><span>净含量：</span><span id="netWeight" name="netWeight"></span></td>
+                                        <td align="left"><span>酒精度：</span><span id="alcoholContent" name="alcoholContent"></span>%</td><td align="left"><span>净含量：</span><span id="netWeight" name="netWeight"></span>ML</td>
                                     </tr>
                                     <tr>
                                         <td align="left"><span>贮藏方式：</span><span id="storageMethod" name="storageMethod"></span></td><td align="left"><span>酿酒时间：</span><span id="makingTime" name="makingTime"></span></td>
@@ -152,7 +148,6 @@
         dataType: 'json',
         data: "id=" + id,
         success: function (data) {
-            console.log(data);
             largeFileName = data.data.backgroundFileName;
             $("#tastingRecords").text(data.data.tastingRecords);
             $("#recommendedReason").text(data.data.recommendedReason);

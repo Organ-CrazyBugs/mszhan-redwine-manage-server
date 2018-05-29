@@ -10,6 +10,7 @@ $(function () {
     let $editSubmitBtn = $('#edit-submit-btn');
     let $createBtn = $('#create_btn');
     let $showIntrBtn = $('#show_intr_btn');
+    let $showPriceBtn = $('#show_price_btn');
 
 
     $table.bootstrapTable({
@@ -20,7 +21,7 @@ $(function () {
             {field: '',
                 title: '产品图片',
                 formatter: img,
-                width:100
+                width:220
             },
             {field: 'productName', title: '产品名称',  width:160, formatter : textShow},
             {field: 'sku', title: 'SKU', width:100},
@@ -41,7 +42,7 @@ $(function () {
             {field: 'storageMethod', title: '贮藏方式', width:150},
             {field: 'withFood', title: '美食搭配', width:150, formatter : textShow},
             {field: 'age', title: '年份', width:100},
-            {field: 'incubationPeriod', title: '培育期', width:100},
+            {field: 'incubationPeriod', title: '酿造方法', width:100},
             {field: 'netWeight', title: '净含量', width:100},
             {field: 'makingTime', title: '酿酒时间', width:100},
             {field: 'tastingRecords', title: '品鉴记录', width:150, formatter : textShow},
@@ -63,7 +64,7 @@ $(function () {
 
     function img(e, v){
         var str = "/product_img/basic/" + v.productFileName;
-        return "<img style='width:80px; height:80px;' src='"+str+"' />";
+        return "<img style='height:60px;width:200px;' src='"+str+"' />";
     }
 
 
@@ -201,7 +202,10 @@ $(function () {
         }
         // 绑定表单数据
         var id = rows[0].id;
-        window.location.href="/page/product/product_introduce_index?id=" + id;
+        window.open("/page/product/product_introduce_index?id=" + id);
+    });
+    $showPriceBtn.on('click', function(event) {
+        window.open("/page/product/show_product_price_index");
     });
 
     // 修改仓库信息 提交按钮单击事件

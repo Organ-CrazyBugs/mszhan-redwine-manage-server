@@ -67,6 +67,10 @@ public class ProductController {
         productService.removePic(id, large);
         return Responses.newInstance().succeed();
     }
+    @GetMapping(value = "/query_for_all")
+    public Object queryForAll() {
+        return productService.queryForAll();
+    }
 
     @DeleteMapping(value = "/delete_by_ids/{ids}")
     public Object deletePic(@PathVariable("ids") String ids) {
