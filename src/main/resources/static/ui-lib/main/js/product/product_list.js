@@ -11,7 +11,8 @@ $(function () {
     let $createBtn = $('#create_btn');
     let $showIntrBtn = $('#show_intr_btn');
     let $showPriceBtn = $('#show_price_btn');
-
+    let $showPriceSubmitBtn = $('#show-price-submit-btn');
+    let $showPriceModal = $('#show-price-modal');
 
     $table.bootstrapTable({
         url: '/product/search',
@@ -158,6 +159,17 @@ $(function () {
             }
         });
     });
+    // 修改仓库信息 按钮单击事件
+    $showPriceSubmitBtn.on('click', function(event) {
+
+        var showGeneralGentPrice = $("#showGeneralGentPrice").val();
+        var showGentPrice = $("#showGentPrice").val();
+        var showWholesalePrice = $("#showWholesalePrice").val();
+        var showRetailPrice = $("#showRetailPrice").val();
+
+        window.open("/page/product/show_product_price_index?showGeneralGentPrice=" + showGeneralGentPrice + "&showGentPrice=" + showGentPrice + "&showWholesalePrice=" + showWholesalePrice + "&showRetailPrice=" + showRetailPrice);
+        $showPriceModal.modal('hide');
+    });
 
     // 修改仓库信息 按钮单击事件
     $showEditBtn.on('click', function(event) {
@@ -205,7 +217,9 @@ $(function () {
         window.open("/page/product/product_introduce_index?id=" + id);
     });
     $showPriceBtn.on('click', function(event) {
-        window.open("/page/product/show_product_price_index");
+        $("#show-price-form").reset();
+        $showPriceModal.modal('show');
+        // window.open("/page/product/show_product_price_index");
     });
 
     // 修改仓库信息 提交按钮单击事件

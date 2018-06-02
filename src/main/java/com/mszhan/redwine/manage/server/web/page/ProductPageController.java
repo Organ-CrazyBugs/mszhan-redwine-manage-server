@@ -38,8 +38,12 @@ public class ProductPageController {
     }
 
     @GetMapping("/page/product/show_product_price_index")
-    public ModelAndView showProductPriceIndex() {
+    public ModelAndView showProductPriceIndex(String showGeneralGentPrice, String showGentPrice, String showWholesalePrice, String showRetailPrice) {
         ModelAndView view = new ModelAndView("product/show_product_price");
+        view.addObject("showGeneralGentPrice", showGeneralGentPrice);
+        view.addObject("showGentPrice", showGentPrice);
+        view.addObject("showWholesalePrice", showWholesalePrice);
+        view.addObject("showRetailPrice", showRetailPrice);
         return view;
     }
 

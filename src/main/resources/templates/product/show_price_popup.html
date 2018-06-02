@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+
+    <div th:fragment="payload(title, modalId)">
+        <div class="modal fade" th:id="${modalId}" tabindex="-1" role="dialog">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" th:text="${title}"></h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <form id="show-price-form" action="#">
+                        <input type="hidden" name="id" />
+                        <div class="modal-body">
+
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <div class="input-group-text query-form-label">总代理价</div>
+                                    </div>
+                                    <select name="showGeneralGentPrice" id="showGeneralGentPrice" class="custom-select">
+                                        <option value="Y" selected="selected">展示</option>
+                                        <option value="N">不展示</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <div class="input-group-text query-form-label">代理价</div>
+                                    </div>
+                                    <select name="showGentPrice" id="showGentPrice" class="custom-select">
+                                        <option value="Y" selected="selected">展示</option>
+                                        <option value="N">不展示</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <div class="input-group-text query-form-label">批发价</div>
+                                    </div>
+                                    <select name="showWholesalePrice" id="showWholesalePrice" class="custom-select">
+                                        <option value="Y" selected="selected">展示</option>
+                                        <option value="N">不展示</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <div class="input-group-text query-form-label">零售价</div>
+                                    </div>
+                                    <select name="showRetailPrice" id="showRetailPrice" class="custom-select">
+                                        <option value="Y" selected="selected">展示</option>
+                                        <option value="N">不展示</option>
+                                    </select>
+                                </div>
+                            </div>
+
+
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
+                            <button id="show-price-submit-btn" type="submit" class="btn btn-primary">确定</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</html>

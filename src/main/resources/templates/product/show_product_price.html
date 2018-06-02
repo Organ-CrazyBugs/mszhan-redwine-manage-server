@@ -39,10 +39,9 @@
         font-size: 13px;
     }
     .productNameClass {
-        font-size:10px;
-        font-weight:600;
+        font-size:8px;
+        font-weight:300;
         text-align:center;
-        width:100px;
     }
     .imgClass {
         height:60px;
@@ -66,24 +65,18 @@
 <body>
 <main class="container container-fluid">
     <div class="my-3 p-3 bg-white rounded box-shadow bk" >
+        <input type="hidden" id="showGeneralGentPrice" th:value="${showGeneralGentPrice}" />
+        <input type="hidden" id="showGentPrice" th:value="${showGentPrice}" />
+        <input type="hidden" id="showWholesalePrice" th:value="${showWholesalePrice}" />
+        <input type="hidden" id="showRetailPrice" th:value="${showRetailPrice}" />
+
         <div style="text-align:center"><img src="/ui-lib/image/company_title.png"  /></div>
 
         <div class="head_table_title">全国招商价格表</div>
 
         <div>
         <table id="dataTable" style="width:100%">
-            <thead class="table_title">
-            <th colspan="2">产品名称</th>
-            <th>产区</th>
-            <th>级别</th>
-            <th>酒精度</th>
-            <th>规格</th>
-            <th>单位</th>
-            <th>总代理</th>
-            <th>代理价</th>
-            <th>批发价</th>
-            <th>零售价</th>
-            </thead>
+
         </table>
         </div>
 
@@ -105,8 +98,43 @@
 </body>
 
 <script>
+    var tableVa = $("#dataTable");
+    var showGeneralGentPrice = $("#showGeneralGentPrice").val();
+    var showGentPrice = $("#showGentPrice").val();
+    var showWholesalePrice = $("#showWholesalePrice").val();
+    var showRetailPrice = $("#showRetailPrice").val();
+    var tableHead = '<thead class="table_title"><th colspan="2">产品名称</th><th>产区</th><th>级别</th><th>酒精度</th><th>规格</th><th>单位</th>';
+    if (showGeneralGentPrice == 'Y'){
+        tableHead = tableHead + '<th>总代理</th>';
+    }
+    if (showGentPrice == 'Y'){
+        tableHead = tableHead + '<th>代理价</th>';
+    }
+    if (showWholesalePrice == 'Y'){
+        tableHead = tableHead + '<th>批发价</th>';
+    }
+    if (showRetailPrice == 'Y'){
+        tableHead = tableHead + '<th>零售价</th>';
+    }
+    tableHead = tableHead + '</thead>';
+    var jqHead = $.parseHTML(tableHead);
+    tableVa.append(jqHead);
+    function clickBtn(e){
+        console.log(e);
+        if ($(e.target).find("input").length == 1){
+            return ;
+        }
+        var html = '<input type="text" style="width:30px;" onblur="blurBtn(event)" value="[value]" />';
+        html = html.replace("[value]", e.target.innerText);
+        var dd = $(html);
+        $(e.target).html(html);
+        dd.focus();
 
+    }
 
+    function blurBtn(e){
+        $(e.target.parentElement).html(e.target.value);
+    }
 
     $.ajax({
         url: '/product/query_for_all',
@@ -115,11 +143,24 @@
         contentType: 'application/json',
         dataType: 'json',
         success: function (data) {
-            var tableVa = $("#dataTable");
             if (data.success){
                 $.each( data.data, function(i, val){
                     var filePath = "/product_img/basic/" + val.productFileName;
-                    var value = '<tr><td style="100px;"><p class="productNameClass">[productName]</p></td><td style="width:180px;"><img  class="imgClass"  /></td><td class="table_td"><span class="table_font">[productionArea]</span></td><td class="table_td"><span class="table_font">[level]</span></td><td class="table_td"><span class="table_font">[alcoholContent]%vol</span></td><td class="table_td"><span class="table_font">[specification]</span></td><td class="table_td"><span class="table_font">[unit]</span></td><td class="table_td"><span class="table_money">[generalGentPrice]</span><span class="table_font">元</span></td><td class="table_td"><span class="table_money">[gentPrice]</span><span clas="table_font">元</span></td><td class="table_td"><span class="table_money">[wholesalePrice]</span><span class="table_font">元</span></td><td class="table_td"><span class="table_money">[retailPrice]</span><span class="table_font">元</span></td></tr>';
+                    var value = '<tr><td style="100px;"><p class="productNameClass">[productName]</p></td><td style="width:180px;"><img  class="imgClass"  /></td><td class="table_td"><span class="table_font">[productionArea]</span></td><td class="table_td"><span class="table_font">[level]</span></td><td class="table_td"><span class="table_font">[alcoholContent]%vol</span></td><td class="table_td"><span class="table_font">[specification]</span></td><td class="table_td"><span class="table_font">[unit]</span></td>';
+                    if (showGeneralGentPrice == 'Y'){
+                        value = value + '<td class="table_td"><span class="table_money" ondblclick="clickBtn(event)" name="generalGentPrice">[generalGentPrice]</span><span class="table_font">元</span></td>';
+                    }
+                    if (showGentPrice == 'Y'){
+                        value = value + '<td class="table_td"><span class="table_money" ondblclick="clickBtn(event)" name="gentPrice">[gentPrice]</span><span class="table_font">元</span></td>';
+                    }
+                    if (showWholesalePrice == 'Y'){
+                        value = value + '<td class="table_td"><span class="table_money" ondblclick="clickBtn(event)" name="wholesalePrice">[wholesalePrice]</span><span class="table_font">元</span></td>';
+                    }
+                    if (showRetailPrice == 'Y'){
+                        value = value + '<td class="table_td"><span class="table_money" ondblclick="clickBtn(event)" name="retailPrice">[retailPrice]</span><span class="table_font">元</span></td>';
+                    }
+
+                    value = value + '</tr>';
                     value = value.replace("[productName]", val.productName == null?"":val.productName).replace("[productFileName]", filePath == null ?"" : filePath).replace("[productionArea]", val.productionArea == null?"":val.productionArea).replace("[level]", val.level == null? "":val.level).replace("[alcoholContent]", val.alcoholContent == null?"": val.alcoholContent)
                         .replace("[specification]", val.specification == null?"":val.specification).replace("[unit]", val.unit == null?"":val.unit).replace("[generalGentPrice]", val.generalGentPrice == null?"": val.generalGentPrice).replace("[gentPrice]", val.gentPrice == null?"": val.gentPrice).replace("[wholesalePrice]", val.wholesalePrice == null ?"" : val.wholesalePrice).replace("[retailPrice]", val.retailPrice == null ? "": val.retailPrice);
                    var jqData = $.parseHTML(value);
