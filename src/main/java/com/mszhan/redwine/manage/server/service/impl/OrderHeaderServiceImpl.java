@@ -10,6 +10,7 @@ import com.mszhan.redwine.manage.server.model.mszhanRedwineManage.base.PaginateR
 import com.mszhan.redwine.manage.server.model.mszhanRedwineManage.query.AddOrderPojo;
 import com.mszhan.redwine.manage.server.model.mszhanRedwineManage.query.OrderQuery;
 import com.mszhan.redwine.manage.server.model.mszhanRedwineManage.vo.CreateOrderVO;
+import com.mszhan.redwine.manage.server.model.mszhanRedwineManage.vo.OrderCancelVO;
 import com.mszhan.redwine.manage.server.model.mszhanRedwineManage.vo.OrderMarkPaymentVO;
 import com.mszhan.redwine.manage.server.service.OrderHeaderService;
 import com.mszhan.redwine.manage.server.core.AbstractService;
@@ -301,6 +302,51 @@ public class OrderHeaderServiceImpl extends AbstractService<OrderHeader> impleme
         history.setRemark(paymentVO.getRemark());
         history.setOrderId(paymentVO.getOrderId());
         this.agentPriceHistoryMapper.insert(history);
+    }
+
+    @Transactional
+    @Override
+    public void orderCancel(OrderCancelVO cancelVO) {
+        Assert.notNull(cancelVO, "参数信息不能为空");
+        Assert.hasLength(cancelVO.getOrderId(), "需求消单的订单号不能为空");
+
+        OrderHeader orderHeader = this.orderHeaderMapper.selectByPrimaryKey(cancelVO.getOrderId());
+        Assert.notNull(orderHeader, "订单号对应的信息未找到");
+        Assert.isTrue(!"REMOVED".equals(orderHeader.getStatus()), "已删除订单无法进行消单操作");
+
+        if ("SHIPPED".equalsIgnoreCase(orderHeader.getStatus())) {
+            // 已发货，回滚库存
+            Condition fetchItemCon = new Condition(OrderItem.class);
+            fetchItemCon.createCriteria().andEqualTo("orderId", orderHeader.getOrderId());
+            List<OrderItem> orderItems = this.orderItemMapper.selectByCondition(fetchItemCon);
+            orderItems.forEach(item -> {
+                Condition inventoryCon = new Condition(Inventory.class);
+                inventoryCon.createCriteria().andEqualTo("sku", item.getSku())
+                        .andEqualTo("wareHouseId", item.getWarehouseId());
+                List<Inventory> inventories = this.inventoryMapper.selectByCondition(inventoryCon);
+                if (inventories.isEmpty()) {
+                    return;
+                }
+                Inventory inventory = inventories.get(0);
+                Integer invQty = inventory.getQuantity() == null ? 0 : inventory.getQuantity();
+                // 增加库存
+                Inventory updateInv = new Inventory();
+                updateInv.setId(inventory.getId());
+                updateInv.setQuantity(invQty + item.getQuantity());
+                this.inventoryMapper.updateByPrimaryKeySelective(updateInv);
+            });
+
+            // 删除出库记录
+            Condition delHistoryCon = new Condition(OutboundHistory.class);
+            delHistoryCon.createCriteria().andEqualTo("orderId", cancelVO.getOrderId());
+            this.outboundHistoryMapper.deleteByCondition(delHistoryCon);
+        }
+
+        // 标记订单状态为 REMOVED
+        OrderHeader updateHeader = new OrderHeader();
+        updateHeader.setOrderId(cancelVO.getOrderId());
+        updateHeader.setStatus("REMOVED");
+        this.orderHeaderMapper.updateByPrimaryKeySelective(updateHeader);
     }
 
     @Override

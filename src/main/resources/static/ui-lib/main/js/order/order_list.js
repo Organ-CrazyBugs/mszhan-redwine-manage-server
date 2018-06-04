@@ -6,6 +6,7 @@ $(function () {
     let $orderMarkPaymentForm = $('#order-mark-payment-form');
     let $orderCreatePopupModal = $('#order-create-popup-modal');
     let $orderCreatePopupForm = $('#order-create-popup-form');
+    let $orderCancelBtn = $('#order-cancel-btn');
 
     // 绑定创建仓库Modal隐藏事件， 隐藏时候清空表单内容
     $orderCreatePopupModal.on('hide.bs.modal', function (e) {
@@ -205,5 +206,34 @@ $(function () {
         });
     });
 
+    $orderCancelBtn.on('click', function(btn) {
+        let rows = $table.bootstrapTable('getSelections');
+        if (rows.length <= 0) {
+            $.alertWarning('提示', '请选择需要进行消单的记录项');
+            return;
+        }
+        if (rows.length > 1) {
+            $.alertWarning('提示', '每次只能同时消一张订单，请重新选择');
+            return;
+        }
+        let orderId = rows[0].orderId;
+        $.confirm('确认', `确认对订单号：<b>${orderId}</b> 做消单操作吗？<b>已发货订单将回滚库存数量</b>。`, function(){
+            $.ajax({
+                url: '/api/order/cancel',
+                method: 'POST',
+                dataType: 'json',
+                data: {orderId},
+                targetBtn: $orderCancelBtn,
+                success: function (data) {
+                    if ($.ajaxIsFailure(data)) {
+                        return;
+                    }
+                    $.alertSuccess('提示', '订单消单成功!');
+                    // 刷新订单列表
+                    $('#table').bootstrapTable('refresh');
+                }
+            });
+        });
+    });
 
 });

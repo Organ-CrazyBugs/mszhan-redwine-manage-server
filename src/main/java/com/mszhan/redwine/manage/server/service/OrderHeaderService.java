@@ -6,6 +6,7 @@ import com.mszhan.redwine.manage.server.model.mszhanRedwineManage.base.PaginateR
 import com.mszhan.redwine.manage.server.model.mszhanRedwineManage.query.AddOrderPojo;
 import com.mszhan.redwine.manage.server.model.mszhanRedwineManage.query.OrderQuery;
 import com.mszhan.redwine.manage.server.model.mszhanRedwineManage.vo.CreateOrderVO;
+import com.mszhan.redwine.manage.server.model.mszhanRedwineManage.vo.OrderCancelVO;
 import com.mszhan.redwine.manage.server.model.mszhanRedwineManage.vo.OrderMarkPaymentVO;
 
 import java.util.List;
@@ -24,6 +25,8 @@ public interface OrderHeaderService extends Service<OrderHeader> {
     void orderMarkShipped(List<String> orderIds);
 
     void orderMarkPayment(OrderMarkPaymentVO paymentVO);
+
+    void orderCancel(OrderCancelVO cancelVO);
 
     void addOrder(AddOrderPojo addOrderPojo);
 }
