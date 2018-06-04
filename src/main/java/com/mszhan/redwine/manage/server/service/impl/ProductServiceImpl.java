@@ -5,6 +5,7 @@ import com.mszhan.redwine.manage.server.core.BasicException;
 import com.mszhan.redwine.manage.server.core.Responses;
 import com.mszhan.redwine.manage.server.core.SecurityUtils;
 import com.mszhan.redwine.manage.server.dao.mszhanRedwineManage.ProductMapper;
+import com.mszhan.redwine.manage.server.enums.AgentTypeEnum;
 import com.mszhan.redwine.manage.server.model.mszhanRedwineManage.Product;
 import com.mszhan.redwine.manage.server.model.mszhanRedwineManage.base.PaginateResult;
 import com.mszhan.redwine.manage.server.model.mszhanRedwineManage.query.ProductQuery;
@@ -60,6 +61,10 @@ public class ProductServiceImpl extends AbstractService<Product> implements Prod
         for (Product pro : list){
             if ("AGENT".equals(type)){
                 pro.setGeneralGentPrice(BigDecimal.ZERO);
+                pro.setCost(BigDecimal.ZERO);
+            }
+            if (AgentTypeEnum.GENERAL_AGENT.toString().equals(type)){
+                pro.setCost(BigDecimal.ZERO);
             }
         }
         return PaginateResult.newInstance(count, list);

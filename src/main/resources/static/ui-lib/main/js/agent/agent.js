@@ -37,7 +37,7 @@ $(function () {
                 },width:100},
             {field: 'tel', title: '座机号码', width:160, formatter:textShow},
             {field: 'phone', title: '联系电话',width:160,formatter:textShow},
-            {field: 'balance', title: '余额',width:100},
+            // {field: 'balance', title: '余额',width:100},
             {field: 'address', title: '地址',width:160, formatter:textShow},
             {field: 'creatorName', title: '创建人',width:100},
             {field: 'createDate', title: '创建时间',width:160},
