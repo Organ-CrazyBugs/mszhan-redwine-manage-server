@@ -55,7 +55,7 @@ $(function () {
                     return $.formatString(tmpl, '-', gentPrice, wholesalePrice, retailPrice);
                     break;
                 case 'AGENT':
-                    return $.formatString(tmpl, '-', '-', wholesalePrice, retailPrice);
+                    return $.formatString(tmpl, '-', gentPrice, wholesalePrice, retailPrice);
                     break;
                 default:
                     return $.formatString(tmpl, '-', '-', wholesalePrice, retailPrice);
