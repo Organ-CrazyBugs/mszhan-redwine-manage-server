@@ -103,7 +103,7 @@
         AND sku like #{sku}
       </if>
       <if test="productName != null and productName != ''">
-        AND sku like #{productName}
+        AND product_name like #{productName}
       </if>
     </where>
   </select>
