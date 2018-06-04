@@ -172,10 +172,12 @@ $(function () {
                     }
                     $.alertSuccess('提示', '订单创建成功!');
                     // $table.bootstrapTable('refresh');
-                    $('#order-create-popup-modal').modal('hide');
-
-                    // 刷新订单列表
-                    $('#table').bootstrapTable('refresh');
+                    console.log(data);
+                    $.alertModal('提示', `订单创建成功，订单号：<b>${data.data.orderId}</b>`, function () {
+                        $('#order-create-popup-modal').modal('hide');
+                        // 刷新订单列表
+                        $('#table').bootstrapTable('refresh');
+                    });
                 }
             });
         });

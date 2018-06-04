@@ -51,6 +51,7 @@
       </if>
     </where>
     group by oh.order_id
+    order by oh.create_date desc
   </select>
 
   <select id="queryForPage" resultMap="BaseResultMap"  parameterType="com.mszhan.redwine.manage.server.model.mszhanRedwineManage.query.OrderQuery">

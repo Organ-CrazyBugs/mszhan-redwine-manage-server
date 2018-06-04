@@ -170,6 +170,37 @@ $.extend({
             }
         });
     },
+    alertModal: function (title, text, confirmEvent) {
+        (new PNotify({
+            title: title,
+            text: text,
+            icon: 'fa fa-question-circle fa-2x',
+            hide: false,
+            addclass: 'stack-modal confirm-bg-white',
+            stack: {'dir1': 'down', 'dir2': 'right', 'modal': true},
+            confirm: {
+                confirm: true,
+                buttons: [{
+                    text: '确认',
+                    addClass: 'confirm-ok-btn',
+                    click: function (notice) {
+                        notice.remove();
+
+                        if (confirmEvent) {
+                            confirmEvent();
+                        }
+                    }
+                }, null]
+            },
+            buttons: {
+                closer: false,
+                sticker: false
+            },
+            history: {
+                history: false
+            }
+        }));
+    },
     confirm: function (title, text, confirmEvent, cancelEvent) {
         (new PNotify({
             title: title,
@@ -209,15 +240,7 @@ $.extend({
             history: {
                 history: false
             }
-        }));/*.get().on('pnotify.confirm', function() {
-            if (confirmEvent) {
-                confirmEvent();
-            }
-        }).on('pnotify.cancel', function() {
-            if (cancelEvent) {
-                cancelEvent();
-            }
-        });*/
+        }));
     }
 });
 
