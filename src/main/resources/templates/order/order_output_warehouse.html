@@ -40,15 +40,39 @@
             <div class="col-10 border-left">
                 <div class="row">
                     <div class="col-3 py-2 text-right font-weight-bold">名称：</div>
-                    <div class="col-9 py-2 border-left" th:text="${oh.getClientName()}"></div>
+                    <div class="col-9 py-2 border-left">
+                        <div th:text="${oh.getClientName()}" style="height: 20px;" onclick="editorEvent(this)"></div>
+                        <div class="input-group editor-wrapper" style="display: none;">
+                            <input type="text" class="form-control" th:value="${oh.getClientName()}" />
+                            <div class="input-group-append">
+                                <button class="btn btn-outline-secondary" type="button" onclick="editorConfirmEvent(this)">确认</button>
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 <div class="row border-top">
                     <div class="col-3 py-2 text-right font-weight-bold">电话：</div>
-                    <div class="col-9 py-2 border-left" th:text="${oh.getPhoneNumber()}"></div>
+                    <div class="col-9 py-2 border-left">
+                        <div th:text="${oh.getPhoneNumber()}" style="height: 20px;" onclick="editorEvent(this)"></div>
+                        <div class="input-group editor-wrapper" style="display: none;">
+                            <input type="text" class="form-control" th:value="${oh.getPhoneNumber()}" />
+                            <div class="input-group-append">
+                                <button class="btn btn-outline-secondary" type="button" onclick="editorConfirmEvent(this)">确认</button>
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 <div class="row border-top">
                     <div class="col-3 py-2 text-right font-weight-bold">收货地址：</div>
-                    <div class="col-9 py-2 border-left" th:text="${oh.getAddress()}"></div>
+                    <div class="col-9 py-2 border-left">
+                        <div th:text="${oh.getAddress()}" style="height: 20px;" onclick="editorEvent(this)"></div>
+                        <div class="input-group editor-wrapper" style="display: none;">
+                            <input type="text" class="form-control" th:value="${oh.getAddress()}" />
+                            <div class="input-group-append">
+                                <button class="btn btn-outline-secondary" type="button" onclick="editorConfirmEvent(this)">确认</button>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -80,16 +104,57 @@
         </div>
         <div class="row border-top text-center">
             <div class="col-2 py-2 font-weight-bold">备注：</div>
-            <div class="col-10 py-2 border-left text-left" th:text="${oh.getRemark()}"></div>
+            <div class="col-10 py-2 border-left text-left">
+                <div th:text="${oh.getRemark()}" style="height: 20px;" onclick="editorEvent(this)"></div>
+                <div class="input-group editor-wrapper" style="display: none;">
+                    <input type="text" class="form-control" th:value="${oh.getRemark()}" />
+                    <div class="input-group-append">
+                        <button class="btn btn-outline-secondary" type="button" onclick="editorConfirmEvent(this)">确认</button>
+                    </div>
+                </div>
+            </div>
         </div>
         <div class="row border-top text-center">
             <div class="col-2 py-2 font-weight-bold">经手人(签名)：</div>
-            <div class="col-2 py-2 border-left"></div>
+            <div class="col-2 py-2 border-left">
+                <div onclick="editorEvent(this)" style="height: 20px;"> </div>
+                <div class="input-group editor-wrapper" style="display: none;">
+                    <input type="text" class="form-control" />
+                    <div class="input-group-append">
+                        <button class="btn btn-outline-secondary" type="button" onclick="editorConfirmEvent(this)">确认</button>
+                    </div>
+                </div>
+            </div>
             <div class="col-2 py-2 font-weight-bold border-left">送货人(签名)：</div>
-            <div class="col-2 py-2 border-left"></div>
+            <div class="col-2 py-2 border-left">
+                <div onclick="editorEvent(this)" style="height: 20px;"> </div>
+                <div class="input-group editor-wrapper" style="display: none;">
+                    <input type="text" class="form-control" />
+                    <div class="input-group-append">
+                        <button class="btn btn-outline-secondary" type="button" onclick="editorConfirmEvent(this)">确认</button>
+                    </div>
+                </div>
+            </div>
             <div class="col-2 py-2 font-weight-bold border-left">收货人(签名)：</div>
-            <div class="col-2 py-2 border-left"></div>
+            <div class="col-2 py-2 border-left">
+                <div onclick="editorEvent(this)" style="height: 20px;"> </div>
+                <div class="input-group editor-wrapper" style="display: none;">
+                    <input type="text" class="form-control" />
+                    <div class="input-group-append">
+                        <button class="btn btn-outline-secondary" type="button" onclick="editorConfirmEvent(this)">确认</button>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
+    <script>
+        function editorEvent(targetEl){
+            $(targetEl).hide().next().show().find(":input:eq(0)").focus();
+        }
+        function editorConfirmEvent(targetEl){
+            let val = $(targetEl).parent().prev().val();
+            $(targetEl).parents('.editor-wrapper').hide().prev().text(val).show();
+        }
+    </script>
 </body>
 </html>
