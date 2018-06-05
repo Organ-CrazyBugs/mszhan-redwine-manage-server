@@ -10,13 +10,16 @@
     <head th:include="includes/ui_libs::payload('出库单')"></head>
     <style>
         .border-left{
-            border-left: solid 1px #666!important;
+            border-left: solid 2px #666!important;
         }
         .border-top{
-            border-top: solid 1px #666!important;
+            border-top: solid 2px #666!important;
         }
         .border{
-            border: solid 1px #666!important;
+            border: solid 2px #666!important;
+        }
+        *{
+            font-size: 16px !important;
         }
     </style>
 </head>
@@ -24,7 +27,27 @@
     <div th:each="oh,record:${orderHeaders}" class="container border mb-5">
         <div class="row">
             <div class="col-12 text-center py-2">
-                <h4 class="font-weight-bold">深圳市汇纳酒业有限公司</h4>
+                <h2 class="font-weight-bold">深圳市汇纳酒业有限公司</h2>
+            </div>
+        </div>
+        <div class="row border-top">
+            <div class="col-6 py-2">
+                <div style="height: 20px;" class="text-right" onclick="editorEvent(this)">详细地址: 深圳市南山区科技园科技中一路48号</div>
+                <div class="input-group editor-wrapper" style="display: none;">
+                    <input type="text" class="form-control" value="详细地址: 深圳市南山区科技园科技中一路48号" />
+                    <div class="input-group-append">
+                        <button class="btn btn-outline-secondary" type="button" onclick="editorConfirmEvent(this)">确认</button>
+                    </div>
+                </div>
+            </div>
+            <div class="col-6 py-2">
+                <div style="height: 20px;" class="" onclick="editorEvent(this)">电话: 0755-26789222</div>
+                <div class="input-group editor-wrapper" style="display: none;">
+                    <input type="text" class="form-control" value="电话: 0755-26789222" />
+                    <div class="input-group-append">
+                        <button class="btn btn-outline-secondary" type="button" onclick="editorConfirmEvent(this)">确认</button>
+                    </div>
+                </div>
             </div>
         </div>
         <div class="row border-top text-center">
@@ -110,6 +133,45 @@
                     <input type="text" class="form-control" th:value="${oh.getRemark()}" />
                     <div class="input-group-append">
                         <button class="btn btn-outline-secondary" type="button" onclick="editorConfirmEvent(this)">确认</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row border-top">
+            <div class="col-1 py-2 text-center">
+                <strong>销货<br />单位</strong>
+            </div>
+            <div class="col-1 py-2 border-left text-center">
+                <strong>汇款<br />信息</strong>
+            </div>
+            <div class="col-10 border-left" style="padding: 0">
+                <div class="p-2">
+                    <div style="height: 20px;" onclick="editorEvent(this)">户名: 钟炎松.  账号: 6222 0840 0000 5719862. 工商银行深圳高新区支行</div>
+                    <div class="input-group editor-wrapper" style="display: none;">
+                        <input type="text" class="form-control" value="户名: 钟炎松.  账号: 6222 0840 0000 5719862. 工商银行深圳高新区支行" />
+                        <div class="input-group-append">
+                            <button class="btn btn-outline-secondary" type="button" onclick="editorConfirmEvent(this)">确认</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="p-2 border-top">
+                    <div>
+                        <div style="height: 20px;" onclick="editorEvent(this)">户名: 深圳市汇纳酒业有限公司</div>
+                        <div class="input-group editor-wrapper" style="display: none;">
+                            <input type="text" class="form-control" value="户名: 深圳市汇纳酒业有限公司" />
+                            <div class="input-group-append">
+                                <button class="btn btn-outline-secondary" type="button" onclick="editorConfirmEvent(this)">确认</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mt-1">
+                        <div style="height: 20px;" onclick="editorEvent(this)">账号: 4000 0933 1910 0171 986. 工商银行深圳高新区支行</div>
+                        <div class="input-group editor-wrapper" style="display: none;">
+                            <input type="text" class="form-control" value="账号: 4000 0933 1910 0171 986. 工商银行深圳高新区支行" />
+                            <div class="input-group-append">
+                                <button class="btn btn-outline-secondary" type="button" onclick="editorConfirmEvent(this)">确认</button>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>

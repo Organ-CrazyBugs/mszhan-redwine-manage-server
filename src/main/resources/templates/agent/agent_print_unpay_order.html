@@ -10,13 +10,16 @@
     <head th:include="includes/ui_libs::payload('未付款单')"></head>
     <style>
         .border-left{
-            border-left: solid 1px #666!important;
+            border-left: solid 2px #666!important;
         }
         .border-top{
-            border-top: solid 1px #666!important;
+            border-top: solid 2px #666!important;
         }
         .border{
-            border: solid 1px #666!important;
+            border: solid 2px #666!important;
+        }
+        * {
+            font-size: 16px !important;
         }
     </style>
 </head>
@@ -44,7 +47,7 @@
             </div>
             <div class="row border-top">
                 <div class="col-md-1 py-1 text-center" th:text="${record.index} + 1"></div>
-                <div class="col-md-1 py-1 text-center border-left" th:text="${#dates.format(oh.getCreateDate(), 'yyyy/MM/dd')}"></div>
+                <div class="col-md-1 py-1 text-center border-left" style="padding-left: 0px;padding-right: 0;" th:text="${#dates.format(oh.getCreateDate(), 'yyyy/MM/dd')}"></div>
                 <div class="col-md-4 py-1 border-left" style="padding-top: 0 !important; padding-bottom: 0 !important;">
                     <div th:each="oi,oiRecord:${oh.getOrderItems()}" th:classappend="${oiRecord.index == 0 ? '' : 'border-top'}" class="row py-1">
                         <div class="col-md-12" th:text="${oi.getProductName()}"></div>
@@ -89,7 +92,7 @@
         </div>
         <div class="row py-1 border-top">
             <div class="col-md-12 text-right">
-                <div style="color: #333;"><span th:text="${agent.name}"></span>&nbsp;剩余余额：￥<span th:text="${agent.getBalance().setScale(2, 4)}"></span></div>
+                <div style="color: #333;display: none;"><span th:text="${agent.name}"></span>&nbsp;剩余余额：￥<span th:text="${agent.getBalance().setScale(2, 4)}"></span></div>
                 <h5><strong>总计：￥<span th:text="${allTotal.setScale(2, 4)}"></span></strong></h5>
             </div>
         </div>
