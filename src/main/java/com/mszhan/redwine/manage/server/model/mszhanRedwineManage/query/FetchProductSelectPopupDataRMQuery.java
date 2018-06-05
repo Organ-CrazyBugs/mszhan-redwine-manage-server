@@ -1,5 +1,7 @@
 package com.mszhan.redwine.manage.server.model.mszhanRedwineManage.query;
 
+import org.apache.commons.lang3.StringUtils;
+
 import java.math.BigDecimal;
 
 public class FetchProductSelectPopupDataRMQuery {
@@ -10,6 +12,25 @@ public class FetchProductSelectPopupDataRMQuery {
     private BigDecimal gentPrice;
     private BigDecimal wholesalePrice;
     private BigDecimal retailPrice;
+    private String wineType;
+
+    private boolean wine = false;
+
+    public boolean isWine() {
+        return StringUtils.isNotBlank(this.wineType);
+    }
+
+    public void setWine(boolean wine) {
+        this.wine = wine;
+    }
+
+    public String getWineType() {
+        return wineType;
+    }
+
+    public void setWineType(String wineType) {
+        this.wineType = wineType;
+    }
 
     public Integer getProductId() {
         return productId;

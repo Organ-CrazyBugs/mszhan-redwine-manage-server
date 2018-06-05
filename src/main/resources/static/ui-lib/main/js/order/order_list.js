@@ -54,7 +54,7 @@ $(function () {
                     <tr>
                       <th class="text-center py-2">#</th>
                       <th class="text-center py-2">产品条码</th>
-                      <th class="text-center py-2">数量</th>
+                      <th class="text-center py-2">数量(支)</th>
                       <th class="text-center py-2">售价（单价）</th>
                       <th class="text-center py-2">包装费</th>
                       <th class="text-center py-2">发货仓</th>

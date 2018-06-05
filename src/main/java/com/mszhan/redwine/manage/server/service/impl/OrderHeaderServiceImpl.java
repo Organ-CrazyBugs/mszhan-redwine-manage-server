@@ -133,7 +133,12 @@ public class OrderHeaderServiceImpl extends AbstractService<OrderHeader> impleme
             OrderItem item = new OrderItem();
             item.setSku(proItem.getSku());
             item.setCreateDate(new Date());
-            item.setQuantity(proItem.getQuantity());
+            if ("UNIT_BOX".equals(proItem.getUnit())) {
+                // 一箱为6支
+                item.setQuantity(proItem.getQuantity() * 6);
+            } else {
+                item.setQuantity(proItem.getQuantity());
+            }
             item.setPackagingFee(packPrice);
             item.setUnitPrice(unitPrice);
 
