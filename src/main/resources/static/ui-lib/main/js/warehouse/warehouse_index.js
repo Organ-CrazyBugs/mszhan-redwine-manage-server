@@ -18,9 +18,9 @@ $(function(){
             {field: 'quantity', title: '库存数量', formatter: function(val, record) {
                 if (record['wineType'] && val) {
                     if (val%6 == 0){
-                        return parseInt(val/6) + '箱';
+                        return val + ' (' + parseInt(val/6) + '箱)';
                     } else {
-                        return parseInt(val/6) + '箱' + val%6 + '支';
+                        return val + ' (' + parseInt(val/6) + '箱' + val%6 + '支)';
                     }
                 }
                 return val;
