@@ -10,16 +10,16 @@
     <head th:include="includes/ui_libs::payload('出库单')"></head>
     <style>
         .border-left{
-            border-left: solid 2px #666!important;
+            border-left: solid 4px #666!important;
         }
         .border-top{
-            border-top: solid 2px #666!important;
+            border-top: solid 4px #666!important;
         }
         .border{
-            border: solid 2px #666!important;
+            border: solid 4px #666!important;
         }
         *{
-            font-size: 16px !important;
+            font-size: 24px !important;
         }
     </style>
 </head>
@@ -32,7 +32,7 @@
         </div>
         <div class="row border-top">
             <div class="col-6 py-2">
-                <div style="height: 20px;" class="text-right" onclick="editorEvent(this)">详细地址: 深圳市南山区科技园科技中一路48号</div>
+                <div style="height: 30px;" class="text-right" onclick="editorEvent(this)">详细地址: 深圳市南山区科技园科技中一路48号</div>
                 <div class="input-group editor-wrapper" style="display: none;">
                     <input type="text" class="form-control" value="详细地址: 深圳市南山区科技园科技中一路48号" />
                     <div class="input-group-append">
@@ -41,7 +41,7 @@
                 </div>
             </div>
             <div class="col-6 py-2">
-                <div style="height: 20px;" class="" onclick="editorEvent(this)">电话: 0755-26789222</div>
+                <div style="height: 30px;" class="" onclick="editorEvent(this)">电话: 0755-26789222</div>
                 <div class="input-group editor-wrapper" style="display: none;">
                     <input type="text" class="form-control" value="电话: 0755-26789222" />
                     <div class="input-group-append">
@@ -62,9 +62,9 @@
             </div>
             <div class="col-10 border-left">
                 <div class="row">
-                    <div class="col-3 py-2 text-right font-weight-bold">名称：</div>
-                    <div class="col-9 py-2 border-left">
-                        <div th:text="${oh.getClientName()}" style="height: 20px;" onclick="editorEvent(this)"></div>
+                    <div class="col-1 py-2 text-right font-weight-bold" style="padding-left: 0; padding-right: 0;">名称：</div>
+                    <div class="col-5 py-2 border-left">
+                        <div th:text="${oh.getClientName()}" style="height: 30px;" onclick="editorEvent(this)"></div>
                         <div class="input-group editor-wrapper" style="display: none;">
                             <input type="text" class="form-control" th:value="${oh.getClientName()}" />
                             <div class="input-group-append">
@@ -72,11 +72,10 @@
                             </div>
                         </div>
                     </div>
-                </div>
-                <div class="row border-top">
-                    <div class="col-3 py-2 text-right font-weight-bold">电话：</div>
-                    <div class="col-9 py-2 border-left">
-                        <div th:text="${oh.getPhoneNumber()}" style="height: 20px;" onclick="editorEvent(this)"></div>
+
+                    <div class="col-1 py-2 text-right font-weight-bold border-left" style="padding-left: 0; padding-right: 0;">电话：</div>
+                    <div class="col-5 py-2 border-left">
+                        <div th:text="${oh.getPhoneNumber()}" style="height: 30px;" onclick="editorEvent(this)"></div>
                         <div class="input-group editor-wrapper" style="display: none;">
                             <input type="text" class="form-control" th:value="${oh.getPhoneNumber()}" />
                             <div class="input-group-append">
@@ -84,11 +83,12 @@
                             </div>
                         </div>
                     </div>
+
                 </div>
                 <div class="row border-top">
-                    <div class="col-3 py-2 text-right font-weight-bold">收货地址：</div>
-                    <div class="col-9 py-2 border-left">
-                        <div th:text="${oh.getAddress()}" style="height: 20px;" onclick="editorEvent(this)"></div>
+                    <div class="col-1 py-2 text-right font-weight-bold" style="padding-left: 0; padding-right: 0;">地址：</div>
+                    <div class="col-10 py-2 border-left">
+                        <div th:text="${oh.getAddress()}" style="height: 30px;" onclick="editorEvent(this)"></div>
                         <div class="input-group editor-wrapper" style="display: none;">
                             <input type="text" class="form-control" th:value="${oh.getAddress()}" />
                             <div class="input-group-append">
@@ -128,7 +128,7 @@
         <div class="row border-top text-center">
             <div class="col-2 py-2 font-weight-bold">备注：</div>
             <div class="col-10 py-2 border-left text-left">
-                <div th:text="${oh.getRemark()}" style="height: 20px;" onclick="editorEvent(this)"></div>
+                <div th:text="${oh.getRemark()}" style="height: 30px;" onclick="editorEvent(this)"></div>
                 <div class="input-group editor-wrapper" style="display: none;">
                     <input type="text" class="form-control" th:value="${oh.getRemark()}" />
                     <div class="input-group-append">
@@ -146,7 +146,7 @@
             </div>
             <div class="col-10 border-left" style="padding: 0">
                 <div class="p-2">
-                    <div style="height: 20px;" onclick="editorEvent(this)">户名: 钟炎松.  账号: 6222 0840 0000 5719862. 工商银行深圳高新区支行</div>
+                    <div style="height: 30px;" onclick="editorEvent(this)">户名: 钟炎松.  账号: 6222 0840 0000 5719862. 工商银行深圳高新区支行</div>
                     <div class="input-group editor-wrapper" style="display: none;">
                         <input type="text" class="form-control" value="户名: 钟炎松.  账号: 6222 0840 0000 5719862. 工商银行深圳高新区支行" />
                         <div class="input-group-append">
@@ -156,7 +156,7 @@
                 </div>
                 <div class="p-2 border-top">
                     <div>
-                        <div style="height: 20px;" onclick="editorEvent(this)">户名: 深圳市汇纳酒业有限公司</div>
+                        <div style="height: 30px;" onclick="editorEvent(this)">户名: 深圳市汇纳酒业有限公司</div>
                         <div class="input-group editor-wrapper" style="display: none;">
                             <input type="text" class="form-control" value="户名: 深圳市汇纳酒业有限公司" />
                             <div class="input-group-append">
@@ -165,7 +165,7 @@
                         </div>
                     </div>
                     <div class="mt-1">
-                        <div style="height: 20px;" onclick="editorEvent(this)">账号: 4000 0933 1910 0171 986. 工商银行深圳高新区支行</div>
+                        <div style="height: 30px;" onclick="editorEvent(this)">账号: 4000 0933 1910 0171 986. 工商银行深圳高新区支行</div>
                         <div class="input-group editor-wrapper" style="display: none;">
                             <input type="text" class="form-control" value="账号: 4000 0933 1910 0171 986. 工商银行深圳高新区支行" />
                             <div class="input-group-append">
@@ -177,9 +177,9 @@
             </div>
         </div>
         <div class="row border-top text-center">
-            <div class="col-2 py-2 font-weight-bold">经手人(签名)：</div>
+            <div class="col-2 py-2 font-weight-bold" style="padding-right: 4px; padding-right: 4px;">经手人(签名)：</div>
             <div class="col-2 py-2 border-left">
-                <div onclick="editorEvent(this)" style="height: 20px;"> </div>
+                <div onclick="editorEvent(this)" style="height: 30px;"> </div>
                 <div class="input-group editor-wrapper" style="display: none;">
                     <input type="text" class="form-control" />
                     <div class="input-group-append">
@@ -187,9 +187,9 @@
                     </div>
                 </div>
             </div>
-            <div class="col-2 py-2 font-weight-bold border-left">送货人(签名)：</div>
+            <div class="col-2 py-2 font-weight-bold border-left" style="padding-right: 4px; padding-right: 4px;">送货人(签名)：</div>
             <div class="col-2 py-2 border-left">
-                <div onclick="editorEvent(this)" style="height: 20px;"> </div>
+                <div onclick="editorEvent(this)" style="height: 30px;"> </div>
                 <div class="input-group editor-wrapper" style="display: none;">
                     <input type="text" class="form-control" />
                     <div class="input-group-append">
@@ -197,9 +197,9 @@
                     </div>
                 </div>
             </div>
-            <div class="col-2 py-2 font-weight-bold border-left">收货人(签名)：</div>
+            <div class="col-2 py-2 font-weight-bold border-left" style="padding-right: 4px; padding-right: 4px;">收货人(签名)：</div>
             <div class="col-2 py-2 border-left">
-                <div onclick="editorEvent(this)" style="height: 20px;"> </div>
+                <div onclick="editorEvent(this)" style="height: 30px;"> </div>
                 <div class="input-group editor-wrapper" style="display: none;">
                     <input type="text" class="form-control" />
                     <div class="input-group-append">
