@@ -26,12 +26,12 @@
 <body>
     <div th:each="oh,record:${orderHeaders}" class="container border mb-5">
         <div class="row">
-            <div class="col-12 text-center py-2">
+            <div class="col-12 text-center py-2-no">
                 <h2 class="font-weight-bold">深圳市汇纳酒业有限公司</h2>
             </div>
         </div>
         <div class="row border-top">
-            <div class="col-6 py-2">
+            <div class="col-6 py-2-no">
                 <div style="height: 30px;" class="text-right" onclick="editorEvent(this)">详细地址: 深圳市南山区科技园科技中一路48号</div>
                 <div class="input-group editor-wrapper" style="display: none;">
                     <input type="text" class="form-control" value="详细地址: 深圳市南山区科技园科技中一路48号" />
@@ -40,7 +40,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-6 py-2">
+            <div class="col-6 py-2-no">
                 <div style="height: 30px;" class="" onclick="editorEvent(this)">电话: 0755-26789222</div>
                 <div class="input-group editor-wrapper" style="display: none;">
                     <input type="text" class="form-control" value="电话: 0755-26789222" />
@@ -51,19 +51,19 @@
             </div>
         </div>
         <div class="row border-top text-center">
-            <div class="col-2 py-2 font-weight-bold">订单编号：</div>
-            <div class="col-4 py-2 border-left" th:text="${oh.getOrderId()}"></div>
-            <div class="col-2 py-2 border-left font-weight-bold">购买日期：</div>
-            <div class="col-2 py-2 border-left" th:text="${#dates.format(oh.getCreateDate(), 'yyyy-MM-dd')}"></div>
+            <div class="col-2 py-2-no font-weight-bold">订单编号：</div>
+            <div class="col-4 py-2-no border-left" th:text="${oh.getOrderId()}"></div>
+            <div class="col-2 py-2-no border-left font-weight-bold">购买日期：</div>
+            <div class="col-2 py-2-no border-left" th:text="${#dates.format(oh.getCreateDate(), 'yyyy-MM-dd')}"></div>
         </div>
         <div class="row border-top">
             <div class="col-2 text-center font-weight-bold">
-                <div style="margin-top: 35px;" class="py-2">购货单位：</div>
+                <div style="margin-top: 35px;" class="py-2-no">购货单位：</div>
             </div>
             <div class="col-10 border-left">
                 <div class="row">
-                    <div class="col-1 py-2 text-right font-weight-bold" style="padding-left: 0; padding-right: 0;">名称：</div>
-                    <div class="col-5 py-2 border-left">
+                    <div class="col-1 py-2-no text-right font-weight-bold" style="padding-left: 0; padding-right: 0;">名称：</div>
+                    <div class="col-5 py-2-no border-left">
                         <div th:text="${oh.getClientName()}" style="height: 30px;" onclick="editorEvent(this)"></div>
                         <div class="input-group editor-wrapper" style="display: none;">
                             <input type="text" class="form-control" th:value="${oh.getClientName()}" />
@@ -73,8 +73,8 @@
                         </div>
                     </div>
 
-                    <div class="col-1 py-2 text-right font-weight-bold border-left" style="padding-left: 0; padding-right: 0;">电话：</div>
-                    <div class="col-5 py-2 border-left">
+                    <div class="col-1 py-2-no text-right font-weight-bold border-left" style="padding-left: 0; padding-right: 0;">电话：</div>
+                    <div class="col-5 py-2-no border-left">
                         <div th:text="${oh.getPhoneNumber()}" style="height: 30px;" onclick="editorEvent(this)"></div>
                         <div class="input-group editor-wrapper" style="display: none;">
                             <input type="text" class="form-control" th:value="${oh.getPhoneNumber()}" />
@@ -86,8 +86,8 @@
 
                 </div>
                 <div class="row border-top">
-                    <div class="col-1 py-2 text-right font-weight-bold" style="padding-left: 0; padding-right: 0;">地址：</div>
-                    <div class="col-10 py-2 border-left">
+                    <div class="col-1 py-2-no text-right font-weight-bold" style="padding-left: 0; padding-right: 0;">地址：</div>
+                    <div class="col-10 py-2-no border-left">
                         <div th:text="${oh.getAddress()}" style="height: 30px;" onclick="editorEvent(this)"></div>
                         <div class="input-group editor-wrapper" style="display: none;">
                             <input type="text" class="form-control" th:value="${oh.getAddress()}" />
@@ -100,34 +100,34 @@
             </div>
         </div>
         <div class="row border-top text-center font-weight-bold">
-            <div class="col-2 py-2">序号</div>
-            <div class="col-3 py-2 border-left">品名规格</div>
-            <div class="col-1 py-2 border-left">数量</div>
-            <div class="col-2 py-2 border-left">包装费</div>
-            <div class="col-2 py-2 border-left">单价</div>
-            <div class="col-2 py-2 border-left">金额</div>
+            <div class="col-2 py-2-no">序号</div>
+            <div class="col-4 py-2-no border-left">品名规格</div>
+            <div class="col-1 py-2-no border-left">数量</div>
+            <div class="col-1 py-2-no border-left">单位</div>
+            <div class="col-2 py-2-no border-left">单价</div>
+            <div class="col-2 py-2-no border-left">金额</div>
         </div>
         <div th:each="oi,record:${oh.getOrderItems()}" class="row border-top text-center">
-            <div class="col-2 py-2" th:text="${record.index + 1}"></div>
-            <div class="col-3 py-2 border-left" th:text="${oi.getProductName()}"></div>
-            <div class="col-1 py-2 border-left" th:text="${oi.getQuantity()}"></div>
-            <div class="col-2 py-2 border-left text-right" th:text="${'￥' + oi.getPackagingFee().setScale(2, 4)}"></div>
-            <div class="col-2 py-2 border-left" th:text="${'￥' + oi.getUnitPrice().setScale(2, 4)}"></div>
-            <div class="col-2 py-2 border-left text-right" th:text="${'￥' + oi.fetchAmountTotal()}"></div>
+            <div class="col-2 py-2-no" th:text="${record.index + 1}"></div>
+            <div class="col-4 py-2-no border-left" th:text="${oi.getProductName()}"></div>
+            <div class="col-1 py-2-no border-left" th:text="${oi.getQuantity()}"></div>
+            <div class="col-1 py-2-no border-left">支</div>
+            <div class="col-2 py-2-no border-left text-right" th:text="${'￥' + oi.getUnitPrice().setScale(2, 4)}"></div>
+            <div class="col-2 py-2-no border-left text-right" th:text="${'￥' + oi.fetchAmountTotal()}"></div>
         </div>
         <div class="row border-top text-center">
-            <div class="col-8 py-2"></div>
-            <div class="col-2 py-2 border-left text-right font-weight-bold">运费：</div>
-            <div class="col-2 py-2 border-left text-right" th:text="${'￥' + oh.getShippingFee().setScale(2, 4)}"></div>
+            <div class="col-8 py-2-no"></div>
+            <div class="col-2 py-2-no border-left text-right font-weight-bold">运费：</div>
+            <div class="col-2 py-2-no border-left text-right" th:text="${'￥' + oh.getShippingFee().setScale(2, 4)}"></div>
         </div>
         <div class="row border-top text-center">
-            <div class="col-8 py-2"></div>
-            <div class="col-2 py-2 border-left text-right font-weight-bold">合计：</div>
-            <div class="col-2 py-2 border-left text-right" th:text="${'￥' + oh.getTotalAmount().setScale(2, 4)}"></div>
+            <div class="col-8 py-2-no"></div>
+            <div class="col-2 py-2-no border-left text-right font-weight-bold">合计：</div>
+            <div class="col-2 py-2-no border-left text-right" th:text="${'￥' + oh.getTotalAmount().setScale(2, 4)}"></div>
         </div>
         <div class="row border-top text-center">
-            <div class="col-2 py-2 font-weight-bold">备注：</div>
-            <div class="col-10 py-2 border-left text-left">
+            <div class="col-2 py-2-no font-weight-bold">备注：</div>
+            <div class="col-10 py-2-no border-left text-left">
                 <div th:text="${oh.getRemark()}" style="height: 30px;" onclick="editorEvent(this)"></div>
                 <div class="input-group editor-wrapper" style="display: none;">
                     <input type="text" class="form-control" th:value="${oh.getRemark()}" />
@@ -138,10 +138,10 @@
             </div>
         </div>
         <div class="row border-top">
-            <div class="col-1 py-2 text-center">
+            <div class="col-1 py-2-no text-center">
                 <strong>销货<br />单位</strong>
             </div>
-            <div class="col-1 py-2 border-left text-center">
+            <div class="col-1 py-2-no border-left text-center">
                 <strong>汇款<br />信息</strong>
             </div>
             <div class="col-10 border-left" style="padding: 0">
@@ -177,8 +177,8 @@
             </div>
         </div>
         <div class="row border-top text-center">
-            <div class="col-2 py-2 font-weight-bold" style="padding-right: 4px; padding-right: 4px;">经手人(签名)：</div>
-            <div class="col-2 py-2 border-left">
+            <div class="col-2 py-2-no font-weight-bold" style="padding-right: 4px; padding-right: 4px;">经手人(签名)：</div>
+            <div class="col-2 py-2-no border-left">
                 <div onclick="editorEvent(this)" style="height: 30px;"> </div>
                 <div class="input-group editor-wrapper" style="display: none;">
                     <input type="text" class="form-control" />
@@ -187,8 +187,8 @@
                     </div>
                 </div>
             </div>
-            <div class="col-2 py-2 font-weight-bold border-left" style="padding-right: 4px; padding-right: 4px;">送货人(签名)：</div>
-            <div class="col-2 py-2 border-left">
+            <div class="col-2 py-2-no font-weight-bold border-left" style="padding-right: 4px; padding-right: 4px;">送货人(签名)：</div>
+            <div class="col-2 py-2-no border-left">
                 <div onclick="editorEvent(this)" style="height: 30px;"> </div>
                 <div class="input-group editor-wrapper" style="display: none;">
                     <input type="text" class="form-control" />
@@ -197,8 +197,8 @@
                     </div>
                 </div>
             </div>
-            <div class="col-2 py-2 font-weight-bold border-left" style="padding-right: 4px; padding-right: 4px;">收货人(签名)：</div>
-            <div class="col-2 py-2 border-left">
+            <div class="col-2 py-2-no font-weight-bold border-left" style="padding-right: 4px; padding-right: 4px;">收货人(签名)：</div>
+            <div class="col-2 py-2-no border-left">
                 <div onclick="editorEvent(this)" style="height: 30px;"> </div>
                 <div class="input-group editor-wrapper" style="display: none;">
                     <input type="text" class="form-control" />
