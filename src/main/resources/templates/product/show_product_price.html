@@ -44,8 +44,7 @@
         text-align:center;
     }
     .imgClass {
-        height:60px;
-        width:200px;
+
     }
     .table_td {
         text-align:center;
@@ -146,7 +145,7 @@
             if (data.success){
                 $.each( data.data, function(i, val){
                     var filePath = "/product_img/basic/" + val.productFileName;
-                    var value = '<tr><td style="100px;"><p class="productNameClass">[productName]</p></td><td style="width:180px;"><img  class="imgClass"  /></td><td class="table_td"><span class="table_font">[productionArea]</span></td><td class="table_td"><span class="table_font">[level]</span></td><td class="table_td"><span class="table_font">[alcoholContent]%vol</span></td><td class="table_td"><span class="table_font">[specification]</span></td><td class="table_td"><span class="table_font">[unit]</span></td>';
+                    var value = '<tr><td><p class="productNameClass">[productName]</p></td><td style="width:130px"><img  class="imgClass"  /></td><td class="table_td" style="width:150px;"><span class="table_font">[productionArea]</span></td><td class="table_td"><span class="table_font">[level]</span></td><td class="table_td"><span class="table_font">[alcoholContent]%vol</span></td><td class="table_td"><span class="table_font">[specification]</span></td><td class="table_td"><span class="table_font">[unit]</span></td>';
                     if (showGeneralGentPrice == 'Y'){
                         value = value + '<td class="table_td"><span class="table_money" ondblclick="clickBtn(event)" name="generalGentPrice">[generalGentPrice]</span><span class="table_font">元</span></td>';
                     }

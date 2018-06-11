@@ -8,8 +8,17 @@ public class FetchInventoryVO {
     private String warehouseName;
     private String productName;
     private String brandName;
+    private String wineType;
     private Date updateDate;
     private Integer quantity;
+
+    public String getWineType() {
+        return wineType;
+    }
+
+    public void setWineType(String wineType) {
+        this.wineType = wineType;
+    }
 
     public String getBrandName() {
         return brandName;

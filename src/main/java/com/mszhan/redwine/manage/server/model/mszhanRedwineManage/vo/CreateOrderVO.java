@@ -24,6 +24,15 @@ public class CreateOrderVO {
         private Integer quantity;
         private BigDecimal packagePrice;
         private Integer warehouseId;
+        private String unit;
+
+        public String getUnit() {
+            return unit;
+        }
+
+        public void setUnit(String unit) {
+            this.unit = unit;
+        }
 
         public Integer getWarehouseId() {
             return warehouseId;

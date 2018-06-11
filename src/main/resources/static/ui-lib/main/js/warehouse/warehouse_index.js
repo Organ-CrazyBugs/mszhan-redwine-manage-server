@@ -15,7 +15,16 @@ $(function(){
             {checkbox: true},
             {field: 'productName', title: '产品名称'},
             {field: 'warehouseName', title: '所属仓库'},
-            {field: 'quantity', title: '库存数量'},
+            {field: 'quantity', title: '库存数量', formatter: function(val, record) {
+                if (record['wineType'] && val) {
+                    if (val%6 == 0){
+                        return val + ' (' + parseInt(val/6) + '箱)';
+                    } else {
+                        return val + ' (' + parseInt(val/6) + '箱' + val%6 + '支)';
+                    }
+                }
+                return val;
+            }},
             {field: 'brandName', title: '产品品牌'},
             {field: 'sku', title: '产品条码'},
             {field: 'updateDate', title: '最近更新时间'}

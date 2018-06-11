@@ -25,7 +25,7 @@ $(function () {
                 width:220
             },
             {field: 'productName', title: '产品名称',  width:160, formatter : textShow},
-            {field: 'sku', title: 'SKU', width:100},
+            {field: 'sku', title: 'SKU', width:100 },
             {field: 'generalGentPrice', title: '总代理价',width:100},
             {field: 'gentPrice', title: '代理价',width:100},
             {field: 'wholesalePrice', title: '批发价',width:100},
@@ -43,7 +43,7 @@ $(function () {
             {field: 'storageMethod', title: '贮藏方式', width:150},
             {field: 'withFood', title: '美食搭配', width:150, formatter : textShow},
             {field: 'age', title: '年份', width:100},
-            {field: 'incubationPeriod', title: '酿造方法', width:100},
+            {field: 'incubationPeriod', title: '酿造方法', width:100, formatter : textShow},
             {field: 'netWeight', title: '净含量', width:100},
             {field: 'makingTime', title: '酿酒时间', width:100},
             {field: 'tastingRecords', title: '品鉴记录', width:150, formatter : textShow},
@@ -57,7 +57,17 @@ $(function () {
 
         ]
     });
+
+    function removeNull(value,row,index) {
+        if ($.trim(value) == ''){
+            return "";
+        }
+    }
+
     function textShow(value,row,index){
+        if ($.trim(value) == ''){
+            return "";
+        }
         var a = "<div class='hiddenOverFlowCoverShow' title='"+value+"'> "+ value +"</div>";
         return a;
     }
@@ -65,7 +75,7 @@ $(function () {
 
     function img(e, v){
         var str = "/product_img/basic/" + v.productFileName;
-        return "<img style='height:60px;width:200px;' src='"+str+"' />";
+        return "<img style='' src='"+str+"' />";
     }
 
 

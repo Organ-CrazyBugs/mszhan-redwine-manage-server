@@ -54,6 +54,7 @@
     <result column="gent_price" jdbcType="DECIMAL" property="gentPrice" />
     <result column="wholesale_price" jdbcType="DECIMAL" property="wholesalePrice" />
     <result column="retail_price" jdbcType="DECIMAL" property="retailPrice" />
+    <result column="wine_type" jdbcType="VARCHAR" property="wineType" />
   </resultMap>
 
   <select id="queryForPage" resultMap="BaseResultMap"  parameterType="com.mszhan.redwine.manage.server.model.mszhanRedwineManage.query.ProductQuery">
@@ -95,7 +96,7 @@
   <select id="fetchProductSelectPopupData" resultMap="fetchProductSelectPopupDataRM">
     SELECT
       id as product_id, product_name, sku, general_gent_price, gent_price,
-      wholesale_price, retail_price
+      wholesale_price, retail_price, wine_type
     FROM
     product
     <where>

@@ -8,6 +8,7 @@ $(function () {
     let $createOrderSubmitBtn = $('#create-order-submit-btn');
     let $orderCreatePopupForm = $('#order-create-popup-form');
     let $warehouseTmplBox = $('#warehouse-tmpl-box');
+    let $productUnitTmplBox = $('#product-unit-tmpl-box');
 
     agentType = $('#contextAgentType').val();
 
@@ -66,6 +67,23 @@ $(function () {
             {field: 'quantity', title: '数量', align: 'left', width: 100, formatter: function (val, record) {
                 return $.formatString(editTempl, 'quantity', record.productId, val, '数量');
             }},
+            {field: 'unit', width: 80, title: '单位', formatter: function(val, record) {
+                if (!record['wine']) {
+                    return '<div class="text-center">支</div>'
+                }
+                let options = $productUnitTmplBox.find('select option');
+                options.removeAttr('selected');
+                if (val != '') {
+                    options.each(function (index, option) {
+                        if ($(option).attr('value') == val) {
+                            $(option).attr('selected', 'selected');
+                            return false;
+                        }
+                    });
+                }
+                $productUnitTmplBox.find('select').attr('data-sku', record['sku']);
+                return $productUnitTmplBox.html();
+            }},
             {field: 'warehouseId', title: '仓库', width: 120, formatter: function (val, record) {
                 let options = $warehouseTmplBox.find('select option');
                 options.removeAttr('selected');
@@ -80,7 +98,7 @@ $(function () {
                 $warehouseTmplBox.find('select').attr('data-sku', record['sku']);
                 return $warehouseTmplBox.html();
             }},
-            {field: 'unitPrice', title: '单价', align: 'left', width: 120, formatter: function (val, record) {
+            {field: 'unitPrice', title: '单价(支)', align: 'left', width: 120, formatter: function (val, record) {
                 return $.formatString(editTempl, 'unitPrice', record.productId, val, '单价');
             }},
             {field: 'packagePrice', title: '包装费', align: 'left', width: 110, formatter: function (val, record) {
@@ -196,7 +214,11 @@ function refreshAmountTotalInfo() {
     $shipAmount.val(shipAmount);
 
     productList.forEach((item, index) => {
-        productAmount += item.quantity * item.unitPrice;
+        if (item.unit == 'UNIT_BOX') {
+            productAmount += item.quantity * item.unitPrice * 6;
+        } else {
+            productAmount += item.quantity * item.unitPrice;
+        }
         packageAmount += item.packagePrice;
     });
     let paymentTotal = productAmount + packageAmount + shipAmount;
@@ -216,7 +238,7 @@ function createOrderProductRemoveItem(productId) {
                 break;
             }
         }
-        console.log(productList);
+        // console.log(productList);
         $('#create-order-product-table').bootstrapTable('load', productList);
         refreshAmountTotalInfo();
     });
@@ -242,8 +264,11 @@ function createOrderProductListChange(field, fieldName, recordId, valueInput, ed
     productList.forEach(function (item) {
         if (item.productId == recordId) {
             item[field] = value;
-
-            item.itemTotal = item.quantity * item.unitPrice + item.packagePrice;
+            if (item.unit == 'UNIT_BOX') {
+                item.itemTotal = item.quantity * item.unitPrice * 6 + item.packagePrice;
+            } else {
+                item.itemTotal = item.quantity * item.unitPrice + item.packagePrice;
+            }
         }
     });
 
@@ -270,6 +295,7 @@ function createOrderSelectProductCallback(products) {
 
                 item.itemTotal = item.quantity * item.unitPrice + item.packagePrice;
                 item.warehouseId = '';
+                item.unit = 'UNIT_PIECE';
                 productList.push(item);
             }
         });
@@ -281,7 +307,7 @@ function createOrderSelectProductCallback(products) {
 function orderItemWarehouseOnChange(select) {
     let $warehouseSelect = $(select);
     let sku = $warehouseSelect.attr('data-sku');
-    console.log($warehouseSelect.val());
+    // console.log($warehouseSelect.val());
 
     productList.forEach(function (product) {
         if (product.sku == sku) {
@@ -290,7 +316,27 @@ function orderItemWarehouseOnChange(select) {
             return false;
         }
     });
-    console.log(productList);
+    // console.log(productList);
+}
+
+function orderItemUnitOnChange(select){
+    let $select = $(select);
+    let sku = $select.attr('data-sku');
+    productList.forEach(function (product) {
+        if (product.sku == sku) {
+            product.unit = $select.val();
+
+            if (product.unit == 'UNIT_BOX') {
+                product.itemTotal = product.quantity * product.unitPrice * 6 + product.packagePrice;
+            } else {
+                product.itemTotal = product.quantity * product.unitPrice + product.packagePrice;
+            }
+            return false;
+        }
+    });
+    $('#create-order-product-table').bootstrapTable('load', productList);
+
+    refreshAmountTotalInfo();
 }
 
 function resetCreateOrderProductList() {

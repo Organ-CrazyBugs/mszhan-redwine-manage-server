@@ -23,6 +23,7 @@
     <result column="brand_name" jdbcType="VARCHAR" property="brandName" />
     <result column="update_date" jdbcType="TIMESTAMP" property="updateDate" />
     <result column="quantity" jdbcType="INTEGER" property="quantity" />
+    <result column="wine_type" jdbcType="VARCHAR" property="wineType" />
   </resultMap>
 
   <select id="fetchInventory" resultMap="fetchInventoryResultMap">
@@ -30,7 +31,8 @@
       inv.*,
       ware.name AS warehouse_name,
       pro.product_name AS product_name,
-      pro.brand_name AS brand_name
+      pro.brand_name AS brand_name,
+      pro.wine_type AS wine_type
     FROM inventory inv LEFT JOIN warehouse ware ON (inv.ware_house_id = ware.id)
     LEFT JOIN product pro ON (pro.sku = inv.sku)
     <where>

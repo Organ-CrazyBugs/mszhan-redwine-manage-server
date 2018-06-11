@@ -151,6 +151,13 @@
                 <option th:each="warehouse,record:${warehouses}" th:value="${warehouse.getId()}" th:text="${warehouse.getName()}"></option>
             </select>
         </div>
+
+        <div id="product-unit-tmpl-box" class="d-none">
+            <select class="form-control" onchange="orderItemUnitOnChange(this)">
+                <option value="UNIT_PIECE">支</option>
+                <option value="UNIT_BOX">箱</option>
+            </select>
+        </div>
     </div>
 
 
