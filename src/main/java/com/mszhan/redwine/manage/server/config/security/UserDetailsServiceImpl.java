@@ -40,10 +40,10 @@ public class UserDetailsServiceImpl implements UserDetailsService {
             throw new UsernameNotFoundException("UserName is blank.");
         }
 
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd");
-        if (Integer.valueOf(dateFormat.format(new Date())) >= 20180618) {
-            throw BasicException.newInstance().error("有效期超时，请联系开发人员", 500);
-        }
+//        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd");
+//        if (Integer.valueOf(dateFormat.format(new Date())) >= 20180618) {
+//            throw BasicException.newInstance().error("有效期超时，请联系开发人员", 500);
+//        }
 
         Condition fetchUserInfo = new Condition(UserLogin.class);
         fetchUserInfo.createCriteria().andEqualTo("userName", userName);
