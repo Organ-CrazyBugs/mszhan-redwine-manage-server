@@ -66,8 +66,8 @@ public class OrderPageController {
                     oi.setProductName(productName);
                     String quantityDescription = oi.getQuantity().toString();
                     if (redWine) {
-                        quantityDescription = oi.getQuantity() < 6 ? String.format("%s支", oi.getQuantity()) : (oi.getQuantity() % 6 == 0 ? String.format("%s (%s箱)", oi.getQuantity(), oi.getQuantity() /6)
-                                : String.format("%s (%s箱%s支)", oi.getQuantity(), oi.getQuantity() /6, oi.getQuantity() %6));
+                        quantityDescription = oi.getQuantity() < 6 ? String.format("%s瓶", oi.getQuantity()) : (oi.getQuantity() % 6 == 0 ? String.format("%s瓶(%s箱)", oi.getQuantity(), oi.getQuantity() /6)
+                                : String.format("%s瓶(%s箱%s瓶)", oi.getQuantity(), oi.getQuantity() /6, oi.getQuantity() %6));
                     }
                     oi.setQuantityDescription(quantityDescription);
                 });
