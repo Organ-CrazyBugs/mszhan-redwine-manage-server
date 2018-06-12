@@ -59,15 +59,18 @@ public class OrderPageController {
                     List<Product> products = this.productMapper.selectByCondition(proCon);
                     String productName = "";
                     boolean redWine = false;
+                    String unit = "瓶";
                     if (!CollectionUtils.isEmpty(products)) {
                         productName = StringUtils.defaultString(products.get(0).getProductName());
                         redWine = StringUtils.isNotBlank(products.get(0).getWineType());
+                        unit = StringUtils.defaultString(products.get(0).getUnit(), "瓶");
                     }
                     oi.setProductName(productName);
                     String quantityDescription = oi.getQuantity().toString();
                     if (redWine) {
-                        quantityDescription = oi.getQuantity() < 6 ? String.format("%s瓶", oi.getQuantity()) : (oi.getQuantity() % 6 == 0 ? String.format("%s瓶(%s箱)", oi.getQuantity(), oi.getQuantity() /6)
-                                : String.format("%s瓶(%s箱%s瓶)", oi.getQuantity(), oi.getQuantity() /6, oi.getQuantity() %6));
+
+                        quantityDescription = oi.getQuantity() < 6 ? String.format("%s%s", oi.getQuantity(), unit) : (oi.getQuantity() % 6 == 0 ? String.format("%s%s(%s箱)", oi.getQuantity(), unit, oi.getQuantity() /6)
+                                : String.format("%s%s(%s箱%s%s)", oi.getQuantity(), unit, oi.getQuantity() /6, oi.getQuantity() %6, unit));
                     }
                     oi.setQuantityDescription(quantityDescription);
                 });
