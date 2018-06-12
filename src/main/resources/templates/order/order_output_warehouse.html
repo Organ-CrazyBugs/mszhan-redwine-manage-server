@@ -60,13 +60,13 @@
         </div>
         <div class="row border-top">
             <div class="col-2 text-center font-weight-bold">
-                <div style="margin-top: 35px;" class="py-2-no">购货单位：</div>
+                <div style="margin-top: 10px;" class="py-2-no">购货单位：</div>
             </div>
             <div class="col-10 border-left">
                 <div class="row">
                     <div class="col-1 py-2-no text-right font-weight-bold" style="padding-left: 0; padding-right: 0;">名称：</div>
                     <div class="col-5 py-2-no border-left">
-                        <div th:text="${oh.getClientName()}" style="height: 30px;" onclick="editorEvent(this)"></div>
+                        <div th:text="${oh.getClientName()}" style="height: 22px;" onclick="editorEvent(this)"></div>
                         <div class="input-group editor-wrapper" style="display: none;">
                             <input type="text" class="form-control" th:value="${oh.getClientName()}" />
                             <div class="input-group-append">
@@ -77,7 +77,7 @@
 
                     <div class="col-1 py-2-no text-right font-weight-bold border-left" style="padding-left: 0; padding-right: 0;">电话：</div>
                     <div class="col-5 py-2-no border-left">
-                        <div th:text="${oh.getPhoneNumber()}" style="height: 30px;" onclick="editorEvent(this)"></div>
+                        <div th:text="${oh.getPhoneNumber()}" style="height: 22px;" onclick="editorEvent(this)"></div>
                         <div class="input-group editor-wrapper" style="display: none;">
                             <input type="text" class="form-control" th:value="${oh.getPhoneNumber()}" />
                             <div class="input-group-append">
@@ -90,7 +90,7 @@
                 <div class="row border-top">
                     <div class="col-1 py-2-no text-right font-weight-bold" style="padding-left: 0; padding-right: 0;">地址：</div>
                     <div class="col-10 py-2-no border-left">
-                        <div th:text="${oh.getAddress()}" style="height: 30px;" onclick="editorEvent(this)"></div>
+                        <div th:text="${oh.getAddress()}" style="height: 22px;" onclick="editorEvent(this)"></div>
                         <div class="input-group editor-wrapper" style="display: none;">
                             <input type="text" class="form-control" th:value="${oh.getAddress()}" />
                             <div class="input-group-append">
@@ -128,7 +128,7 @@
         <div class="row border-top text-center">
             <div class="col-2 py-2-no font-weight-bold">备注：</div>
             <div class="col-10 py-2-no border-left text-left">
-                <div th:text="${oh.getRemark()}" style="height: 30px;" onclick="editorEvent(this)"></div>
+                <div th:text="${oh.getRemark()}" style="height: 22px;" onclick="editorEvent(this)"></div>
                 <div class="input-group editor-wrapper" style="display: none;">
                     <input type="text" class="form-control" th:value="${oh.getRemark()}" />
                     <div class="input-group-append">
