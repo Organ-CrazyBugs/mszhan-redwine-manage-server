@@ -92,6 +92,26 @@ public class OrderItem {
 
     @Transient
     private String productName;
+    @Transient
+    private boolean redWine;
+    @Transient
+    private String quantityDescription;
+
+    public String getQuantityDescription() {
+        return quantityDescription;
+    }
+
+    public void setQuantityDescription(String quantityDescription) {
+        this.quantityDescription = quantityDescription;
+    }
+
+    public boolean isRedWine() {
+        return redWine;
+    }
+
+    public void setRedWine(boolean redWine) {
+        this.redWine = redWine;
+    }
 
     public String getProductName() {
         return productName;

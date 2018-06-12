@@ -58,10 +58,18 @@ public class OrderPageController {
                     proCon.createCriteria().andEqualTo("sku", oi.getSku());
                     List<Product> products = this.productMapper.selectByCondition(proCon);
                     String productName = "";
+                    boolean redWine = false;
                     if (!CollectionUtils.isEmpty(products)) {
                         productName = StringUtils.defaultString(products.get(0).getProductName());
+                        redWine = StringUtils.isNotBlank(products.get(0).getWineType());
                     }
                     oi.setProductName(productName);
+                    String quantityDescription = oi.getQuantity().toString();
+                    if (redWine) {
+                        quantityDescription = oi.getQuantity() < 6 ? String.format("%s支", oi.getQuantity()) : (oi.getQuantity() % 6 == 0 ? String.format("%s (%s箱)", oi.getQuantity(), oi.getQuantity() /6)
+                                : String.format("%s (%s箱%s支)", oi.getQuantity(), oi.getQuantity() /6, oi.getQuantity() %6));
+                    }
+                    oi.setQuantityDescription(quantityDescription);
                 });
             });
         }
