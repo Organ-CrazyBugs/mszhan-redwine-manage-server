@@ -11,6 +11,7 @@ import com.mszhan.redwine.manage.server.model.mszhanRedwineManage.query.AddOrder
 import com.mszhan.redwine.manage.server.model.mszhanRedwineManage.query.OrderQuery;
 import com.mszhan.redwine.manage.server.model.mszhanRedwineManage.vo.CreateOrderVO;
 import com.mszhan.redwine.manage.server.model.mszhanRedwineManage.vo.OrderCancelVO;
+import com.mszhan.redwine.manage.server.model.mszhanRedwineManage.vo.OrderItemPriceUpdateVO;
 import com.mszhan.redwine.manage.server.model.mszhanRedwineManage.vo.OrderMarkPaymentVO;
 import com.mszhan.redwine.manage.server.service.OrderHeaderService;
 import com.mszhan.redwine.manage.server.core.AbstractService;
@@ -369,5 +370,35 @@ public class OrderHeaderServiceImpl extends AbstractService<OrderHeader> impleme
         } catch (IOException e) {
             throw BasicException.newInstance().error("订单信息转化异常", 500);
         }
+    }
+
+    @Override
+    public void updateItemPrice(OrderItemPriceUpdateVO vo) {
+        OrderHeader orderHeader = this.orderHeaderMapper.selectByPrimaryKey(vo.getOrderId());
+        if (orderHeader == null) {
+            return;
+        }
+        vo.getItems().stream().forEach(itemVo -> {
+            OrderItem updateItem = new OrderItem();
+            updateItem.setId(itemVo.getOrderItemId());
+            updateItem.setUnitPrice(itemVo.getPrice());
+            this.orderItemMapper.updateByPrimaryKeySelective(updateItem);
+        });
+        List<Integer> itemIds = vo.getItems().stream().map(OrderItemPriceUpdateVO.PriceItem::getOrderItemId).collect(Collectors.toList());
+        Condition itemCondition = new Condition(OrderItem.class);
+        itemCondition.createCriteria().andIn("id", itemIds);
+        List<OrderItem> orderItems = this.orderItemMapper.selectByCondition(itemCondition);
+
+        BigDecimal orderTotal = BigDecimal.ZERO;
+        for (OrderItem item : orderItems) {
+            orderTotal = orderTotal.add(item.getUnitPrice().multiply(new BigDecimal(item.getQuantity()))).add(item.getPackagingFee());
+        }
+        if (orderHeader.getShippingFee() != null) {
+            orderTotal = orderTotal.add(orderHeader.getShippingFee());
+        }
+        OrderHeader updateHeader = new OrderHeader();
+        updateHeader.setTotalAmount(orderTotal);
+        updateHeader.setOrderId(vo.getOrderId());
+        this.orderHeaderMapper.updateByPrimaryKeySelective(updateHeader);
     }
 }

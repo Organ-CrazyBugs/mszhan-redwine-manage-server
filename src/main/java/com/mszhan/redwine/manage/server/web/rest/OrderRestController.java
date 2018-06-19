@@ -16,6 +16,7 @@ import com.mszhan.redwine.manage.server.model.mszhanRedwineManage.OrderItem;
 import com.mszhan.redwine.manage.server.model.mszhanRedwineManage.base.PaginateResult;
 import com.mszhan.redwine.manage.server.model.mszhanRedwineManage.vo.CreateOrderVO;
 import com.mszhan.redwine.manage.server.model.mszhanRedwineManage.vo.OrderCancelVO;
+import com.mszhan.redwine.manage.server.model.mszhanRedwineManage.vo.OrderItemPriceUpdateVO;
 import com.mszhan.redwine.manage.server.model.mszhanRedwineManage.vo.OrderMarkPaymentVO;
 import com.mszhan.redwine.manage.server.service.OrderHeaderService;
 import org.apache.commons.lang3.StringUtils;
@@ -128,6 +129,12 @@ public class OrderRestController {
         OrderCancelVO cancelVO = new OrderCancelVO();
         cancelVO.setOrderId(orderId);
         this.orderHeaderService.orderCancel(cancelVO);
+        return Responses.newInstance().succeed();
+    }
+
+    @PostMapping("/api/order/update_item_price")
+    public Object updateItemPrice(@RequestBody OrderItemPriceUpdateVO vo) {
+        this.orderHeaderService.updateItemPrice(vo);
         return Responses.newInstance().succeed();
     }
 

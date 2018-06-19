@@ -1,3 +1,37 @@
+function itemPriceUpdateSaveBtnClick (btn, orderId) {
+    let items = [];
+    let hasError = false;
+    $('input[data-order-id="'+orderId+'"]').each(function(){
+        let $input = $(this);
+        if (isNaN(parseFloat($input.val())) || parseFloat($input.val()) < 0) {
+            hasError = true;
+        }
+        items.push({orderItemId: $input.attr('data-order-item-id'), price: $input.val()})
+    });
+    if (hasError) {
+        $.alertWarning('提示', '请输入正确的商品价格');
+        return;
+    }
+    let obj = {items, orderId: orderId};
+    $.confirm('确认', `确认修改订单商品的价格吗？`, function(){
+        $.ajax({
+            url: '/api/order/update_item_price',
+            method: 'POST',
+            dataType: 'json',
+            contentType: 'application/json',
+            data: JSON.stringify(obj),
+            targetBtn: $(btn),
+            success: function (data) {
+                if ($.ajaxIsFailure(data)) {
+                    return;
+                }
+                $.alertSuccess('提示', '订单商品价格修改成功!');
+                $('#table').bootstrapTable('refresh');
+            }
+        });
+    });
+}
+
 $(function () {
     let $table = $('#table');
     let $orderMarkPaymentBtn = $('#order-mark-payment-btn');
@@ -28,7 +62,7 @@ $(function () {
                       <th scope="row" class="text-center">${index+1}</th>
                       <td class="text-center">${oi.sku}</td>
                       <td class="text-right">${oi.quantity}</td>
-                      <td class="text-right">￥${$.formatMoney(parseFloat(oi.unitPrice).toFixed(2))}</td>
+                      <td class="text-right" style="width: 180px"><input class="form-control" style="text-align: right;" data-order-id="${record.orderId}" data-order-item-id="${oi.id}" value="${parseFloat(oi.unitPrice)}" /></td>
                       <td class="text-right">￥${$.formatMoney(parseFloat(oi.packagingFee).toFixed(2))}</td>
                       <td class="text-center">${oi.warehouseName}</td>
                     </tr>
@@ -62,6 +96,9 @@ $(function () {
                   </thead>
                   <tbody>
                     ${rowTmpl()}
+                    <tr>
+                        <td colspan="6" style="text-align: right;"><button type="button" class="btn btn-primary" onclick="itemPriceUpdateSaveBtnClick(this, '${record.orderId}')">保存</button></td>
+                    </tr>
                   </tbody>
                 </table>
             `;
