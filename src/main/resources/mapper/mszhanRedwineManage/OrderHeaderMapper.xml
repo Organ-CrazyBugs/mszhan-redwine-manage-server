@@ -155,4 +155,13 @@
 
 
   </select>
+
+  <select id="queryForOutboundExcel">
+
+
+
+
+
+
+  </select>
 </mapper>

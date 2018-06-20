@@ -10,6 +10,7 @@ import com.mszhan.redwine.manage.server.model.mszhanRedwineManage.vo.OrderCancel
 import com.mszhan.redwine.manage.server.model.mszhanRedwineManage.vo.OrderItemPriceUpdateVO;
 import com.mszhan.redwine.manage.server.model.mszhanRedwineManage.vo.OrderMarkPaymentVO;
 
+import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
 /**
@@ -32,4 +33,6 @@ public interface OrderHeaderService extends Service<OrderHeader> {
     void addOrder(AddOrderPojo addOrderPojo);
 
     void updateItemPrice(OrderItemPriceUpdateVO vo);
+
+    void leadOutOrderOutboundExcel(HttpServletResponse response, OrderQuery query);
 }

@@ -25,12 +25,13 @@ import org.springframework.util.CollectionUtils;
 import tk.mybatis.mapper.entity.Condition;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.io.OutputStream;
+import java.io.UnsupportedEncodingException;
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
+import java.text.SimpleDateFormat;
+import java.util.*;
 import java.util.stream.Collectors;
 
 
@@ -400,5 +401,26 @@ public class OrderHeaderServiceImpl extends AbstractService<OrderHeader> impleme
         updateHeader.setTotalAmount(orderTotal);
         updateHeader.setOrderId(vo.getOrderId());
         this.orderHeaderMapper.updateByPrimaryKeySelective(updateHeader);
+    }
+
+    @Override
+    public void leadOutOrderOutboundExcel(HttpServletResponse response, OrderQuery query) {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        response.setContentType("application/vnd.ms-excel");
+        String fileName = "order_outbound";
+        try {
+            response.setHeader("content-disposition", "attachment;filename=" + java.net.URLEncoder.encode(fileName, "utf-8") + "-" + sdf.format(new Date()) + ".xlsx");
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+        }
+        OutputStream out = null;
+        try {
+            out = response.getOutputStream();
+        } catch (IOException e) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+        }
+        List<Map<String, Object>>
+
+
     }
 }

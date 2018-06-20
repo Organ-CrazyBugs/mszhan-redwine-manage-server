@@ -28,6 +28,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import tk.mybatis.mapper.entity.Condition;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -141,6 +143,15 @@ public class OrderRestController {
     @PostMapping(value = "/api/order/create")
     public Object createOrder(@RequestBody CreateOrderVO vo){
         OrderHeader order = this.orderHeaderService.createOrder(vo);
+        return Responses.newInstance().succeed(order);
+    }
+
+    @GetMapping(value = "/api/order/lead_out_excel")
+    public Object leadOutExcel(HttpServletRequest req, HttpServletResponse res){
+
+
+
+
         return Responses.newInstance().succeed(order);
     }
 }

@@ -7,6 +7,7 @@ import org.apache.ibatis.annotations.Param;
 import org.springframework.core.annotation.Order;
 
 import java.util.List;
+import java.util.Map;
 
 public interface OrderHeaderMapper extends Mapper<OrderHeader> {
 
@@ -23,4 +24,6 @@ public interface OrderHeaderMapper extends Mapper<OrderHeader> {
         );
 
     List<OrderHeader> queryForPage(OrderQuery query);
+
+    List<Map<String, Object>> queryForOutboundExcel(OrderQuery query);
 }
