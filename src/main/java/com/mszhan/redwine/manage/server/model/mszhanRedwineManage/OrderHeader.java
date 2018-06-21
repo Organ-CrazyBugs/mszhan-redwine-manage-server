@@ -114,6 +114,21 @@ public class OrderHeader {
     @Column(name = "shipping_fee")
     private BigDecimal shippingFee;
 
+    /**
+     * 发货时间
+     */
+    @Column(name = "delivery_date")
+    private Date deliveryDate;
+
+
+    public Date getDeliveryDate() {
+        return deliveryDate;
+    }
+
+    public void setDeliveryDate(Date deliveryDate) {
+        this.deliveryDate = deliveryDate;
+    }
+
     public BigDecimal getShippingFee() {
         return shippingFee;
     }

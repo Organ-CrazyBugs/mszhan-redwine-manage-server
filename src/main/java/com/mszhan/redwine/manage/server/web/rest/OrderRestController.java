@@ -146,11 +146,10 @@ public class OrderRestController {
         return Responses.newInstance().succeed(order);
     }
 
-    @GetMapping(value = "/api/order/lead_out_excel")
-    public Object leadOutExcel(HttpServletRequest req, HttpServletResponse res){
+    @GetMapping(value = "/api/order/lead_out_outbound_excel")
+    public void leadOutOutboundExcel(HttpServletRequest req, HttpServletResponse res){
 
-        return null;
-
+        orderHeaderService.leadOutOrderOutboundExcel();
 
 //        return Responses.newInstance().succeed(order);
     }

@@ -21,6 +21,7 @@
     <result column="phone_number" jdbcType="VARCHAR" property="phoneNumber" />
     <result column="remark" jdbcType="VARCHAR" property="remark" />
     <result column="shipping_fee" jdbcType="DECIMAL" property="shippingFee" />
+    <result column="delivery_date" jdbcType="TIMESTAMP" property="deliveryDate" />
   </resultMap>
 
   <select id="fetchOrders" resultMap="BaseResultMap">
