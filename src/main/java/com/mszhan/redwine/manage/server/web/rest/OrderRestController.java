@@ -9,11 +9,11 @@ import com.mszhan.redwine.manage.server.core.SecurityUtils;
 import com.mszhan.redwine.manage.server.dao.mszhanRedwineManage.OrderHeaderMapper;
 import com.mszhan.redwine.manage.server.dao.mszhanRedwineManage.OrderItemMapper;
 import com.mszhan.redwine.manage.server.dao.mszhanRedwineManage.ProductMapper;
-import com.mszhan.redwine.manage.server.enums.AgentOperationTypeEnum;
 import com.mszhan.redwine.manage.server.enums.AgentTypeEnum;
 import com.mszhan.redwine.manage.server.model.mszhanRedwineManage.OrderHeader;
 import com.mszhan.redwine.manage.server.model.mszhanRedwineManage.OrderItem;
 import com.mszhan.redwine.manage.server.model.mszhanRedwineManage.base.PaginateResult;
+import com.mszhan.redwine.manage.server.model.mszhanRedwineManage.query.OrderQuery;
 import com.mszhan.redwine.manage.server.model.mszhanRedwineManage.vo.CreateOrderVO;
 import com.mszhan.redwine.manage.server.model.mszhanRedwineManage.vo.OrderCancelVO;
 import com.mszhan.redwine.manage.server.model.mszhanRedwineManage.vo.OrderItemPriceUpdateVO;
@@ -28,7 +28,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import tk.mybatis.mapper.entity.Condition;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
 import java.util.List;
@@ -147,10 +146,7 @@ public class OrderRestController {
     }
 
     @GetMapping(value = "/api/order/lead_out_outbound_excel")
-    public void leadOutOutboundExcel(HttpServletRequest req, HttpServletResponse res){
-
-        orderHeaderService.leadOutOrderOutboundExcel();
-
-//        return Responses.newInstance().succeed(order);
+    public void leadOutOutboundExcel(HttpServletResponse res, OrderQuery query){
+        orderHeaderService.leadOutOrderOutboundExcel(res, query);
     }
 }

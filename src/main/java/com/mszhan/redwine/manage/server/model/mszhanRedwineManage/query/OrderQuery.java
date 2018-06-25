@@ -8,105 +8,144 @@ import java.util.List;
 
 public class OrderQuery extends PageQuery {
 
-    private String orderIds;
+    private Integer agentId;
 
-    private String clientNames;
+    private String orderId;
 
-    private String skus;
+    private String sku;
 
-    private String agentNames;
+    private String productName;
 
-    private String deliveryPersonNames;
+    private String brandName;
 
-    private List<String> clientNameList;
+    private String orderStatus;
 
-    private List<String> skuList;
+    private String paymentStatus;
 
-    private List<String> agentNameList;
+    private String createStartDate;
 
-    private List<String> deliveryPersonNameList;
+    private String createEndDate;
 
-    private List<String> orderIdList;
+    private String deliveryStartDate;
 
-    public String getOrderIds() {
-        return orderIds;
+    private String deliveryEndDate;
+
+
+    public String getOrderStatus() {
+        return orderStatus;
     }
 
-    public void setOrderIds(String orderIds) {
-        this.orderIds = orderIds;
+    public void setOrderStatus(String orderStatus) {
+        this.orderStatus = orderStatus;
     }
 
-    public String getClientNames() {
-        return clientNames;
+    public String getBrandName() {
+        if (!StringUtils.isBlank(brandName)){
+            return String.format("%%%s%%", StringUtils.trimToNull(brandName));
+        }
+        return StringUtils.trimToNull(brandName);
     }
 
-    public void setClientNames(String clientNames) {
-        this.clientNames = clientNames;
+    public void setBrandName(String brandName) {
+        this.brandName = brandName;
     }
 
-    public String getSkus() {
-        return skus;
+    public String getCreateStartDate() {
+        String startDate = StringUtils.trimToNull(this.createStartDate);
+        if (StringUtils.isNotBlank(startDate)){
+            startDate = String.format("%s 00:00:00", startDate);
+        }
+        return startDate;
     }
 
-    public void setSkus(String skus) {
-        this.skus = skus;
+    public String getCreateEndDate() {
+        String endDate = StringUtils.trimToNull(this.createEndDate);
+        if (StringUtils.isNotBlank(endDate)){
+            endDate = String.format("%s 23:59:59", endDate);
+        }
+        return endDate;
     }
 
-    public String getAgentNames() {
-        return agentNames;
+
+    public void setCreateStartDate(String createStartDate) {
+        this.createStartDate = createStartDate;
     }
 
-    public void setAgentNames(String agentNames) {
-        this.agentNames = agentNames;
+
+    public void setCreateEndDate(String createEndDate) {
+        this.createEndDate = createEndDate;
     }
 
-    public String getDeliveryPersonNames() {
-        return deliveryPersonNames;
+    public String getDeliveryStartDate() {
+        String startDate = StringUtils.trimToNull(this.deliveryStartDate);
+        if (StringUtils.isNotBlank(startDate)){
+            startDate = String.format("%s 00:00:00", startDate);
+        }
+        return startDate;
     }
 
-    public void setDeliveryPersonNames(String deliveryPersonNames) {
-        this.deliveryPersonNames = deliveryPersonNames;
+    public String getDeliveryEndDate() {
+        String endDate = StringUtils.trimToNull(this.deliveryEndDate);
+        if (StringUtils.isNotBlank(endDate)){
+            endDate = String.format("%s 23:59:59", endDate);
+        }
+        return endDate;
     }
 
-    public List<String> getClientNameList() {
-        return fetchObjList(clientNames, clientNameList);
+    public void setDeliveryStartDate(String deliveryStartDate) {
+        this.deliveryStartDate = deliveryStartDate;
     }
 
-    public void setClientNameList(List<String> clientNameList) {
-        this.clientNameList = clientNameList;
+
+    public void setDeliveryEndDate(String deliveryEndDate) {
+        this.deliveryEndDate = deliveryEndDate;
     }
 
-    public List<String> getSkuList() {
-        return fetchObjList(skus, skuList);
+    public Integer getAgentId() {
+        return agentId;
     }
 
-    public void setSkuList(List<String> skuList) {
-        this.skuList = skuList;
+    public void setAgentId(Integer agentId) {
+        this.agentId = agentId;
     }
 
-    public List<String> getAgentNameList() {
-        return fetchObjList(agentNames, agentNameList);
+    public String getOrderId() {
+        return StringUtils.trimToNull(orderId);
     }
 
-    public void setAgentNameList(List<String> agentNameList) {
-        this.agentNameList = agentNameList;
+    public void setOrderId(String orderId) {
+        this.orderId = orderId;
     }
 
-    public List<String> getDeliveryPersonNameList() {
-        return fetchObjList(deliveryPersonNames, deliveryPersonNameList);
+    public String getSku() {
+        return StringUtils.trimToNull(sku);
     }
 
-    public void setDeliveryPersonNameList(List<String> deliveryPersonNameList) {
-        this.deliveryPersonNameList = deliveryPersonNameList;
+    public void setSku(String sku) {
+        this.sku = sku;
     }
 
-    public List<String> getOrderIdList() {
-        return fetchObjList(orderIds, orderIdList);
+    public String getProductName() {
+        if (!StringUtils.isBlank(productName)){
+            return String.format("%%%s%%", StringUtils.trimToNull(productName));
+        }
+        return StringUtils.trimToNull(productName);
     }
 
-    public void setOrderIdList(List<String> orderIdList) {
-        this.orderIdList = orderIdList;
+    public void setProductName(String productName) {
+        this.productName = productName;
     }
+
+
+    public String getPaymentStatus() {
+        return StringUtils.trimToNull(paymentStatus);
+    }
+
+    public void setPaymentStatus(String paymentStatus) {
+        this.paymentStatus = paymentStatus;
+    }
+
+
 
     public List<String> fetchObjList(String obj, List<String> objList) {
         if (!CollectionUtils.isEmpty(objList)){

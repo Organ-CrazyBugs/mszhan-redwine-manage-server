@@ -32,6 +32,38 @@ function itemPriceUpdateSaveBtnClick (btn, orderId) {
     });
 }
 
+
+
+function createFormByJson(formId, method, actionUrl, json) {
+    //如果已经创建,移出节点
+    var formCreated = $('#' + formId);
+    if (formCreated) {
+        formCreated.remove();
+    }
+    //创建form
+    var actionUrl = actionUrl,
+        //如果有token增加携带token的input
+        submitParamsJson =  json;
+    var $form = $('<form></form>'),
+        inputDom = '',
+        inputArr = [];
+    $form.attr('action', actionUrl);
+    $form.attr('method', method);
+    $form.attr('id', formId);
+    //遍历json创建input
+    for (key in submitParamsJson) {
+        inputDom = $('<input type="hidden"/>');
+        inputDom.attr('name', key);
+        inputDom.attr('value', submitParamsJson[key]);
+        inputArr.push(inputDom[0]);
+        $form.append(inputDom);
+    }
+
+    //提交表单
+    $('body').append($form);
+    $form.submit();
+};
+
 $(function () {
     let $table = $('#table');
     let $orderMarkPaymentBtn = $('#order-mark-payment-btn');
@@ -41,6 +73,8 @@ $(function () {
     let $orderCreatePopupModal = $('#order-create-popup-modal');
     let $orderCreatePopupForm = $('#order-create-popup-form');
     let $orderCancelBtn = $('#order-cancel-btn');
+    let $orderLeadOutOutboundExcelBtn = $('#order-leadout-outbound-excel-btn');
+
 
     // 绑定创建仓库Modal隐藏事件， 隐藏时候清空表单内容
     $orderCreatePopupModal.on('hide.bs.modal', function (e) {
@@ -169,6 +203,14 @@ $(function () {
             totalAmount, paymentAmount}, ['agentName', 'orderId', 'personName', 'totalAmount', 'paymentAmount']);
 
         $orderPaymentPopupModal.modal('show');
+    });
+
+    $orderLeadOutOutboundExcelBtn.on('click', function(){
+        let params = $("#table-query-form").serializeObject();
+        console.log(params);
+
+        createFormByJson("orderLeadOutOutboundExcel","get","/api/order/lead_out_outbound_excel", params);
+        // window.open("/api/order/lead_out_outbound_excel?data=" + JSON.stringify(params));
     });
 
     $orderMarkPaymentForm.on('submit', function (event) {

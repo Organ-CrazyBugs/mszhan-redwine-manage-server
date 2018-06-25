@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
-
+<link href="/ui-lib/bootstrap-datetimepicker-3.0/css/bootstrap-datetimepicker.min.css" rel="stylesheet" media="screen" />
 <head th:include="includes/ui_libs::payload('订单管理')"></head>
 
 <script type="text/javascript" src="/ui-lib/main/js/order/order_list.js"></script>
@@ -23,6 +23,44 @@
     <div class="my-3 p-3 bg-white rounded box-shadow">
         <!-- 页面内容在此处填充 -->
         <form id="table-query-form" class="table-query-form" action="#">
+            <div class="row">
+                    <div class="input-group date form_date col-md-3" data-date="" data-date-format="yyyy年mm月dd" data-link-field="createStartDate" data-link-format="yyyy-mm-dd">
+                        <div class="input-group-prepend">
+                            <div class="input-group-text query-form-label">下单开始时间</div>
+                        </div>
+                        <input class="form-control" size="16" type="text" value="" readonly="readonly" />
+                        <span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span>
+                        <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+                        <input type="hidden" id="createStartDate" name="createStartDate" value="" /><br/>
+                    </div>
+                <div class="input-group date form_date col-md-3" data-date="" data-date-format="yyyy年mm月dd" data-link-field="createEndDate" data-link-format="yyyy-mm-dd">
+                    <div class="input-group-prepend">
+                        <div class="input-group-text query-form-label">下单结束时间</div>
+                    </div>
+                    <input class="form-control" size="16" type="text" value="" readonly="readonly" />
+                    <span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span>
+                    <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+                    <input type="hidden" id="createEndDate" name="createEndDate" value="" /><br/>
+                </div>
+                <div class="input-group date form_date col-md-3" data-date="" data-date-format="yyyy年mm月dd" data-link-field="deliveryStartDate" data-link-format="yyyy-mm-dd">
+                    <div class="input-group-prepend">
+                        <div class="input-group-text query-form-label">发货开始时间</div>
+                    </div>
+                    <input class="form-control" size="16" type="text" value="" readonly="readonly" />
+                    <span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span>
+                    <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+                    <input type="hidden" id="deliveryStartDate" name="deliveryStartDate" value="" /><br/>
+                </div>
+                <div class="input-group date form_date col-md-3" data-date="" data-date-format="yyyy年mm月dd" data-link-field="deliveryEndDate" data-link-format="yyyy-mm-dd">
+                    <div class="input-group-prepend">
+                        <div class="input-group-text query-form-label">发货结束时间</div>
+                    </div>
+                    <input class="form-control" size="16" type="text" value="" readonly="readonly" />
+                    <span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span>
+                    <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+                    <input type="hidden" id="deliveryEndDate" name="deliveryEndDate" value="" /><br/>
+                </div>
+            </div>
             <div class="row">
                 <div class="col-md-3" role:secRole="ADMIN,GENERAL_AGENT">
                     <div class="input-group">
@@ -103,6 +141,7 @@
                         <button id="order-print-output-btn" type="button" class="btn btn-outline-primary">&nbsp;打印出库单&nbsp;</button>
                         <button role:secRole="ADMIN,GENERAL_AGENT" id="order-mark-payment-btn" type="button" class="btn btn-outline-primary">&nbsp;标账&nbsp;</button>
                         <button role:secRole="ADMIN,GENERAL_AGENT" id="order-cancel-btn" type="button" class="btn btn-outline-primary">&nbsp;消单&nbsp;</button>
+                        <button  id="order-leadout-outbound-excel-btn" type="button" class="btn btn-outline-primary">&nbsp;导出出库明细Excel&nbsp;</button>
                     </div>
                     <div style="display: none">
                         <button type="button" class="btn btn-outline-primary" style="display: none">&nbsp;销单&nbsp;</button>
@@ -124,5 +163,21 @@
         </form>
     </div>
 </main>
+<script type="text/javascript" src="/ui-lib/bootstrap-datetimepicker-3.0/bootstrap-datetimepicker.js" charset="UTF-8"></script>
+<script type="text/javascript" src="/ui-lib/bootstrap-datetimepicker-3.0/locales/bootstrap-datetimepicker.zh-CN.js" charset="UTF-8"></script>
+<script type="text/javascript">
+
+    $('.form_date').datetimepicker({
+        language:  'zh-CN',
+        weekStart: 1,
+        todayBtn:  1,
+        autoclose: 1,
+        todayHighlight: 1,
+        startView: 2,
+        minView: 2,
+        forceParse: 0
+    });
+
+</script>
 </body>
 </html>

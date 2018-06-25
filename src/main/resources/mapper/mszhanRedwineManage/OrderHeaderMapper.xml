@@ -157,12 +157,45 @@
 
   </select>
 
-  <select id="queryForOutboundExcel">
-
-
-
-
-
-
+  <select id="queryForOutboundExcel" resultType="java.util.HashMap" parameterType="com.mszhan.redwine.manage.server.model.mszhanRedwineManage.query.OrderQuery">
+    select DATE_FORMAT(o.delivery_date, "%Y年%m月%d") as deliveryDate, p.unit, i.unit_price unitPrice, i.quantity, i.unit_price*i.quantity as totalPrice, p.product_name as productName, p.sku, p.wine_type as wineType, o.client_name as clientName from order_item i
+      join order_header o on o.order_id = i.order_id
+      join product p on p.sku = i.sku
+    where status = 'SHIPPED'
+    <if test="agentId != null">
+      AND o.agent_id = #{agentId}
+    </if>
+    <if test="orderId != null and orderId !=''">
+      AND o.order_id = #{orderId}
+    </if>
+    <if test="orderStatus != null and orderStatus !=''">
+      AND o.status = #{orderStatus}
+    </if>
+    <if test="paymentStatus != null and paymentStatus !=''">
+      AND o.payment_status = #{paymentStatus}
+    </if>
+    <if test="sku != null and sku !=''">
+      AND i.sku = #{sku}
+    </if>
+    <if test="productName != null and productName !=''">
+      AND p.product_name like #{productName}
+    </if>
+    <if test="brandName != null and brandName !=''">
+      AND p.brand_name like #{brandName}
+    </if>
+    <if test="createStartDate != null and createStartDate !=''">
+      AND o.create_date >= #{createStartDate}
+    </if>
+    <if test="createEndDate != null and createEndDate !=''">
+      <![CDATA[  AND o.create_date <= #{createEndDate}  ]]>
+    </if>
+    <if test="deliveryStartDate != null and deliveryStartDate !=''">
+      AND o.delivery_start_date >= #{deliveryStartDate}
+    </if>
+    <if test="deliveryEndDate != null and deliveryEndDate !=''">
+      <![CDATA[  AND o.delivery_end_date <= #{deliveryEndDate}  ]]>
+    </if>
+    group by CONCAT(DATE_FORMAT(o.delivery_date, "%Y年%m月%d"),'|', o.client_name, '|', i.SKU)
+    order by o.delivery_date asc
   </select>
 </mapper>

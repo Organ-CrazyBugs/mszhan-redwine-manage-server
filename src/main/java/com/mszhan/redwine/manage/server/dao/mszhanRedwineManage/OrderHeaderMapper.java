@@ -4,7 +4,6 @@ import com.mszhan.redwine.manage.server.core.Mapper;
 import com.mszhan.redwine.manage.server.model.mszhanRedwineManage.OrderHeader;
 import com.mszhan.redwine.manage.server.model.mszhanRedwineManage.query.OrderQuery;
 import org.apache.ibatis.annotations.Param;
-import org.springframework.core.annotation.Order;
 
 import java.util.List;
 import java.util.Map;
@@ -21,7 +20,7 @@ public interface OrderHeaderMapper extends Mapper<OrderHeader> {
             @Param("brandName") String brandName,
             @Param("orderStatus") String orderStatus,
             @Param("paymentStatus") String paymentStatus
-        );
+    );
 
     List<OrderHeader> queryForPage(OrderQuery query);
 
