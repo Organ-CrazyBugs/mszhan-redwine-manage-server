@@ -7,7 +7,6 @@
     -->
     <id column="id" jdbcType="INTEGER" property="id" />
     <result column="order_id" jdbcType="VARCHAR" property="orderId" />
-    <result column="product_id" jdbcType="INTEGER" property="productId" />
     <result column="sku" jdbcType="VARCHAR" property="sku" />
     <result column="quantity" jdbcType="INTEGER" property="quantity" />
     <result column="shipping_fee" jdbcType="DECIMAL" property="shippingFee" />
@@ -22,4 +21,12 @@
     <result column="warehouse_name" jdbcType="VARCHAR" property="warehouseName" />
     <result column="warehouse_id" jdbcType="INTEGER" property="warehouseId" />
   </resultMap>
+  <select id="fetchOrderItemsByOrderId"
+          resultType="com.mszhan.redwine.manage.server.model.mszhanRedwineManage.OrderItem">
+    SELECT oi.sku as sku, oi.quantity as  quantity, oi.order_id as orderId, p.product_name as productName, p.wine_type as wineType FROM order_item oi left join product p on (oi.sku = p.sku)
+    where oi.order_id in
+    <foreach collection="orderIds" item="item" open="(" separator="," close=")">
+      #{item}
+    </foreach>
+  </select>
 </mapper>

@@ -5,6 +5,7 @@ import com.mszhan.redwine.manage.server.model.mszhanRedwineManage.OrderHeader;
 import com.mszhan.redwine.manage.server.model.mszhanRedwineManage.query.OrderQuery;
 import org.apache.ibatis.annotations.Param;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -19,7 +20,12 @@ public interface OrderHeaderMapper extends Mapper<OrderHeader> {
             @Param("sku") String sku,
             @Param("brandName") String brandName,
             @Param("orderStatus") String orderStatus,
-            @Param("paymentStatus") String paymentStatus
+            @Param("paymentStatus") String paymentStatus,
+
+            @Param("createStartDate") Date createStartDate,
+            @Param("createEndDate") Date createEndDate,
+            @Param("deliveryStartDate") Date deliveryStartDate,
+            @Param("deliveryEndDate") Date deliveryEndDate
     );
 
     List<OrderHeader> queryForPage(OrderQuery query);

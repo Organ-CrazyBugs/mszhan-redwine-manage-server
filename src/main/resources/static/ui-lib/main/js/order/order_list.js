@@ -74,6 +74,7 @@ $(function () {
     let $orderCreatePopupForm = $('#order-create-popup-form');
     let $orderCancelBtn = $('#order-cancel-btn');
     let $orderLeadOutOutboundExcelBtn = $('#order-leadout-outbound-excel-btn');
+    let $orderSalesExcelBtn = $('#order-sales-excel-btn');
 
 
     // 绑定创建仓库Modal隐藏事件， 隐藏时候清空表单内容
@@ -211,6 +212,11 @@ $(function () {
 
         createFormByJson("orderLeadOutOutboundExcel","get","/api/order/lead_out_outbound_excel", params);
         // window.open("/api/order/lead_out_outbound_excel?data=" + JSON.stringify(params));
+    });
+
+    $orderSalesExcelBtn.on('click', function(){
+        let params = $("#table-query-form").serializeObject();
+        createFormByJson("orderSalesExportExcel","get","/api/order/order_sales_export", params);
     });
 
     $orderMarkPaymentForm.on('submit', function (event) {

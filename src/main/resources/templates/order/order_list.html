@@ -141,7 +141,8 @@
                         <button id="order-print-output-btn" type="button" class="btn btn-outline-primary">&nbsp;打印出库单&nbsp;</button>
                         <button role:secRole="ADMIN,GENERAL_AGENT" id="order-mark-payment-btn" type="button" class="btn btn-outline-primary">&nbsp;标账&nbsp;</button>
                         <button role:secRole="ADMIN,GENERAL_AGENT" id="order-cancel-btn" type="button" class="btn btn-outline-primary">&nbsp;消单&nbsp;</button>
-                        <button  id="order-leadout-outbound-excel-btn" type="button" class="btn btn-outline-primary">&nbsp;导出出库明细Excel&nbsp;</button>
+                        <button id="order-leadout-outbound-excel-btn" type="button" class="btn btn-outline-primary">&nbsp;导出出库明细&nbsp;</button>
+                        <button id="order-sales-excel-btn" type="button" class="btn btn-outline-primary">&nbsp;导出销售明细&nbsp;</button>
                     </div>
                     <div style="display: none">
                         <button type="button" class="btn btn-outline-primary" style="display: none">&nbsp;销单&nbsp;</button>
@@ -175,7 +176,8 @@
         todayHighlight: 1,
         startView: 2,
         minView: 2,
-        forceParse: 0
+        forceParse: 0,
+        clearBtn: true
     });
 
 </script>

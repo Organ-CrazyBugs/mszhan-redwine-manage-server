@@ -95,7 +95,17 @@ public class OrderItem {
     @Transient
     private boolean redWine;
     @Transient
+    private String wineType;
+    @Transient
     private String quantityDescription;
+
+    public String getWineType() {
+        return wineType;
+    }
+
+    public void setWineType(String wineType) {
+        this.wineType = wineType;
+    }
 
     public String getQuantityDescription() {
         return quantityDescription;

@@ -50,6 +50,27 @@
       <if test="brandName != null and brandName !=''">
         AND p.brand_name like #{brandName}
       </if>
+
+      <if test="createStartDate != null">
+        <![CDATA[
+        AND oh.create_date >= #{createStartDate}
+        ]]>
+      </if>
+      <if test="createEndDate != null">
+        <![CDATA[
+        AND date(oh.create_date) <= #{createEndDate}
+        ]]>
+      </if>
+      <if test="deliveryStartDate != null">
+        <![CDATA[
+        AND oh.delivery_date >= #{deliveryStartDate}
+        ]]>
+      </if>
+      <if test="deliveryEndDate != null">
+        <![CDATA[
+        AND date(oh.delivery_date) <= #{deliveryEndDate}
+        ]]>
+      </if>
     </where>
     group by oh.order_id
     order by oh.create_date desc
