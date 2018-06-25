@@ -38,10 +38,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -252,14 +249,40 @@ public class OrderRestController {
                     for (OrderItem orderItem : orderHeaders.get(i).getOrderItems()) {
                         if (skuList.get(j).startsWith(orderItem.getSku() + "___")) {
                             if (StringUtils.isNotBlank(orderItem.getWineType())) {
-
+                                String des;
+                                if (orderItem.getQuantity() < 6) {
+                                    des = "";
+                                } else if (orderItem.getQuantity() % 6 == 0) {
+                                    des = String.format("（%s箱）", orderItem.getQuantity()/6);
+                                } else {
+                                    des = String.format("（%s箱%s瓶）", orderItem.getQuantity()/6, orderItem.getQuantity()%6);
+                                }
+                                qty = String.format("%s瓶%s", orderItem.getQuantity(), des);
                             } else {
                                 qty = orderItem.getQuantity() + "";
                             }
                         }
+
                     }
                     cell.setCellValue(qty);
                 }
+            }
+        }
+
+        Map<String, Integer> sum = orderHeaders.stream().flatMap(oh -> oh.getOrderItems().stream())
+                .collect(Collectors.groupingBy(OrderItem::getSku, Collectors.reducing(0, OrderItem::getQuantity, (i1, i2) -> i1 + i2)));
+
+        Row footer = sheet.createRow(rowIndex++);
+        for (int i = -3; i < skuList.size(); i++) {
+            Cell cell = footer.createCell(i + 3);
+            if (i == -3) {
+                cell.setCellValue("合计");
+            } else if (i == -2) {
+                cell.setCellValue("");
+            } else if (i == -1) {
+                cell.setCellValue("");
+            } else {
+                cell.setCellValue(sum.get(skuList.get(i).split("___")[0]));
             }
         }
         try {
