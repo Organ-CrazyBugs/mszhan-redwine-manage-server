@@ -37,6 +37,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
+import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -219,7 +220,7 @@ public class OrderRestController {
         int rowIndex = 0;
         Row header = sheet.createRow(rowIndex++);
 
-        for (int i = -3; i < skuList.size(); i++) {
+        for (int i = -3; i < skuList.size() + 3; i++) {
             Cell cell = header.createCell(i + 3);
             if (i == -3) {
                 cell.setCellValue("序号");
@@ -227,16 +228,27 @@ public class OrderRestController {
                 cell.setCellValue("日期");
             } else if (i == -1) {
                 cell.setCellValue("客户");
-            } else {
+            } else if (i < skuList.size()){
                 cell.setCellValue(skuList.get(i).split("___")[1]);
+            } else if (i == skuList.size()) {
+                cell.setCellValue("销售额");
+            } else if (i == skuList.size() + 1) {
+                cell.setCellValue("成本");
+            } else if (i == skuList.size() + 2) {
+                cell.setCellValue("利润");
             }
         }
 
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy年MM月dd日");
+        BigDecimal salesAmountTotal = BigDecimal.ZERO;
+        BigDecimal costAmountTotal = BigDecimal.ZERO;
+
         for (int i = 0; i < orderHeaders.size(); i++) {
             Row row = sheet.createRow(rowIndex++);
 
-            for (int j = -3; j < skuList.size(); j++) {
+            BigDecimal salesAmount = BigDecimal.ZERO;
+            BigDecimal costAmount = BigDecimal.ZERO;
+            for (int j = -3; j < skuList.size() + 3; j++) {
                 Cell cell = row.createCell(j + 3);
                 if (j == -3) {
                     cell.setCellValue(i + 1);
@@ -244,7 +256,7 @@ public class OrderRestController {
                     cell.setCellValue(dateFormat.format(orderHeaders.get(i).getCreateDate()));
                 } else if (j == -1) {
                     cell.setCellValue( orderHeaders.get(i).getClientName() + "");
-                } else {
+                } else if (j < skuList.size()){
                     String qty = "";
                     for (OrderItem orderItem : orderHeaders.get(i).getOrderItems()) {
                         if (skuList.get(j).startsWith(orderItem.getSku() + "___")) {
@@ -265,15 +277,33 @@ public class OrderRestController {
 
                     }
                     cell.setCellValue(qty);
+                } else if (j == skuList.size()) {
+                    for (OrderItem orderItem : orderHeaders.get(i).getOrderItems()) {
+                        salesAmount = salesAmount.add(orderItem.getUnitPrice().multiply(new BigDecimal(orderItem.getQuantity())));
+                    }
+                    cell.setCellValue(salesAmount.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
+                } else if (j == skuList.size() + 1) {
+                    for (OrderItem orderItem : orderHeaders.get(i).getOrderItems()) {
+                        if (orderItem.getCost() == null) {
+                            orderItem.setCost(BigDecimal.ZERO);
+                        }
+                        costAmount = costAmount.add(orderItem.getCost().multiply(new BigDecimal(orderItem.getQuantity())));
+                    }
+                    cell.setCellValue(costAmount.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
+                } else if (j == skuList.size() + 2) {
+                    cell.setCellValue(salesAmount.subtract(costAmount).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
                 }
             }
+
+            salesAmountTotal = salesAmountTotal.add(salesAmount);
+            costAmountTotal = costAmountTotal.add(costAmount);
         }
 
         Map<String, Integer> sum = orderHeaders.stream().flatMap(oh -> oh.getOrderItems().stream())
                 .collect(Collectors.groupingBy(OrderItem::getSku, Collectors.reducing(0, OrderItem::getQuantity, (i1, i2) -> i1 + i2)));
 
         Row footer = sheet.createRow(rowIndex++);
-        for (int i = -3; i < skuList.size(); i++) {
+        for (int i = -3; i < skuList.size() + 3; i++) {
             Cell cell = footer.createCell(i + 3);
             if (i == -3) {
                 cell.setCellValue("合计");
@@ -281,8 +311,14 @@ public class OrderRestController {
                 cell.setCellValue("");
             } else if (i == -1) {
                 cell.setCellValue("");
-            } else {
+            } else if (i < skuList.size()){
                 cell.setCellValue(sum.get(skuList.get(i).split("___")[0]));
+            } else if (i == skuList.size()) {
+                cell.setCellValue(salesAmountTotal.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
+            } else if (i == skuList.size() + 1) {
+                cell.setCellValue(costAmountTotal.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
+            } else if (i == skuList.size() + 2) {
+                cell.setCellValue(salesAmountTotal.subtract(costAmountTotal).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
             }
         }
         try {

@@ -45,6 +45,9 @@ public class OrderItem {
     @Column(name = "unit_price")
     private BigDecimal unitPrice;
 
+    @Transient
+    private BigDecimal cost;
+
     /**
      * 创建人
      */
@@ -98,6 +101,14 @@ public class OrderItem {
     private String wineType;
     @Transient
     private String quantityDescription;
+
+    public BigDecimal getCost() {
+        return cost;
+    }
+
+    public void setCost(BigDecimal cost) {
+        this.cost = cost;
+    }
 
     public String getWineType() {
         return wineType;

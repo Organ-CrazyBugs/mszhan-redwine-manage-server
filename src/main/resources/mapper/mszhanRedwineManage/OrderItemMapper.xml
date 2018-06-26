@@ -23,7 +23,7 @@
   </resultMap>
   <select id="fetchOrderItemsByOrderId"
           resultType="com.mszhan.redwine.manage.server.model.mszhanRedwineManage.OrderItem">
-    SELECT oi.sku as sku, oi.quantity as  quantity, oi.order_id as orderId, p.product_name as productName, p.wine_type as wineType FROM order_item oi left join product p on (oi.sku = p.sku)
+    SELECT oi.sku as sku, oi.quantity as  quantity, oi.order_id as orderId, oi.unit_price as unitPrice, p.product_name as productName, p.wine_type as wineType, p.cost as cost FROM order_item oi left join product p on (oi.sku = p.sku)
     where oi.order_id in
     <foreach collection="orderIds" item="item" open="(" separator="," close=")">
       #{item}
