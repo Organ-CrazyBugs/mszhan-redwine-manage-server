@@ -23,6 +23,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.util.CellRangeAddress;
 import org.apache.poi.xssf.streaming.SXSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.CollectionUtils;
@@ -218,6 +219,26 @@ public class OrderRestController {
         sheet.setDefaultColumnWidth(20);
 
         int rowIndex = 0;
+        Row topRow = sheet.createRow(rowIndex++);
+        Cell topCell = topRow.createCell(0);
+        topCell.setCellValue("深圳市汇纳酒业有限公司");
+        sheet.addMergedRegion(new CellRangeAddress(
+                0,
+                0,
+                0,
+                skuList.size() + 5
+        ));
+
+        topRow = sheet.createRow(rowIndex++);
+        topCell = topRow.createCell(0);
+        topCell.setCellValue("销售报表");
+        sheet.addMergedRegion(new CellRangeAddress(
+                1,
+                1,
+                0,
+                skuList.size() + 5
+        ));
+
         Row header = sheet.createRow(rowIndex++);
 
         for (int i = -3; i < skuList.size() + 3; i++) {
