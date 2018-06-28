@@ -207,6 +207,7 @@ public class OrderHeaderServiceImpl extends AbstractService<OrderHeader> impleme
         if (CollectionUtils.isEmpty(orderHeaders)) {
             return;
         }
+        Date newDate = new Date();
         orderHeaders.forEach(orderHeader -> {
             // 判断订单状态, 待处理的订单状态才能出库
             if (!"WAIT_DEAL".equals(orderHeader.getStatus())) {
@@ -259,6 +260,7 @@ public class OrderHeaderServiceImpl extends AbstractService<OrderHeader> impleme
             OrderHeader updateOH = new OrderHeader();
             updateOH.setOrderId(orderHeader.getOrderId());
             updateOH.setStatus("SHIPPED");
+            updateOH.setDeliveryDate(newDate);
             this.orderHeaderMapper.updateByPrimaryKeySelective(updateOH);
         });
     }

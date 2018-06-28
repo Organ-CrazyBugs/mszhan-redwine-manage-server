@@ -64,6 +64,14 @@ function createFormByJson(formId, method, actionUrl, json) {
     $form.submit();
 };
 
+function textShow(value,row,index){
+    if ($.trim(value) == ''){
+        return "";
+    }
+    var a = "<div class='hiddenOverFlowCoverShow' title='"+value+"'> "+ value +"</div>";
+    return a;
+}
+
 $(function () {
     let $table = $('#table');
     let $orderMarkPaymentBtn = $('#order-mark-payment-btn');
@@ -95,7 +103,7 @@ $(function () {
                     html += `
                     <tr>
                       <th scope="row" class="text-center">${index+1}</th>
-                      <td class="text-center">${oi.sku}</td>
+                      <td class="text-center">${textShow(oi.productName)}</td>
                       <td class="text-right">${oi.quantity}</td>
                       <td class="text-right" style="width: 180px"><input class="form-control" style="text-align: right;" data-order-id="${record.orderId}" data-order-item-id="${oi.id}" value="${parseFloat(oi.unitPrice)}" /></td>
                       <td class="text-right">￥${$.formatMoney(parseFloat(oi.packagingFee).toFixed(2))}</td>
@@ -122,7 +130,7 @@ $(function () {
                   <thead>
                     <tr>
                       <th class="text-center py-2">#</th>
-                      <th class="text-center py-2">产品条码</th>
+                      <th class="text-center py-2">产品名称</th>
                       <th class="text-center py-2">数量(支)</th>
                       <th class="text-center py-2">售价（单价）</th>
                       <th class="text-center py-2">包装费</th>
@@ -170,6 +178,7 @@ $(function () {
             }},
             {field: 'remark', title: '备注'},
             {field: 'createDate', title: '创建时间'},
+            {field: 'deliveryDate', title: '发货时间'},
             {field: 'updateDate', title: '最近更新时间'}
         ]
     });
@@ -200,6 +209,7 @@ $(function () {
         let totalAmount = data['totalAmount'];
         let paymentAmount = totalAmount;
         $orderMarkPaymentForm.reset();
+        $("#paymentRemark").val("");
         $orderMarkPaymentForm.bindData({orderId, agentName, personName,
             totalAmount, paymentAmount}, ['agentName', 'orderId', 'personName', 'totalAmount', 'paymentAmount']);
 
@@ -229,7 +239,7 @@ $(function () {
             $.alertWarning('提示', '请选择支付方式');
             return false;
         }
-        if (isNaN(paymentAmount) || paymentAmount <= 0) {
+        if (isNaN(paymentAmount) || paymentAmount < 0) {
             $.alertWarning('提示', '请输入正确的支付金额');
             return false;
         }

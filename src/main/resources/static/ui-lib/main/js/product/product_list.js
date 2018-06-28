@@ -55,7 +55,7 @@ $(function () {
             {field: 'updateDate', title: '更新时间', width:150},
 
 
-        ]
+        ],
     });
 
     function removeNull(value,row,index) {

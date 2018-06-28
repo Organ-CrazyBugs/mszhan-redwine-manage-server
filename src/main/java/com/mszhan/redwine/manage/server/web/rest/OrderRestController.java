@@ -12,6 +12,7 @@ import com.mszhan.redwine.manage.server.dao.mszhanRedwineManage.ProductMapper;
 import com.mszhan.redwine.manage.server.enums.AgentTypeEnum;
 import com.mszhan.redwine.manage.server.model.mszhanRedwineManage.OrderHeader;
 import com.mszhan.redwine.manage.server.model.mszhanRedwineManage.OrderItem;
+import com.mszhan.redwine.manage.server.model.mszhanRedwineManage.Product;
 import com.mszhan.redwine.manage.server.model.mszhanRedwineManage.base.PaginateResult;
 import com.mszhan.redwine.manage.server.model.mszhanRedwineManage.query.OrderQuery;
 import com.mszhan.redwine.manage.server.model.mszhanRedwineManage.vo.CreateOrderVO;
@@ -111,6 +112,12 @@ public class OrderRestController {
             Condition fetchOrderItemCon = new Condition(OrderItem.class);
             fetchOrderItemCon.createCriteria().andIn("orderId", orderIds);
             List<OrderItem> orderItems = orderItemMapper.selectByCondition(fetchOrderItemCon);
+            for (OrderItem orderItem : orderItems){
+                List<Product> products = productMapper.queryProductBySku(orderItem.getSku());
+                if (!CollectionUtils.isEmpty(products)){
+                    orderItem.setProductName(products.get(0).getProductName());
+                }
+            }
             Map<String, List<OrderItem>> orderItemGroup = orderItems.stream().collect(Collectors.groupingBy(OrderItem::getOrderId));
             page.forEach(orderHeader -> orderHeader.setOrderItems(orderItemGroup.get(orderHeader.getOrderId())));
         }

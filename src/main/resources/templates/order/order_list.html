@@ -2,6 +2,23 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<style>
+    .hiddenOverFlowCoverShow:hover
+    {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        text-decoration:underline;
+        cursor:pointer;
+    }
+    .hiddenOverFlowCoverShow{
+        width: 150px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+</style>
 <link href="/ui-lib/bootstrap-datetimepicker-3.0/css/bootstrap-datetimepicker.min.css" rel="stylesheet" media="screen" />
 <head th:include="includes/ui_libs::payload('订单管理')"></head>
 
@@ -141,8 +158,8 @@
                         <button id="order-print-output-btn" type="button" class="btn btn-outline-primary">&nbsp;打印出库单&nbsp;</button>
                         <button role:secRole="ADMIN,GENERAL_AGENT" id="order-mark-payment-btn" type="button" class="btn btn-outline-primary">&nbsp;标账&nbsp;</button>
                         <button role:secRole="ADMIN,GENERAL_AGENT" id="order-cancel-btn" type="button" class="btn btn-outline-primary">&nbsp;消单&nbsp;</button>
-                        <button id="order-leadout-outbound-excel-btn" type="button" class="btn btn-outline-primary">&nbsp;导出出库明细&nbsp;</button>
-                        <button id="order-sales-excel-btn" type="button" class="btn btn-outline-primary">&nbsp;导出销售明细&nbsp;</button>
+                        <button role:secRole="ADMIN" id="order-leadout-outbound-excel-btn" type="button" class="btn btn-outline-primary">&nbsp;导出出库明细&nbsp;</button>
+                        <button role:secRole="ADMIN" id="order-sales-excel-btn" type="button" class="btn btn-outline-primary">&nbsp;导出销售明细&nbsp;</button>
                     </div>
                     <div style="display: none">
                         <button type="button" class="btn btn-outline-primary" style="display: none">&nbsp;销单&nbsp;</button>
