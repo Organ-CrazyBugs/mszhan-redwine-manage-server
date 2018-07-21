@@ -29,6 +29,7 @@
     LEFT JOIN order_item oi ON (oh.order_id = oi.order_id)
     LEFT JOIN product p ON (oi.sku = p.sku)
     <where>
+      and status not in ('REMOVED')
       <if test="agentId != null">
         AND oh.agent_id = #{agentId}
       </if>
