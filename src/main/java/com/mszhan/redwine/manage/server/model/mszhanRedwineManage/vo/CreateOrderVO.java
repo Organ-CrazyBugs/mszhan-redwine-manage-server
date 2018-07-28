@@ -25,6 +25,15 @@ public class CreateOrderVO {
         private BigDecimal packagePrice;
         private Integer warehouseId;
         private String unit;
+        private String gift;
+
+        public String getGift() {
+            return gift;
+        }
+
+        public void setGift(String gift) {
+            this.gift = gift;
+        }
 
         public String getUnit() {
             return unit;

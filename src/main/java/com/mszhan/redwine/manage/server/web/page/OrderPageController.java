@@ -51,9 +51,11 @@ public class OrderPageController {
             orderHeaders.forEach(oh -> {
                 Condition oiCon = new Condition(OrderItem.class);
                 oiCon.createCriteria().andEqualTo("orderId", oh.getOrderId());
-                oh.setOrderItems(this.orderItemMapper.selectByCondition(oiCon));
+                List<OrderItem> itemList = this.orderItemMapper.selectByCondition(oiCon);
+                oh.setOrderItems(itemList);
 
                 oh.getOrderItems().forEach(oi -> {
+                    oi.setGift( "Y".equals(oi.getGift()) ? "是" : "否" );
                     Condition proCon = new Condition(Product.class);
                     proCon.createCriteria().andEqualTo("sku", oi.getSku());
                     List<Product> products = this.productMapper.selectByCondition(proCon);

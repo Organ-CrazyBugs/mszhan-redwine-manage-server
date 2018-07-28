@@ -1,4 +1,5 @@
 let productList = [];
+let productIndex = 1;
 
 let agentType;
 $(function () {
@@ -9,6 +10,7 @@ $(function () {
     let $orderCreatePopupForm = $('#order-create-popup-form');
     let $warehouseTmplBox = $('#warehouse-tmpl-box');
     let $productUnitTmplBox = $('#product-unit-tmpl-box');
+    let $productGiftTmplBox = $("#product-gift-tmpl-box");
 
     agentType = $('#contextAgentType').val();
 
@@ -63,7 +65,27 @@ $(function () {
             }
         },
         columns: [
-            {field: 'sku', width: 150, title: 'SKU'},
+            {field: 'sku', width: 150, title: 'SKU', formatter: function(val, record) {
+
+            return '<div name="sku-'+ record.index +'">'+ val +'</div>'
+
+            } },
+            {field: 'gift', width: 80, title: '是否赠品',  formatter: function(val, record) {
+                let options = $productGiftTmplBox.find('select option');
+                options.removeAttr('selected');
+                if (val != '') {
+                    options.each(function (index, option) {
+                        if ($(option).attr('value') == val) {
+                            $(option).attr('selected', 'selected');
+                            return false;
+                        }
+                    });
+                }
+                $productGiftTmplBox.find('select').attr('data-sku', record['sku']);
+                return $productGiftTmplBox.html();
+            return '<select class="d-none" ><option value="N">否</option><option value="Y">是</option></select>';
+
+            }},
             {field: 'quantity', title: '数量', align: 'left', width: 100, formatter: function (val, record) {
                 return $.formatString(editTempl, 'quantity', record.productId, val, '数量');
             }},
@@ -280,24 +302,39 @@ function createOrderProductListChange(field, fieldName, recordId, valueInput, ed
 }
 
 function createOrderSelectProductCallback(products) {
-    console.log(products);
+    console.log(3333);
+
     if (products) {
-        products.forEach(function (item) {
-            let exists = productList.filter(fItem => fItem.productId == item.productId);
-            if (exists.length != 0) {
-                exists.forEach(eItem => eItem.quantity++);
-            } else {
-                item.quantity = 1;
+        var newObject = jQuery.extend(true, {}, products);
+        $.each(newObject, function(i, item){
+            var mIn = productIndex.toString();
+            // let exists = productList.filter(fItem => fItem.productId == item.productId);
+            // if (exists.length != 0) {
+            //     exists.forEach(eItem => eItem.quantity++);
+            // } else {
+            //     item.quantity = 1;
+            //
+            //     // TODO: 获取初始化的价格信息
+            //     item.packagePrice = 0;
+            //     item.unitPrice = item.retailPrice;
+            //
+            //     item.itemTotal = item.quantity * item.unitPrice + item.packagePrice;
+            //     item.warehouseId = '';
+            //     item.unit = 'UNIT_PIECE';
+            //     productList.push(item);
+            // }
+            item.quantity = 1;
 
-                // TODO: 获取初始化的价格信息
-                item.packagePrice = 0;
-                item.unitPrice = item.retailPrice;
+            // TODO: 获取初始化的价格信息
+            item.packagePrice = 0;
+            item.unitPrice = item.retailPrice;
 
-                item.itemTotal = item.quantity * item.unitPrice + item.packagePrice;
-                item.warehouseId = '';
-                item.unit = 'UNIT_PIECE';
-                productList.push(item);
-            }
+            item.itemTotal = item.quantity * item.unitPrice + item.packagePrice;
+            item.warehouseId = '';
+            item.unit = 'UNIT_PIECE';
+            item.index = mIn;
+            productIndex ++;
+            productList.push(item);
         });
     }
     $('#create-order-product-table').bootstrapTable('load', productList);
@@ -308,11 +345,27 @@ function orderItemWarehouseOnChange(select) {
     let $warehouseSelect = $(select);
     let sku = $warehouseSelect.attr('data-sku');
     // console.log($warehouseSelect.val());
-
+    var px = $(select.parentElement.parentElement).find("td:eq(1) div").attr("name").replace("sku-", "");
     productList.forEach(function (product) {
-        if (product.sku == sku) {
+        if (product.index  == px) {
             console.log('sku:' + sku + '改变');
             product.warehouseId = $warehouseSelect.val();
+            return false;
+        }
+    });
+    // console.log(productList);
+}
+
+function orderItemGiftOnChange(select) {
+    console.log(2222);
+    let $warehouseSelect = $(select);
+    var px = $(select.parentElement.parentElement).find("td:eq(1) div").attr("name").replace("sku-", "");
+    let sku = $warehouseSelect.attr('data-sku');
+    // console.log($warehouseSelect.val());
+    productList.forEach(function (product) {
+        if (product.index == px) {
+            console.log('sku:' + sku + '改变');
+            product.gift = $warehouseSelect.val();
             return false;
         }
     });
@@ -322,8 +375,9 @@ function orderItemWarehouseOnChange(select) {
 function orderItemUnitOnChange(select){
     let $select = $(select);
     let sku = $select.attr('data-sku');
+    var px = $(select.parentElement.parentElement).find("td:eq(1) div").attr("name").replace("sku-", "");
     productList.forEach(function (product) {
-        if (product.sku == sku) {
+        if (product.index == px) {
             product.unit = $select.val();
 
             if (product.unit == 'UNIT_BOX') {

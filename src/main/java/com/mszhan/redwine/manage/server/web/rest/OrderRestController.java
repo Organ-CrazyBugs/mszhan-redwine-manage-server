@@ -85,15 +85,14 @@ public class OrderRestController {
         String orderId = requests.getString("orderId", null);
         String sku = requests.getString("sku", null);
         String productName = requests.getString("productName", null);
+        String clientName = requests.getString("clientName", null);
         String brandName = requests.getString("brandName", null);
-
         String orderStatus = requests.getString("orderStatus", null);
         String paymentStatus = requests.getString("paymentStatus", null);
         Date createStartDate = requests.getDate("createStartDate", new SimpleDateFormat("yyyy-MM-dd"), null);
         Date createEndDate = requests.getDate("createEndDate", new SimpleDateFormat("yyyy-MM-dd"), null);
         Date deliveryStartDate = requests.getDate("deliveryStartDate", new SimpleDateFormat("yyyy-MM-dd"), null);
         Date deliveryEndDate = requests.getDate("deliveryEndDate", new SimpleDateFormat("yyyy-MM-dd"), null);
-
         String brandNameLikeVal = StringUtils.isBlank(brandName) ? "" : String.format("%%%s%%", brandName);
         String productNameLikeVal = StringUtils.isBlank(productName) ? "" : String.format("%%%s%%", productName);
 
@@ -104,7 +103,7 @@ public class OrderRestController {
         Integer finalAgentId = agentId;
         Page<OrderHeader> page = PageHelper.offsetPage(offset, limit)
                 .doSelectPage(() -> this.orderHeaderMapper.fetchOrders(finalAgentId, orderId, productNameLikeVal, sku, brandNameLikeVal, orderStatus, paymentStatus,
-                        createStartDate, createEndDate, deliveryStartDate, deliveryEndDate
+                        createStartDate, createEndDate, deliveryStartDate, deliveryEndDate, clientName
                         ));
 
         if (!CollectionUtils.isEmpty(page)) {
@@ -168,193 +167,8 @@ public class OrderRestController {
     }
 
     @GetMapping("/api/order/order_sales_export")
-    public void exportOrderSalesExcel(Requests requests, HttpServletResponse response) {
-        Integer agentId = requests.getInteger("agentId", null);
-        String orderId = requests.getString("orderId", null);
-        String sku = requests.getString("sku", null);
-        String productName = requests.getString("productName", null);
-        String brandName = requests.getString("brandName", null);
-
-        String orderStatus = requests.getString("orderStatus", null);
-        String paymentStatus = requests.getString("paymentStatus", null);
-        Date createStartDate = requests.getDate("createStartDate", new SimpleDateFormat("yyyy-MM-dd"), null);
-        Date createEndDate = requests.getDate("createEndDate", new SimpleDateFormat("yyyy-MM-dd"), null);
-        Date deliveryStartDate = requests.getDate("deliveryStartDate", new SimpleDateFormat("yyyy-MM-dd"), null);
-        Date deliveryEndDate = requests.getDate("deliveryEndDate", new SimpleDateFormat("yyyy-MM-dd"), null);
-
-        String brandNameLikeVal = StringUtils.isBlank(brandName) ? "" : String.format("%%%s%%", brandName);
-        String productNameLikeVal = StringUtils.isBlank(productName) ? "" : String.format("%%%s%%", productName);
-
-        User user = SecurityUtils.getAuthenticationUser();
-        if (AgentTypeEnum.AGENT.toString().equals(user.getAgentType())){
-            agentId = user.getAgentId();
-        }
-
-        List<OrderHeader> orderHeaders = this.orderHeaderMapper.fetchOrders(agentId, orderId, productNameLikeVal, sku, brandNameLikeVal, orderStatus, paymentStatus,
-                createStartDate, createEndDate, deliveryStartDate, deliveryEndDate
-        );
-
-        if (!CollectionUtils.isEmpty(orderHeaders)) {
-            List<String> orderIds = orderHeaders.stream().map(OrderHeader::getOrderId).collect(Collectors.toList());
-            List<OrderItem> orderItems = orderItemMapper.fetchOrderItemsByOrderId(orderIds);
-            Map<String, List<OrderItem>> orderItemGroup = orderItems.stream().collect(Collectors.groupingBy(OrderItem::getOrderId));
-            orderHeaders.forEach(orderHeader -> orderHeader.setOrderItems(orderItemGroup.get(orderHeader.getOrderId())));
-        }
-
-        // 计算项目产品种类个数
-        List<String> skuList = orderHeaders.stream()
-                .flatMap(oh -> oh.getOrderItems().stream())
-                .map(oi -> String.format("%s___%s", oi.getSku(), oi.getProductName())).distinct()
-                .collect(Collectors.toList());
-
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        response.setContentType("application/vnd.ms-excel");
-        String fileName = "OrderSalesExport";
-        try {
-            response.setHeader("content-disposition", "attachment;filename=" + java.net.URLEncoder.encode(fileName, "utf-8") + "-" + sdf.format(new Date()) + ".xlsx");
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-        }
-        OutputStream out = null;
-        try {
-            out = response.getOutputStream();
-        } catch (IOException e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-        }
-        SXSSFWorkbook workbook = new SXSSFWorkbook(1000);
-        Sheet sheet = workbook.createSheet("sheet");
-        sheet.setDefaultColumnWidth(20);
-
-        int rowIndex = 0;
-        Row topRow = sheet.createRow(rowIndex++);
-        Cell topCell = topRow.createCell(0);
-        topCell.setCellValue("深圳市汇纳酒业有限公司");
-        sheet.addMergedRegion(new CellRangeAddress(
-                0,
-                0,
-                0,
-                skuList.size() + 5
-        ));
-
-        topRow = sheet.createRow(rowIndex++);
-        topCell = topRow.createCell(0);
-        topCell.setCellValue("销售报表");
-        sheet.addMergedRegion(new CellRangeAddress(
-                1,
-                1,
-                0,
-                skuList.size() + 5
-        ));
-
-        Row header = sheet.createRow(rowIndex++);
-
-        for (int i = -3; i < skuList.size() + 3; i++) {
-            Cell cell = header.createCell(i + 3);
-            if (i == -3) {
-                cell.setCellValue("序号");
-            } else if (i == -2) {
-                cell.setCellValue("日期");
-            } else if (i == -1) {
-                cell.setCellValue("客户");
-            } else if (i < skuList.size()){
-                cell.setCellValue(skuList.get(i).split("___")[1]);
-            } else if (i == skuList.size()) {
-                cell.setCellValue("销售额");
-            } else if (i == skuList.size() + 1) {
-                cell.setCellValue("成本");
-            } else if (i == skuList.size() + 2) {
-                cell.setCellValue("利润");
-            }
-        }
-
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy年MM月dd日");
-        BigDecimal salesAmountTotal = BigDecimal.ZERO;
-        BigDecimal costAmountTotal = BigDecimal.ZERO;
-
-        for (int i = 0; i < orderHeaders.size(); i++) {
-            Row row = sheet.createRow(rowIndex++);
-
-            BigDecimal salesAmount = BigDecimal.ZERO;
-            BigDecimal costAmount = BigDecimal.ZERO;
-            for (int j = -3; j < skuList.size() + 3; j++) {
-                Cell cell = row.createCell(j + 3);
-                if (j == -3) {
-                    cell.setCellValue(i + 1);
-                } else if (j == -2) {
-                    cell.setCellValue(dateFormat.format(orderHeaders.get(i).getCreateDate()));
-                } else if (j == -1) {
-                    cell.setCellValue( orderHeaders.get(i).getClientName() + "");
-                } else if (j < skuList.size()){
-                    String qty = "";
-                    for (OrderItem orderItem : orderHeaders.get(i).getOrderItems()) {
-                        if (skuList.get(j).startsWith(orderItem.getSku() + "___")) {
-                            if (StringUtils.isNotBlank(orderItem.getWineType())) {
-                                String des;
-                                if (orderItem.getQuantity() < 6) {
-                                    des = "";
-                                } else if (orderItem.getQuantity() % 6 == 0) {
-                                    des = String.format("（%s箱）", orderItem.getQuantity()/6);
-                                } else {
-                                    des = String.format("（%s箱%s瓶）", orderItem.getQuantity()/6, orderItem.getQuantity()%6);
-                                }
-                                qty = String.format("%s瓶%s", orderItem.getQuantity(), des);
-                            } else {
-                                qty = orderItem.getQuantity() + "";
-                            }
-                        }
-
-                    }
-                    cell.setCellValue(qty);
-                } else if (j == skuList.size()) {
-                    for (OrderItem orderItem : orderHeaders.get(i).getOrderItems()) {
-                        salesAmount = salesAmount.add(orderItem.getUnitPrice().multiply(new BigDecimal(orderItem.getQuantity())));
-                    }
-                    cell.setCellValue(salesAmount.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
-                } else if (j == skuList.size() + 1) {
-                    for (OrderItem orderItem : orderHeaders.get(i).getOrderItems()) {
-                        if (orderItem.getCost() == null) {
-                            orderItem.setCost(BigDecimal.ZERO);
-                        }
-                        costAmount = costAmount.add(orderItem.getCost().multiply(new BigDecimal(orderItem.getQuantity())));
-                    }
-                    cell.setCellValue(costAmount.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
-                } else if (j == skuList.size() + 2) {
-                    cell.setCellValue(salesAmount.subtract(costAmount).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
-                }
-            }
-
-            salesAmountTotal = salesAmountTotal.add(salesAmount);
-            costAmountTotal = costAmountTotal.add(costAmount);
-        }
-
-        Map<String, Integer> sum = orderHeaders.stream().flatMap(oh -> oh.getOrderItems().stream())
-                .collect(Collectors.groupingBy(OrderItem::getSku, Collectors.reducing(0, OrderItem::getQuantity, (i1, i2) -> i1 + i2)));
-
-        Row footer = sheet.createRow(rowIndex++);
-        for (int i = -3; i < skuList.size() + 3; i++) {
-            Cell cell = footer.createCell(i + 3);
-            if (i == -3) {
-                cell.setCellValue("合计");
-            } else if (i == -2) {
-                cell.setCellValue("");
-            } else if (i == -1) {
-                cell.setCellValue("");
-            } else if (i < skuList.size()){
-                cell.setCellValue(sum.get(skuList.get(i).split("___")[0]));
-            } else if (i == skuList.size()) {
-                cell.setCellValue(salesAmountTotal.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
-            } else if (i == skuList.size() + 1) {
-                cell.setCellValue(costAmountTotal.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
-            } else if (i == skuList.size() + 2) {
-                cell.setCellValue(salesAmountTotal.subtract(costAmountTotal).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
-            }
-        }
-        try {
-            workbook.write(out);
-            out.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+    public void orderSalesExport(OrderQuery query, HttpServletResponse response){
+        this.orderHeaderService.orderSalesExport(query, response);
     }
 
     @GetMapping(value = "/api/order/lead_out_outbound_excel")

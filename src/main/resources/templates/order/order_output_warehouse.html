@@ -104,15 +104,17 @@
         <div class="row border-top text-center font-weight-bold">
             <div class="col-2 py-2-no">序号</div>
             <div class="col-4 py-2-no border-left">品名规格</div>
-            <div class="col-2 py-2-no border-left">数量</div>
-            <div class="col-2 py-2-no border-left">单价</div>
+            <div class="col-1 py-2-no border-left">数量</div>
+            <div class="col-1 py-2-no border-left">单价</div>
+            <div class="col-2 py-2-no border-left">是否赠品</div>
             <div class="col-2 py-2-no border-left">金额</div>
         </div>
         <div th:each="oi,record:${oh.getOrderItems()}" class="row border-top text-center">
             <div class="col-2 py-2-no" th:text="${record.index + 1}"></div>
             <div class="col-4 py-2-no border-left" th:text="${oi.getProductName()}"></div>
-            <div class="col-2 py-2-no border-left" th:text="${oi.getQuantityDescription()}"></div>
-            <div class="col-2 py-2-no border-left text-right" th:text="${'￥' + oi.getUnitPrice().setScale(2, 4)}"></div>
+            <div class="col-1 py-2-no border-left" th:text="${oi.getQuantityDescription()}"></div>
+            <div class="col-1 py-2-no border-left text-right" th:text="${'￥' + oi.getUnitPrice().setScale(2, 4)}"></div>
+            <div class="col-2 py-2-no border-left text-right" th:text="${oi.getGift()}"></div>
             <div class="col-2 py-2-no border-left text-right" th:text="${'￥' + oi.fetchAmountTotal()}"></div>
         </div>
         <div class="row border-top text-center">

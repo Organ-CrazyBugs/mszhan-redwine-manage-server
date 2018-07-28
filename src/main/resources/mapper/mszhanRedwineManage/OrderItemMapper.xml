@@ -20,6 +20,7 @@
     <result column="type" jdbcType="VARCHAR" property="type" />
     <result column="warehouse_name" jdbcType="VARCHAR" property="warehouseName" />
     <result column="warehouse_id" jdbcType="INTEGER" property="warehouseId" />
+    <result column="gift" jdbcType="VARCHAR" property="gift" />
   </resultMap>
   <select id="fetchOrderItemsByOrderId"
           resultType="com.mszhan.redwine.manage.server.model.mszhanRedwineManage.OrderItem">
@@ -29,4 +30,10 @@
       #{item}
     </foreach>
   </select>
+
+  <!--<select id="fetchOrderGiftByOrderId" resultType="java.util.HashMap">-->
+    <!--select o.quantity from order_item o-->
+    <!--join product p on o.sku = p.sku-->
+     <!--where o.order_id = #{orderId} and o.gift = 'Y'-->
+  <!--</select>-->
 </mapper>

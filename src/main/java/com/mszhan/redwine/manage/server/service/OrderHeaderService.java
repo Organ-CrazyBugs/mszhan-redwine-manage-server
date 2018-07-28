@@ -35,4 +35,6 @@ public interface OrderHeaderService extends Service<OrderHeader> {
     void updateItemPrice(OrderItemPriceUpdateVO vo);
 
     void leadOutOrderOutboundExcel(HttpServletResponse response, OrderQuery query);
+
+    void orderSalesExport(OrderQuery query, HttpServletResponse response);
 }

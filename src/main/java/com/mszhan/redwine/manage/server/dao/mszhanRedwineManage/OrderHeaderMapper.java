@@ -25,10 +25,13 @@ public interface OrderHeaderMapper extends Mapper<OrderHeader> {
             @Param("createStartDate") Date createStartDate,
             @Param("createEndDate") Date createEndDate,
             @Param("deliveryStartDate") Date deliveryStartDate,
-            @Param("deliveryEndDate") Date deliveryEndDate
+            @Param("deliveryEndDate") Date deliveryEndDate,
+            @Param("clientName") String clientName
     );
 
     List<OrderHeader> queryForPage(OrderQuery query);
 
     List<Map<String, Object>> queryForOutboundExcel(OrderQuery query);
+
+    List<Map<String, Object>> queryForSalesDetail(OrderQuery query);
 }

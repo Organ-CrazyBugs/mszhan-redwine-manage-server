@@ -93,6 +93,9 @@ public class OrderItem {
     @Column(name = "warehouse_name")
     private String warehouseName;
 
+    @Column(name = "gift")
+    private String gift;
+
     @Transient
     private String productName;
     @Transient
@@ -410,5 +413,13 @@ public class OrderItem {
      */
     public void setType(String type) {
         this.type = type;
+    }
+
+    public String getGift() {
+        return gift;
+    }
+
+    public void setGift(String gift) {
+        this.gift = gift;
     }
 }

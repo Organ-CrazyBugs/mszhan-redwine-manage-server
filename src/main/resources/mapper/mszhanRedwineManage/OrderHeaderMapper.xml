@@ -26,8 +26,8 @@
 
   <select id="fetchOrders" resultMap="BaseResultMap">
     SELECT oh.* FROM order_header oh
-    LEFT JOIN order_item oi ON (oh.order_id = oi.order_id)
-    LEFT JOIN product p ON (oi.sku = p.sku)
+    JOIN order_item oi ON (oh.order_id = oi.order_id)
+    JOIN product p ON (oi.sku = p.sku)
     <where>
       and status not in ('REMOVED')
       <if test="agentId != null">
@@ -50,6 +50,9 @@
       </if>
       <if test="brandName != null and brandName !=''">
         AND p.brand_name like #{brandName}
+      </if>
+      <if test="clientName != null and clientName != ''">
+        AND oh.client_name = #{clientName}
       </if>
 
       <if test="createStartDate != null">
@@ -119,6 +122,9 @@
           #{item}
         </foreach>
       </if>
+      <if test="clientName != null and clientName != ''">
+        AND h.client_name = #{clientName}
+      </if>
     </where>
     group by h.order_id
     ORDER BY h.id DESC
@@ -171,6 +177,9 @@
           #{item}
         </foreach>
       </if>
+      <if test="clientName != null and clientName != ''">
+        AND h.client_name = #{clientName}
+      </if>
     </where>
       group by h.id
 
@@ -180,10 +189,76 @@
   </select>
 
   <select id="queryForOutboundExcel" resultType="java.util.HashMap" parameterType="com.mszhan.redwine.manage.server.model.mszhanRedwineManage.query.OrderQuery">
-    select DATE_FORMAT(o.delivery_date, "%Y年%m月%d") as deliveryDate, p.unit, i.unit_price unitPrice, i.quantity, i.unit_price*i.quantity as totalPrice, p.product_name as productName, p.sku, p.wine_type as wineType, o.client_name as clientName from order_item i
+    select i.gift, DATE_FORMAT(o.delivery_date, "%Y年%m月%d") as deliveryDate, p.unit, i.unit_price unitPrice, i.quantity, i.unit_price*i.quantity as totalPrice, p.product_name as productName, p.sku, p.wine_type as wineType, o.client_name as clientName
+    from order_item i
       join order_header o on o.order_id = i.order_id
       join product p on p.sku = i.sku
     where status = 'SHIPPED'
+    <if test="agentId != null">
+      AND o.agent_id = #{agentId}
+    </if>
+    <if test="orderId != null and orderId !=''">
+      AND o.order_id = #{orderId}
+    </if>
+    <if test="orderStatus != null and orderStatus !=''">
+      AND o.status = #{orderStatus}
+    </if>
+    <if test="paymentStatus != null and paymentStatus !=''">
+      AND o.payment_status = #{paymentStatus}
+    </if>
+    <if test="sku != null and sku !=''">
+      AND i.sku = #{sku}
+    </if>
+    <if test="productName != null and productName !=''">
+      AND p.product_name like #{productName}
+    </if>
+    <if test="brandName != null and brandName !=''">
+      AND p.brand_name like #{brandName}
+    </if>
+    <if test="createStartDate != null and createStartDate !=''">
+      AND o.create_date >= #{createStartDate}
+    </if>
+    <if test="createEndDate != null and createEndDate !=''">
+      <![CDATA[  AND o.create_date <= #{createEndDate}  ]]>
+    </if>
+    <if test="clientName != null and clientName != ''">
+      AND o.client_name = #{clientName}
+    </if>
+    <if test="deliveryStartDate != null and deliveryStartDate !=''">
+      AND o.delivery_start_date >= #{deliveryStartDate}
+    </if>
+    <if test="deliveryEndDate != null and deliveryEndDate !=''">
+      <![CDATA[  AND o.delivery_end_date <= #{deliveryEndDate}  ]]>
+    </if>
+    group by CONCAT(DATE_FORMAT(o.delivery_date, "%Y年%m月%d"),'|', o.client_name, '|', i.SKU, '|', i.gift)
+    order by o.delivery_date asc
+  </select>
+
+
+
+  <select id="queryForSalesDetail" resultType="java.util.HashMap">
+    SELECT
+    DATE_FORMAT(o.delivery_date, "%Y年%m月%d") as deliveryDate,
+    DATE_FORMAT(o.create_date, "%Y年%m月%d") as createDate,
+    o.client_name as clientName,
+    i.quantity as qty,
+    i.unit_price as itemPrice,
+    i.packaging_fee as packagingFee,
+    p.cost,
+    i.quantity * i.unit_price as itemPriceTotal,
+    i.quantity * p.cost as costTotal,
+    ((i.quantity * i.unit_price) - (i.quantity * p.cost ) - i.packaging_fee) as profitTotal,
+    i.sku,
+    i.gift,
+    o.shipping_fee as shipFee,
+    o.order_id as orderId,
+    p.wine_type as wineType,
+    p.unit
+    FROM order_header o
+    JOIN order_item i ON (o.order_id = i.order_id)
+    JOIN product p ON (i.sku = p.sku)
+    <where>
+      and status not in ('REMOVED')
     <if test="agentId != null">
       AND o.agent_id = #{agentId}
     </if>
@@ -217,7 +292,14 @@
     <if test="deliveryEndDate != null and deliveryEndDate !=''">
       <![CDATA[  AND o.delivery_end_date <= #{deliveryEndDate}  ]]>
     </if>
-    group by CONCAT(DATE_FORMAT(o.delivery_date, "%Y年%m月%d"),'|', o.client_name, '|', i.SKU)
-    order by o.delivery_date asc
+    <if test="clientName != null and clientName != ''">
+      AND o.client_name = #{clientName}
+    </if>
+    </where>
+    order by o.create_date asc
   </select>
+
+
+
+
 </mapper>

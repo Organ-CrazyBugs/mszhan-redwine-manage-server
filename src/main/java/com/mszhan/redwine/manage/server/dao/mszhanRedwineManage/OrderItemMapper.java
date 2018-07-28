@@ -11,4 +11,6 @@ public interface OrderItemMapper extends Mapper<OrderItem> {
 
     List<OrderItem> fetchOrderItemsByOrderId(@Param("orderIds") List<String> orderIds);
 
+    OrderItem fetchOrderGiftByOrderId(String orderId);
+
 }

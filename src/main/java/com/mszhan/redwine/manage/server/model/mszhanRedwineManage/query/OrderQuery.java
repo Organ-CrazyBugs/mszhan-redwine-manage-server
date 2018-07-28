@@ -30,6 +30,15 @@ public class OrderQuery extends PageQuery {
 
     private String deliveryEndDate;
 
+    private String clientName;
+
+    public String getClientName() {
+        return clientName;
+    }
+
+    public void setClientName(String clientName) {
+        this.clientName = clientName;
+    }
 
     public String getOrderStatus() {
         return orderStatus;

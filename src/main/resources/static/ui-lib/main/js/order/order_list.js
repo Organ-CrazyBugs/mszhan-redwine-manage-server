@@ -100,6 +100,10 @@ $(function () {
                 let orderItems = record.orderItems;
                 let html = '';
                 orderItems.forEach((oi, index) => {
+                    var giftName = "否";
+                    if ($.trim(oi.gift) != '' && oi.gift == 'Y'){
+                        giftName = "是";
+                    }
                     html += `
                     <tr>
                       <th scope="row" class="text-center">${index+1}</th>
@@ -108,6 +112,7 @@ $(function () {
                       <td class="text-right" style="width: 180px"><input class="form-control" style="text-align: right;" data-order-id="${record.orderId}" data-order-item-id="${oi.id}" value="${parseFloat(oi.unitPrice)}" /></td>
                       <td class="text-right">￥${$.formatMoney(parseFloat(oi.packagingFee).toFixed(2))}</td>
                       <td class="text-center">${oi.warehouseName}</td>
+                      <td class="text-center">${giftName}</td>
                     </tr>
                     `;
                 });
@@ -135,6 +140,7 @@ $(function () {
                       <th class="text-center py-2">售价（单价）</th>
                       <th class="text-center py-2">包装费</th>
                       <th class="text-center py-2">发货仓</th>
+                      <th class="text-center py-2">是否赠品</th>
                     </tr>
                   </thead>
                   <tbody>
