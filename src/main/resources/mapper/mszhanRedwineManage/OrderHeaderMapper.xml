@@ -298,8 +298,19 @@
     </where>
     order by o.create_date asc
   </select>
-
-
+  <select id="queryOrderByUnPaid" resultMap="BaseResultMap" >
+    select * from order_header
+    where
+    status in ('SHIPPED', 'RECEIVED')
+    and payment_status = 'UNPAID'
+    and agent_id = #{agentId}
+    <if test="createStartDate != null and createStartDate !=''">
+      AND create_date >= #{createStartDate}
+    </if>
+    <if test="createEndDate != null and createEndDate !=''">
+      <![CDATA[  AND create_date <= #{createEndDate}  ]]>
+    </if>
+  </select>
 
 
 </mapper>

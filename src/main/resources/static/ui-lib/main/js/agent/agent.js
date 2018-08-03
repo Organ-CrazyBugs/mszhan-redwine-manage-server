@@ -19,6 +19,7 @@ $(function () {
 
     let $printUnpayBtn = $('#print-unpay-btn');
     let $printUnpayForm = $('#print-unpay-form');
+    let $tableQueryForm = $('#table-query-form');
 
     $table.bootstrapTable({
         url: '/agent/search',
@@ -162,7 +163,12 @@ $(function () {
             $.alertWarning('提示', '只能勾选一个进行打印未付款单');
             return;
         }
+        var createStartDate = $tableQueryForm.find("input[name='createStartDate']").val();
+        var createEndDate = $tableQueryForm.find("input[name='createEndDate']").val();
+
         let agentId = rows[0].id;
+        $printUnpayForm.find('input[name="createStartDate"]').val(createStartDate);
+        $printUnpayForm.find('input[name="createEndDate"]').val(createEndDate);
         $printUnpayForm.find('input[name="agentId"]').val(agentId);
         $printUnpayForm.submit();
     });

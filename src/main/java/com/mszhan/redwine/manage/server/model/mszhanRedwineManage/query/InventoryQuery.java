@@ -7,25 +7,21 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by god on 2018/4/7.
+ * Created by god on 2018/7/31.
  */
-public class AgentQuery extends PageQuery {
+public class InventoryQuery extends PageQuery {
 
-    private String names;
+    private Integer warehouseId;
 
-    private String type;
+    private String sku;
 
-    private String phones;
+    private String productName;
 
-    private Integer agentId;
+    private String brandName;
 
     private String createStartDate;
 
     private String createEndDate;
-
-    private List<String> nameList;
-
-    private List<String> phoneList;
 
 
     public String getCreateStartDate() {
@@ -43,6 +39,7 @@ public class AgentQuery extends PageQuery {
         }
         return endDate;
     }
+
     public void setCreateStartDate(String createStartDate) {
         this.createStartDate = createStartDate;
     }
@@ -52,53 +49,43 @@ public class AgentQuery extends PageQuery {
         this.createEndDate = createEndDate;
     }
 
-    public Integer getAgentId() {
-        return agentId;
+    public Integer getWarehouseId() {
+        return warehouseId;
     }
 
-    public void setAgentId(Integer agentId) {
-        this.agentId = agentId;
+    public void setWarehouseId(Integer warehouseId) {
+        this.warehouseId = warehouseId;
     }
 
-    public List<String> getPhoneList() {
-        return fetchObjList(phones, phoneList);
+    public void setSku(String sku) {
+        this.sku = sku;
     }
 
-    public void setPhoneList(List<String> phoneList) {
-        this.phoneList = phoneList;
+
+    public void setProductName(String productName) {
+        this.productName = productName;
     }
 
-    public String getType() {
-        return StringUtils.trimToNull(type);
+
+    public void setBrandName(String brandName) {
+        this.brandName = brandName;
     }
 
-    public void setType(String type) {
-        this.type = type;
+    public String getSku() {
+        return StringUtils.isBlank(sku) ? null : String.format("%%%s%%", StringUtils.trimToNull(sku));
     }
 
-    public String getPhones() {
-        return phones;
+
+    public String getProductName() {
+        return StringUtils.isBlank(productName) ? null : String.format("%%%s%%", StringUtils.trimToNull(productName));
     }
 
-    public void setPhones(String phones) {
-        this.phones = phones;
+
+    public String getBrandName() {
+        return StringUtils.isBlank(brandName) ? null : String.format("%%%s%%", StringUtils.trimToNull(brandName));
     }
 
-    public String getNames() {
-        return names;
-    }
 
-    public void setNames(String names) {
-        this.names = names;
-    }
-
-    public List<String> getNameList() {
-        return fetchObjList(names, nameList);
-    }
-
-    public void setNameList(List<String> nameList) {
-        this.nameList = nameList;
-    }
 
     public List<String> fetchObjList(String obj, List<String> objList) {
         if (!CollectionUtils.isEmpty(objList)){
@@ -116,6 +103,4 @@ public class AgentQuery extends PageQuery {
         }
         return objList;
     }
-
-
 }

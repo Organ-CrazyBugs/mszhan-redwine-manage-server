@@ -4,7 +4,9 @@
       xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
 
     <head th:include="includes/ui_libs::payload('代理管理')"></head>
+    <link href="/ui-lib/bootstrap-datetimepicker-3.0/css/bootstrap-datetimepicker.min.css" rel="stylesheet" media="screen" />
     <script type="text/javascript" src="/ui-lib/main/js/agent/agent.js"></script>
+
     <style>
         /*.table tr td {*/
         /*text-overflow: ellipsis; !* for IE *!*/
@@ -74,6 +76,29 @@
                             </div>
                         </div>
                     </div>
+
+                    <div class="row">
+
+                    <div class="input-group date form_date col-md-3" data-date="" data-date-format="yyyy年mm月dd" data-link-field="createStartDate" data-link-format="yyyy-mm-dd">
+                        <div class="input-group-prepend">
+                            <div class="input-group-text query-form-label">下单开始时间</div>
+                        </div>
+                        <input class="form-control" size="16" type="text" value="" readonly="readonly" />
+                        <span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span>
+                        <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+                        <input type="hidden" id="createStartDate" name="createStartDate" value="" /><br/>
+                    </div>
+                    <div class="input-group date form_date col-md-3" data-date="" data-date-format="yyyy年mm月dd" data-link-field="createEndDate" data-link-format="yyyy-mm-dd">
+                        <div class="input-group-prepend">
+                            <div class="input-group-text query-form-label">下单结束时间</div>
+                        </div>
+                        <input class="form-control" size="16" type="text" value="" readonly="readonly" />
+                        <span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span>
+                        <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+                        <input type="hidden" id="createEndDate" name="createEndDate" value="" /><br/>
+                    </div>
+                    </div>
+
                     <div class="row">
                         <div class="col-md-6">
                             <div class="btn-group mr-2">
@@ -99,7 +124,26 @@
 
             <form id="print-unpay-form" target="_blank" action="/page/agent/print_unpay" method="post">
                 <input type="hidden" name="agentId" />
+                <input type="hidden"  name="createStartDate" value="" />
+                <input type="hidden"  name="createEndDate" value="" />
             </form>
         </main>
+        <script type="text/javascript" src="/ui-lib/bootstrap-datetimepicker-3.0/bootstrap-datetimepicker.js" charset="UTF-8"></script>
+        <script type="text/javascript" src="/ui-lib/bootstrap-datetimepicker-3.0/locales/bootstrap-datetimepicker.zh-CN.js" charset="UTF-8"></script>
+        <script type="text/javascript">
+
+            $('.form_date').datetimepicker({
+                language:  'zh-CN',
+                weekStart: 1,
+                todayBtn:  1,
+                autoclose: 1,
+                todayHighlight: 1,
+                startView: 2,
+                minView: 2,
+                forceParse: 0,
+                clearBtn: true
+            });
+
+        </script>
     </body>
 </html>

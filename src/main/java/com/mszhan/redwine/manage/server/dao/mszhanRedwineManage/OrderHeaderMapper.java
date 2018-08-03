@@ -34,4 +34,6 @@ public interface OrderHeaderMapper extends Mapper<OrderHeader> {
     List<Map<String, Object>> queryForOutboundExcel(OrderQuery query);
 
     List<Map<String, Object>> queryForSalesDetail(OrderQuery query);
+
+    List<OrderHeader> queryOrderByUnPaid(@Param("agentId") Integer agentId, @Param("createStartDate") String createStartDate, @Param("createEndDate") String createEndDate);
 }

@@ -250,7 +250,7 @@ public class OrderHeaderServiceImpl extends AbstractService<OrderHeader> impleme
                 history.setOrderId(orderHeader.getOrderId());
                 history.setOrderItemId(orderItem.getId());
                 history.setSku(orderItem.getSku());
-                history.setType("SALES_INBOUND");
+                history.setType("SALES_OUTBOUND");
                 history.setCreator(user.getAgentId());
                 history.setCreatorName(user.getAgentName());
                 history.setQuantity(orderItem.getQuantity());
@@ -431,17 +431,30 @@ public class OrderHeaderServiceImpl extends AbstractService<OrderHeader> impleme
         SXSSFWorkbook workbook = new SXSSFWorkbook(1000);
         Sheet sheet = workbook.createSheet("sheet");
         sheet.setDefaultColumnWidth(20);
+        CellStyle cellStyle = workbook.createCellStyle();
+        Font font = workbook.createFont();
+        font.setFontName("黑体");
+        cellStyle.setAlignment(HSSFCellStyle.ALIGN_CENTER);
+        font.setFontHeightInPoints((short)12);//设置字体大小
+        cellStyle.setFont(font);
+
+        CellStyle titleStyle = workbook.createCellStyle();
+        Font titleFont = workbook.createFont();
+        titleStyle.setAlignment(HSSFCellStyle.ALIGN_CENTER);
+        titleFont.setFontName("黑体");
+        titleFont.setFontHeightInPoints((short)13);//设置字体大小
+        titleStyle.setFont(titleFont);
         try {
 //            Map<String, Map<String, Object>> dataListMap = new HashMap<>();
             Map<String, Map<String, Object>> resultMap = new LinkedHashMap<>();
 //            生成标题
             Map<Integer, Object> firstTitles = new HashMap<>();
             firstTitles.put(0, "深圳市汇纳酒业有限公司");
-            genCompanySheetHead(workbook,sheet, 0, firstTitles, (short)16);
+            genCompanySheetHead(sheet, titleStyle, 0, firstTitles);
 
             Map<Integer, Object> twoTitles = new HashMap<>();
             twoTitles.put(0, "出库明细表");
-            genCompanySheetHead( workbook, sheet, 1, twoTitles, (short) 14);
+            genCompanySheetHead(sheet, titleStyle, 1, twoTitles);
             sheet.addMergedRegion(new CellRangeAddress(
                     0, //first row (0-based)  from 行
                     0, //last row  (0-based)  to 行
@@ -464,7 +477,7 @@ public class OrderHeaderServiceImpl extends AbstractService<OrderHeader> impleme
             titleMap.put(5, "数量");
             titleMap.put(6, "单价");
             titleMap.put(7, "是否赠品");
-            genCompanySheetHead(workbook, sheet, 2, titleMap, (short)13);
+            genCompanySheetHead(sheet, titleStyle, 2, titleMap);
             indexKeyMap.put("index", 0);
             indexKeyMap.put("date", 1);
             indexKeyMap.put("client", 2);
@@ -539,9 +552,9 @@ public class OrderHeaderServiceImpl extends AbstractService<OrderHeader> impleme
                             k //last column  (0-based)  to 列
                     ));
                 }
-                createCell(workbook , row, k, resMap.get("index").toString());
+                createCell(cellStyle, row, k, resMap.get("index").toString());
                 k++;
-                createCell(workbook, row, k, resMap.get("date").toString());
+                createCell(cellStyle, row, k, resMap.get("date").toString());
                 if (rowNum != mergeSize){
                     sheet.addMergedRegion(new CellRangeAddress(
                             rowNum, //first row (0-based)  from 行
@@ -551,7 +564,7 @@ public class OrderHeaderServiceImpl extends AbstractService<OrderHeader> impleme
                     ));
                 }
                 k++;
-                createCell(workbook, row, k, resMap.get("client"));
+                createCell(cellStyle, row, k, resMap.get("client"));
                 if (rowNum != mergeSize){
                     sheet.addMergedRegion(new CellRangeAddress(
                             rowNum, //first row (0-based)  from 行
@@ -561,7 +574,7 @@ public class OrderHeaderServiceImpl extends AbstractService<OrderHeader> impleme
                     ));
                 }
                 k++;
-                createCell(workbook, row, k, new BigDecimal(resMap.get("total").toString()).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+                createCell(cellStyle, row, k, new BigDecimal(resMap.get("total").toString()).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
                 if (rowNum != mergeSize){
                     sheet.addMergedRegion(new CellRangeAddress(
                             rowNum, //first row (0-based)  from 行
@@ -579,10 +592,10 @@ public class OrderHeaderServiceImpl extends AbstractService<OrderHeader> impleme
                         newRow = sheet.createRow(rowNum + i);
                     }
                     Map<String, Object> listData = list.get(i);
-                    createCell(workbook, newRow, k, listData.get("productName"));
-                    createCell(workbook, newRow, k + 1, listData.get("qty").toString());
-                    createCell(workbook, newRow, k + 2, new BigDecimal(listData.get("cost").toString()).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
-                    createCell(workbook, newRow, k + 3, listData.get("gift").toString());
+                    createCell(cellStyle, newRow, k, listData.get("productName"));
+                    createCell(cellStyle, newRow, k + 1, listData.get("qty").toString());
+                    createCell(cellStyle, newRow, k + 2, new BigDecimal(listData.get("cost").toString()).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+                    createCell(cellStyle, newRow, k + 3, listData.get("gift").toString());
                 }
 
                 rowNum = rowNum + listSize;
@@ -620,7 +633,19 @@ public class OrderHeaderServiceImpl extends AbstractService<OrderHeader> impleme
         SXSSFWorkbook workbook = new SXSSFWorkbook(1000);
         Sheet sheet = workbook.createSheet("sheet");
         sheet.setDefaultColumnWidth(20);
+        CellStyle cellStyle = workbook.createCellStyle();
+        Font font = workbook.createFont();
+        font.setFontName("黑体");
+        cellStyle.setAlignment(HSSFCellStyle.ALIGN_CENTER);
+        font.setFontHeightInPoints((short)12);//设置字体大小
+        cellStyle.setFont(font);
 
+        CellStyle titleStyle = workbook.createCellStyle();
+        Font titleFont = workbook.createFont();
+        titleStyle.setAlignment(HSSFCellStyle.ALIGN_CENTER);
+        titleFont.setFontName("黑体");
+        titleFont.setFontHeightInPoints((short)13);//设置字体大小
+        titleStyle.setFont(titleFont);
         try {
 
 
@@ -746,11 +771,11 @@ public class OrderHeaderServiceImpl extends AbstractService<OrderHeader> impleme
 //            生成标题
         Map<Integer, Object> firstTitles = new HashMap<>();
         firstTitles.put(0, "深圳市汇纳酒业有限公司");
-        genCompanySheetHead(workbook, sheet, 0, firstTitles, (short) 16);
+        genCompanySheetHead(sheet, titleStyle, 0, firstTitles);
 
         Map<Integer, Object> twoTitles = new HashMap<>();
         twoTitles.put(0, "销售明细表");
-        genCompanySheetHead(workbook, sheet, 1, twoTitles, (short) 14);
+        genCompanySheetHead(sheet, titleStyle,1, twoTitles);
         sheet.addMergedRegion(new CellRangeAddress(
                 0, //first row (0-based)  from 行
                 0, //last row  (0-based)  to 行
@@ -774,7 +799,7 @@ public class OrderHeaderServiceImpl extends AbstractService<OrderHeader> impleme
         titleIndexMap.put(cellIndex, "利润");
         skuIndexMap.put("allProfitTotal", cellIndex++);
 
-        genCompanySheetHead(workbook, sheet, 2, titleIndexMap, (short) 13);
+        genCompanySheetHead(sheet, titleStyle, 2, titleIndexMap);
 
         int rowNum = 3;
         int fi = 1;
@@ -790,9 +815,9 @@ public class OrderHeaderServiceImpl extends AbstractService<OrderHeader> impleme
                 shipFeeMap.remove(clientKey);
             }
             Row row = sheet.createRow(rowNum);
-            createCell(workbook, row, 0, String.valueOf(fi));
-            createCell(workbook, row, 1, splitKey[0]);
-            createCell(workbook, row, 2, splitKey[1]);
+            createCell(cellStyle, row, 0, String.valueOf(fi));
+            createCell(cellStyle, row, 1, splitKey[0]);
+            createCell(cellStyle, row, 2, splitKey[1]);
             for (Map.Entry<String, Map<String, Object>> skuData : skuDataMap.entrySet()){
                 Map<String, Object> dataMap = skuData.getValue();
                 String sku = skuData.getKey();
@@ -834,18 +859,18 @@ public class OrderHeaderServiceImpl extends AbstractService<OrderHeader> impleme
                     if (!StringUtils.isEmpty(gift)){
                         qtt = qtt + gift;
                     }
-                createCell(workbook, row, skuIndexMap.get(sku), qtt);
+                createCell(cellStyle, row, skuIndexMap.get(sku), qtt);
             }
             BigDecimal allItemPriceTotal = (BigDecimal) clientDataMap.get("allItemPriceTotal");
             BigDecimal allCostTotal = (BigDecimal) clientDataMap.get("allCostTotal");
             BigDecimal allShipFeeTotal = (BigDecimal) clientDataMap.get("allShipFeeTotal");
             BigDecimal allPackagingFeeTotal = (BigDecimal) clientDataMap.get("allPackagingFeeTotal");
             BigDecimal allProfitTotal = (BigDecimal) clientDataMap.get("allProfitTotal");
-            createCell(workbook, row, skuIndexMap.get("allItemPriceTotal"), allItemPriceTotal.setScale(2, BigDecimal.ROUND_HALF_UP).toString());
-            createCell(workbook, row, skuIndexMap.get("allCostTotal"), allCostTotal.setScale(2, BigDecimal.ROUND_HALF_UP).toString());
-            createCell(workbook, row, skuIndexMap.get("allShipFeeTotal"), allShipFeeTotal.setScale(2, BigDecimal.ROUND_HALF_UP).toString());
-            createCell(workbook, row, skuIndexMap.get("allPackagingFeeTotal"), allPackagingFeeTotal.setScale(2, BigDecimal.ROUND_HALF_UP).toString());
-            createCell(workbook, row, skuIndexMap.get("allProfitTotal"), allProfitTotal.setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+            createCell(cellStyle, row, skuIndexMap.get("allItemPriceTotal"), allItemPriceTotal.setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+            createCell(cellStyle, row, skuIndexMap.get("allCostTotal"), allCostTotal.setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+            createCell(cellStyle, row, skuIndexMap.get("allShipFeeTotal"), allShipFeeTotal.setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+            createCell(cellStyle, row, skuIndexMap.get("allPackagingFeeTotal"), allPackagingFeeTotal.setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+            createCell(cellStyle, row, skuIndexMap.get("allProfitTotal"), allProfitTotal.setScale(2, BigDecimal.ROUND_HALF_UP).toString());
 
 
             rowNum ++;
@@ -869,31 +894,9 @@ public class OrderHeaderServiceImpl extends AbstractService<OrderHeader> impleme
      * @param rowNum 第几行的行号
      * @param values key:第几列的列号  value:值
      */
-    public  void genSheetHead(Sheet sheet, SXSSFWorkbook wb,int rowNum, Map<Integer, Object> values) {
 
+    public  void genCompanySheetHead(Sheet sheet, CellStyle cellStyle,  int rowNum, Map<Integer, Object> values) {
         Row row = sheet.createRow(rowNum);
-        for (Integer cellNum : values.keySet()) {
-            CellStyle cellStyle = wb.createCellStyle();
-            Font font = wb.createFont();
-            cellStyle.setAlignment(HSSFCellStyle.ALIGN_CENTER);
-            font.setFontName("黑体");
-            font.setFontHeightInPoints((short)12);//设置字体大小
-            cellStyle.setFont(font);
-            Cell cell = row.createCell(cellNum);
-            cell.setCellStyle(cellStyle);
-            Object value = values.get(cellNum);
-            generateValue(value, cell);
-        }
-    }
-
-    public  void genCompanySheetHead(SXSSFWorkbook wb,Sheet sheet, int rowNum, Map<Integer, Object> values, short fontsize) {
-        Row row = sheet.createRow(rowNum);
-        CellStyle cellStyle = wb.createCellStyle();
-        Font font = wb.createFont();
-        cellStyle.setAlignment(HSSFCellStyle.ALIGN_CENTER);
-        font.setFontName("黑体");
-        font.setFontHeightInPoints(fontsize);//设置字体大小
-        cellStyle.setFont(font);
         for (Integer cellNum : values.keySet()) {
             Cell cell = row.createCell(cellNum);
             cell.setCellStyle(cellStyle);
@@ -908,27 +911,10 @@ public class OrderHeaderServiceImpl extends AbstractService<OrderHeader> impleme
      * @param cellNum 第几列的列号
      * @param value   值
      */
-    public  void createCell(SXSSFWorkbook wb, Row row, int cellNum, Object value) {
+    public  void createCell(CellStyle cellStyle, Row row, int cellNum, Object value) {
         Cell cell = row.createCell(cellNum);
-        CellStyle cellStyle = wb.createCellStyle();
-        Font font = wb.createFont();
-        font.setFontName("黑体");
-        cellStyle.setAlignment(HSSFCellStyle.ALIGN_CENTER);
-        font.setFontHeightInPoints((short)12);//设置字体大小
-        cellStyle.setFont(font);
         cell.setCellStyle(cellStyle);
         generateValue(value, cell);
-    }
-
-    public  void createCellMerge(Sheet sheet, Row row, int cellNum, Object value, Integer mergeSize, Integer totalIndex) {
-        Cell cell = row.createCell(cellNum);
-        generateValue(value, cell);
-//        sheet.addMergedRegion(new CellRangeAddress(
-//                totalIndex + , //first row (0-based)  from 行
-//                totalIndex, //last row  (0-based)  to 行
-//                0, //first column (0-based) from 列
-//                8 //last column  (0-based)  to 列
-//        ))
     }
 
     private  void generateValue(Object value, Cell cell) {
@@ -944,6 +930,10 @@ public class OrderHeaderServiceImpl extends AbstractService<OrderHeader> impleme
             cell.setCellValue((Calendar) value);
         } else if (value instanceof RichTextString) {
             cell.setCellValue((RichTextString) value);
+        } else if (value instanceof BigDecimal){
+            cell.setCellValue(value.toString());
+        } else if (value instanceof Integer){
+            cell.setCellValue(value.toString());
         }
     }
 }

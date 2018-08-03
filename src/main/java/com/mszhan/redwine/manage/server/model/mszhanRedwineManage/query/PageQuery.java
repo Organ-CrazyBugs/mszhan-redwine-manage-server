@@ -4,8 +4,19 @@ package com.mszhan.redwine.manage.server.model.mszhanRedwineManage.query;
  * Created by god on 2017/11/9.
  */
 public class PageQuery {
-        private Integer limit = 20;
-        private Integer offset = 0;
+    private Integer limit = 20;
+    private Integer pageNumber = 1;
+    private Integer page;
+    private Integer offset = 0;
+
+    public Integer getOffset() {
+        return offset;
+    }
+
+    public void setOffset(Integer offset) {
+        this.offset = offset;
+    }
+
     public Integer getLimit() {
         return limit;
     }
@@ -14,11 +25,22 @@ public class PageQuery {
         this.limit = limit;
     }
 
-    public Integer getOffset() {
-        return offset;
+    public Integer getPageNumber() {
+        return pageNumber;
     }
 
-    public void setOffset(Integer offset) {
-        this.offset = offset;
+    public void setPageNumber(Integer pageNumber) {
+        this.pageNumber = pageNumber;
+    }
+
+    public Integer getPage() {
+        if (limit == null || pageNumber == null) {
+            return null;
+        }
+        return (pageNumber - 1) * limit;
+    }
+
+    public void setPage(Integer page) {
+        this.page = page;
     }
 }

@@ -6,6 +6,7 @@ import com.mszhan.redwine.manage.server.core.Requests;
 import com.mszhan.redwine.manage.server.core.Responses;
 import com.mszhan.redwine.manage.server.dao.mszhanRedwineManage.InventoryMapper;
 import com.mszhan.redwine.manage.server.model.mszhanRedwineManage.base.PaginateResult;
+import com.mszhan.redwine.manage.server.model.mszhanRedwineManage.query.InventoryQuery;
 import com.mszhan.redwine.manage.server.model.mszhanRedwineManage.vo.FetchInventoryVO;
 import com.mszhan.redwine.manage.server.model.mszhanRedwineManage.vo.InventoryInputVO;
 import com.mszhan.redwine.manage.server.model.mszhanRedwineManage.vo.InventoryOutputVO;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 @RestController
 public class InventoryRestController {
@@ -59,6 +61,17 @@ public class InventoryRestController {
     public Object inventoryOutput(@RequestBody InventoryOutputVO vo) {
         this.inventoryService.inventoryOutput(vo);
         return Responses.newInstance().succeed();
+    }
+
+
+    @GetMapping(value = "/api/inventory/lead_out_outbound_excel")
+    public void leadOutOutboundExcel(HttpServletResponse res, InventoryQuery query){
+        inventoryService.leadOutOutboundDetail(query, res);
+    }
+
+    @GetMapping(value = "/api/inventory/lead_out_inbound_excel")
+    public void leadOutInboundExcel(HttpServletResponse res, InventoryQuery query){
+        inventoryService.leadOutInboundDetail(query, res);
     }
 
 }

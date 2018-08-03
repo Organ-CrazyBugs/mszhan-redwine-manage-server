@@ -9,6 +9,7 @@ import com.mszhan.redwine.manage.server.model.mszhanRedwineManage.Agents;
 import com.mszhan.redwine.manage.server.model.mszhanRedwineManage.OrderHeader;
 import com.mszhan.redwine.manage.server.model.mszhanRedwineManage.OrderItem;
 import com.mszhan.redwine.manage.server.model.mszhanRedwineManage.Product;
+import com.mszhan.redwine.manage.server.model.mszhanRedwineManage.query.AgentQuery;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.CollectionUtils;
@@ -48,8 +49,8 @@ public class AgentPageController {
     }
 
     @RequestMapping(value = "/page/agent/print_unpay")
-    public ModelAndView printUnpayOrders(Requests requests){
-        Integer agentId = requests.getInteger("agentId", null);
+    public ModelAndView printUnpayOrders(AgentQuery query){
+        Integer agentId = query.getAgentId();
         Agents agent = null;
         if (agentId != null) {
             agent = agentsMapper.selectByPrimaryKey(agentId);
@@ -60,11 +61,8 @@ public class AgentPageController {
         if (agent.getBalance() == null) {
             agent.setBalance(BigDecimal.ZERO);
         }
-        Condition orderCon = new Condition(OrderHeader.class);
-        orderCon.createCriteria().andEqualTo("agentId", agent.getId())
-                .andIn("status", Arrays.asList("SHIPPED", "RECEIVED"))
-                .andEqualTo("paymentStatus", "UNPAID");
-        List<OrderHeader> orderHeaders = this.orderHeaderMapper.selectByCondition(orderCon);
+
+        List<OrderHeader> orderHeaders = this.orderHeaderMapper.queryOrderByUnPaid(agentId, query.getCreateStartDate(), query.getCreateEndDate());
 
         if (!CollectionUtils.isEmpty(orderHeaders)) {
             List<String> orderIds = orderHeaders.stream().map(OrderHeader::getOrderId).collect(Collectors.toList());

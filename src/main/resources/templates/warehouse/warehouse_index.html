@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
-
+<link href="/ui-lib/bootstrap-datetimepicker-3.0/css/bootstrap-datetimepicker.min.css" rel="stylesheet" media="screen" />
     <head th:include="includes/ui_libs::payload('库存管理')"></head>
 
     <script type="text/javascript" src="/ui-lib/main/js/warehouse/warehouse_index.js"></script>
@@ -57,12 +57,35 @@
                             </div>
                         </div>
                     </div>
+                    <div class="row">
+                        <div class="input-group date form_date col-md-3" data-date="" data-date-format="yyyy年mm月dd" data-link-field="createStartDate" data-link-format="yyyy-mm-dd">
+                            <div class="input-group-prepend">
+                                <div class="input-group-text query-form-label">开始时间</div>
+                            </div>
+                            <input class="form-control" size="16" type="text" value="" readonly="readonly" />
+                            <span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span>
+                            <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+                            <input type="hidden" id="createStartDate" name="createStartDate" value="" /><br/>
+                        </div>
+                        <div class="input-group date form_date col-md-3" data-date="" data-date-format="yyyy年mm月dd" data-link-field="createEndDate" data-link-format="yyyy-mm-dd">
+                            <div class="input-group-prepend">
+                                <div class="input-group-text query-form-label">结束时间</div>
+                            </div>
+                            <input class="form-control" size="16" type="text" value="" readonly="readonly" />
+                            <span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span>
+                            <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+                            <input type="hidden" id="createEndDate" name="createEndDate" value="" /><br/>
+                        </div>
+
+                    </div>
 
                     <div class="row">
                         <div class="col-md-6">
                             <div class="btn-group mr-2">
                                 <button role:secRole="ADMIN,GENERAL_AGENT" type="button" class="btn btn-outline-primary" data-toggle="modal" data-target="#warehouse-input-popup-modal">&nbsp;入库&nbsp;</button>
                                 <button role:secRole="ADMIN,GENERAL_AGENT" type="button" class="btn btn-outline-primary" data-toggle="modal" data-target="#warehouse-output-popup-modal">&nbsp;出库&nbsp;</button>
+                                <button role:secRole="ADMIN,GENERAL_AGENT" id="warehouse-lead-out-input-popup-modal" type="button" class="btn btn-outline-primary" data-toggle="modal" >&nbsp;导出入库历史记录&nbsp;</button>
+                                <button role:secRole="ADMIN,GENERAL_AGENT" id="warehouse-lead-out-output-popup-modal" type="button" class="btn btn-outline-primary" data-toggle="modal" >&nbsp;导出出库历史记录&nbsp;</button>
                             </div>
                         </div>
                         <div class="col-md-6 text-right">
@@ -76,6 +99,41 @@
                     </div>
                 </div>
             </div>
+            <!--<div>-->
+                <!--<form id="leadOutOutBoundForm" target="_blank" action="/api/inventory/lead_out_outbound_excel" method="post">-->
+                    <!--<input type="hidden" name="warehouseId" value="" />-->
+                    <!--<input type="hidden" name="sku" value="" />-->
+                    <!--<input type="hidden" name="productName" value="" />-->
+                    <!--<input type="hidden" name="brandName" value="" />-->
+                    <!--<input type="hidden" name="createStartDate" value="" />-->
+                    <!--<input type="hidden" name="createEndDate" value="" />-->
+                <!--</form>-->
+                <!--<form id="leadOutInBoundForm" target="_blank" action="/api/inventory/lead_out_inbound_excel" method="post">-->
+                    <!--<input type="hidden" name="warehouseId" value="" />-->
+                    <!--<input type="hidden" name="sku" value="" />-->
+                    <!--<input type="hidden" name="productName" value="" />-->
+                    <!--<input type="hidden" name="brandName" value="" />-->
+                    <!--<input type="hidden" name="createStartDate" value="" />-->
+                    <!--<input type="hidden" name="createEndDate" value="" />-->
+                <!--</form>-->
+            <!--</div>-->
         </main>
+        <script type="text/javascript" src="/ui-lib/bootstrap-datetimepicker-3.0/bootstrap-datetimepicker.js" charset="UTF-8"></script>
+        <script type="text/javascript" src="/ui-lib/bootstrap-datetimepicker-3.0/locales/bootstrap-datetimepicker.zh-CN.js" charset="UTF-8"></script>
+        <script type="text/javascript">
+
+            $('.form_date').datetimepicker({
+                language:  'zh-CN',
+                weekStart: 1,
+                todayBtn:  1,
+                autoclose: 1,
+                todayHighlight: 1,
+                startView: 2,
+                minView: 2,
+                forceParse: 0,
+                clearBtn: true
+            });
+
+        </script>
     </body>
 </html>

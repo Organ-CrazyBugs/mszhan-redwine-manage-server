@@ -18,4 +18,37 @@
     <result column="order_item_id" jdbcType="INTEGER" property="orderItemId" />
     <result column="warehouse_id" jdbcType="INTEGER" property="warehouseId" />
   </resultMap>
+
+  <select id="leadOutOutboundDetail" resultType="java.util.HashMap" >
+    select h.type, p.product_name as productName, h.sku, h.quantity, h.creator_name as createName, h.create_date as createDate, w.name as warehouseName, h.remark
+    from outbound_history h
+    join product p on p.sku = h.sku
+    join warehouse w on w.id = h.warehouse_id
+    <where>
+      <if test="warehouseId != null">
+        and h.warehouse_id = #{warehouseId}
+      </if>
+      <if test="sku != null">
+        and h.sku like #{sku}
+      </if>
+      <if test="productName != null">
+        and p.product_name like #{productName}
+      </if>
+      <if test="brandName != null">
+        and p.brand_name like #{brandName}
+      </if>
+      <if test="warehouseId != null">
+        and h.warehouse_id = #{warehouseId}
+      </if>
+      <if test="createStartDate != null">
+        and h.create_date >= #{createStartDate}
+      </if>
+      <if test="createEndDate != null">
+        <![CDATA[  and h.create_date <= #{createEndDate}]]>
+      </if>
+    </where>
+    order by h.sku, h.create_date asc
+    limit #{page}, #{limit}
+  </select>
+
 </mapper>

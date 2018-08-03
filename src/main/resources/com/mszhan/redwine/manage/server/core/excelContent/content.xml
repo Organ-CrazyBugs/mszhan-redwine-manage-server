@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<contents xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:noNamespaceSchemaLocation="excelContentSchema.xsd" >
+    <content name="fbaAgeInventoryPriceImport" fileName="价格维护导入模板 " >
+        <headerTitle text="期间"  type="String"  key = "periodDate"   font-size="9" necessary="true"  color="BLUE"   item-font-size="9" font-color="WHITE" item-font-color="BLACK" length="12"   item-color="YELLOW"   ></headerTitle>
+        <headerTitle text="小组" type="String"  key = "groupName"  font-size="9" necessary="true"  color="BLUE" item-font-color="BLACK" font-color="WHITE"  item-font-size="9" length="12"   item-color="YELLOW"   ></headerTitle>
+        <headerTitle text="亚马逊SKU" type="String"  key = "amazonSku"  font-size="9" necessary="true"  color="BLUE"  item-font-size="9" font-color="WHITE"  length="12" item-font-color="BLACK"   item-color="YELLOW"   />
+        <headerTitle text="FNSKU" type="String"  key = "fnsku"  font-size="9" necessary="true"  color="BLUE"  item-font-size="9" font-color="WHITE"  length="12" item-font-color="BLACK"   item-color="YELLOW"   />
+        <headerTitle text="单价" type="BigDecimal"  key = "unitPrice"  font-size="9" necessary="true"  color="BLUE"  item-font-size="9" font-color="WHITE"  length="12" item-font-color="BLACK"   item-color="YELLOW"   />
+    </content>
+
+    <content name="outboundDetail" fileName="出库导出" >
+        <headerTitle text="仓库" type="String"  key = "warehouseName"  font-size="9" necessary="true"  color="BLUE"  item-font-size="9" font-color="WHITE"  length="12" item-font-color="BLACK"   item-color="YELLOW"   />
+        <headerTitle text="出库类型"  type="String"  key = "type"   font-size="9" necessary="true"  color="BLUE"   item-font-size="9" font-color="WHITE" item-font-color="BLACK" length="12"   item-color="YELLOW"   />
+        <headerTitle text="产品名称" type="String"  key = "productName"  font-size="9" necessary="true"  color="BLUE" item-font-color="BLACK" font-color="WHITE"  item-font-size="9" length="12"   item-color="YELLOW"   />
+        <headerTitle text="条码" type="String"  key = "sku"  font-size="9" necessary="true"  color="BLUE"  item-font-size="9" font-color="WHITE"  length="12" item-font-color="BLACK"   item-color="YELLOW"   />
+        <headerTitle text="数量" type="Integer"  key = "quantity"  font-size="9" necessary="true"  color="BLUE"  item-font-size="9" font-color="WHITE"  length="12" item-font-color="BLACK"   item-color="YELLOW"   />
+        <headerTitle text="单价" type="String"  key = "unitPrice"  font-size="9" necessary="true"  color="BLUE"  item-font-size="9" font-color="WHITE"  length="12" item-font-color="BLACK"   item-color="YELLOW"   />
+        <headerTitle text="操作时间" type="String"  key = "createDate"  font-size="9" necessary="true"  color="BLUE"  item-font-size="9" font-color="WHITE"  length="12" item-font-color="BLACK"   item-color="YELLOW"   />
+        <headerTitle text="操作人" type="String"  key = "creatorName"  font-size="9" necessary="true"  color="BLUE"  item-font-size="9" font-color="WHITE"  length="12" item-font-color="BLACK"   item-color="YELLOW"   />
+    </content>
+
+
+</contents>

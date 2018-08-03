@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
+    <xs:element name="contents">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element maxOccurs="unbounded" ref="content"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="content">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element maxOccurs="unbounded" ref="headerTitle"/>
+            </xs:sequence>
+            <xs:attribute name="name" use="required" type="xs:string"/>
+            <xs:attribute name="fileName" use="required" type="xs:string"/>
+            <xs:attribute name="complex" use="optional" type="xs:string"/>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="headerTitle">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element minOccurs="0" maxOccurs="unbounded" ref="itemTitle"/>
+            </xs:sequence>
+            <xs:attribute name="color" use="optional" >
+                <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                        <xs:enumeration value="WHITE"/>
+                        <xs:enumeration value="BLUE"/>
+                        <xs:enumeration value="YELLOW"/>
+                        <xs:enumeration value="GREEN"/>
+                        <xs:enumeration value="BLACK"/>
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:attribute>
+            <xs:attribute name="comment" use="optional" type="xs:string"/>
+            <xs:attribute name="font-color" use="optional"  >
+                <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                        <xs:enumeration value="WHITE"/>
+                        <xs:enumeration value="BLUE"/>
+                        <xs:enumeration value="YELLOW"/>
+                        <xs:enumeration value="GREEN"/>
+                        <xs:enumeration value="BLACK"/>
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:attribute>
+            <xs:attribute name="font-size" use="optional" type="xs:integer"/>
+            <xs:attribute name="item-color" use="optional"  >
+                <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                        <xs:enumeration value="WHITE"/>
+                        <xs:enumeration value="BLUE"/>
+                        <xs:enumeration value="YELLOW"/>
+                        <xs:enumeration value="GREEN"/>
+                        <xs:enumeration value="BLACK"/>
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:attribute>
+            <xs:attribute name="item-font-color" use="optional" >
+                <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                        <xs:enumeration value="WHITE"/>
+                        <xs:enumeration value="BLUE"/>
+                        <xs:enumeration value="YELLOW"/>
+                        <xs:enumeration value="GREEN"/>
+                        <xs:enumeration value="BLACK"/>
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:attribute>
+            <xs:attribute name="item-font-size" use="optional" type="xs:integer"/>
+            <xs:attribute name="key" use="optional" type="xs:string"/>
+            <xs:attribute name="length" use="optional" type="xs:integer"/>
+            <xs:attribute name="necessary" use="optional" type="xs:boolean"/>
+            <xs:attribute name="text" use="required" type="xs:string"/>
+            <!--<xs:attribute name="type" use="optional" type="xs:string"/>-->
+            <xs:attribute name="type" use="optional"  >
+                <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                        <xs:enumeration value="String"/>
+                        <xs:enumeration value="BigDecimal"/>
+                        <xs:enumeration value="Date"/>
+                        <xs:enumeration value="Integer"/>
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:attribute>
+
+            <xs:attribute name="format" use="optional" type="xs:string"/>
+            <!--<xs:attribute name="select" use="optional" type="xs:string"/>-->
+            <xs:attribute name="select" use="optional" >
+                <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                        <xs:enumeration value="text"/>
+                        <xs:enumeration value="boolean"/>
+                        <!--<xs:enumeration value="BLUE"/>-->
+                        <!--<xs:enumeration value="YELLOW"/>-->
+                        <!--<xs:enumeration value="GREEN"/>-->
+                        <!--<xs:enumeration value="BLACK"/>-->
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:attribute>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="itemTitle">
+        <xs:complexType>
+            <xs:attribute name="color" use="optional" >
+                <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                        <xs:enumeration value="WHITE"/>
+                        <xs:enumeration value="BLUE"/>
+                        <xs:enumeration value="YELLOW"/>
+                        <xs:enumeration value="GREEN"/>
+                        <xs:enumeration value="BLACK"/>
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:attribute>
+            <xs:attribute name="comment" use="optional" type="xs:string"/>
+            <xs:attribute name="font-color" use="optional"  >
+                <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                        <xs:enumeration value="WHITE"/>
+                        <xs:enumeration value="BLUE"/>
+                        <xs:enumeration value="YELLOW"/>
+                        <xs:enumeration value="GREEN"/>
+                        <xs:enumeration value="BLACK"/>
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:attribute>
+            <xs:attribute name="font-size" use="optional" type="xs:integer"/>
+            <xs:attribute name="item-color" use="optional"  >
+                <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                        <xs:enumeration value="WHITE"/>
+                        <xs:enumeration value="BLUE"/>
+                        <xs:enumeration value="YELLOW"/>
+                        <xs:enumeration value="GREEN"/>
+                        <xs:enumeration value="BLACK"/>
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:attribute>
+            <xs:attribute name="item-font-color" use="optional" >
+                <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                        <xs:enumeration value="WHITE"/>
+                        <xs:enumeration value="BLUE"/>
+                        <xs:enumeration value="YELLOW"/>
+                        <xs:enumeration value="GREEN"/>
+                        <xs:enumeration value="BLACK"/>
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:attribute>
+            <xs:attribute name="item-font-size" use="optional" type="xs:integer"/>
+            <xs:attribute name="key" use="required" type="xs:string"/>
+            <xs:attribute name="length" use="optional" type="xs:integer"/>
+            <xs:attribute name="necessary" use="optional" type="xs:boolean"/>
+            <xs:attribute name="text" use="required" type="xs:string"/>
+            <!--<xs:attribute name="type" use="required" type="xs:string"/>-->
+            <xs:attribute name="type" use="required"  >
+                <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                        <xs:enumeration value="String"/>
+                        <xs:enumeration value="BigDecimal"/>
+                        <xs:enumeration value="Date"/>
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:attribute>
+            <xs:attribute name="format" use="optional" type="xs:string"/>
+            <xs:attribute name="select" use="optional" type="xs:string"/>
+        </xs:complexType>
+    </xs:element>
+</xs:schema>

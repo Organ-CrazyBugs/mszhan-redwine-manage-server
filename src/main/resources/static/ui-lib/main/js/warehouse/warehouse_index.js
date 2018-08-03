@@ -7,7 +7,37 @@ $(function(){
     let $warehouseOutputSubmitBtn = $('#warehouse-output-submit-btn');
     let $warehouseOutputForm = $('#warehouse-output-form');
     let $warehouseOutputPopupModal = $('#warehouse-output-popup-modal');
+    let $warehouseLeadOutOutputPopupModal = $('#warehouse-lead-out-output-popup-modal');
+    let $warehouseLeadOutInputPopupModal = $('#warehouse-lead-out-input-popup-modal');
+    function createFormByJson(formId, method, actionUrl, json) {
+        //如果已经创建,移出节点
+        var formCreated = $('#' + formId);
+        if (formCreated) {
+            formCreated.remove();
+        }
+        //创建form
+        var actionUrl = actionUrl,
+            //如果有token增加携带token的input
+            submitParamsJson =  json;
+        var $form = $('<form></form>'),
+            inputDom = '',
+            inputArr = [];
+        $form.attr('action', actionUrl);
+        $form.attr('method', method);
+        $form.attr('id', formId);
+        //遍历json创建input
+        for (key in submitParamsJson) {
+            inputDom = $('<input type="hidden"/>');
+            inputDom.attr('name', key);
+            inputDom.attr('value', submitParamsJson[key]);
+            inputArr.push(inputDom[0]);
+            $form.append(inputDom);
+        }
 
+        //提交表单
+        $('body').append($form);
+        $form.submit();
+    };
     $table.bootstrapTable({
         url: '/api/inventory/list',
         tableQueryForm: '#table-query-form',
@@ -92,6 +122,16 @@ $(function(){
         });
 
     });
+    $warehouseLeadOutOutputPopupModal.on('click', function(){
+        let params = $("#table-query-form").serializeObject();
+        createFormByJson("leadOutOutboundExcel","get","/api/inventory/lead_out_outbound_excel", params);
+    });
+
+    $warehouseLeadOutInputPopupModal.on('click', function(){
+        let params = $("#table-query-form").serializeObject();
+        createFormByJson("leadOutInboundExcel","get","/api/inventory/lead_out_inbound_excel", params);
+    });
+
 
     $warehouseOutputSubmitBtn.on('click', function (event) {
         event.preventDefault();
