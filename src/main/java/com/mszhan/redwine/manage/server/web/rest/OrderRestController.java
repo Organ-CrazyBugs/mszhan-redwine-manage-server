@@ -21,11 +21,6 @@ import com.mszhan.redwine.manage.server.model.mszhanRedwineManage.vo.OrderItemPr
 import com.mszhan.redwine.manage.server.model.mszhanRedwineManage.vo.OrderMarkPaymentVO;
 import com.mszhan.redwine.manage.server.service.OrderHeaderService;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.ss.usermodel.Sheet;
-import org.apache.poi.ss.util.CellRangeAddress;
-import org.apache.poi.xssf.streaming.SXSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -34,14 +29,12 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import tk.mybatis.mapper.entity.Condition;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.io.OutputStream;
-import java.io.UnsupportedEncodingException;
-import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
@@ -95,7 +88,7 @@ public class OrderRestController {
         Date deliveryEndDate = requests.getDate("deliveryEndDate", new SimpleDateFormat("yyyy-MM-dd"), null);
         String brandNameLikeVal = StringUtils.isBlank(brandName) ? "" : String.format("%%%s%%", brandName);
         String productNameLikeVal = StringUtils.isBlank(productName) ? "" : String.format("%%%s%%", productName);
-
+        Integer warehouseId = requests.getInteger("warehouseId", null);
         User user = SecurityUtils.getAuthenticationUser();
         if (AgentTypeEnum.AGENT.toString().equals(user.getAgentType())){
             agentId = user.getAgentId();
@@ -103,7 +96,7 @@ public class OrderRestController {
         Integer finalAgentId = agentId;
         Page<OrderHeader> page = PageHelper.offsetPage(offset, limit)
                 .doSelectPage(() -> this.orderHeaderMapper.fetchOrders(finalAgentId, orderId, productNameLikeVal, sku, brandNameLikeVal, orderStatus, paymentStatus,
-                        createStartDate, createEndDate, deliveryStartDate, deliveryEndDate, clientName
+                        createStartDate, createEndDate, deliveryStartDate, deliveryEndDate, clientName, warehouseId
                         ));
 
         if (!CollectionUtils.isEmpty(page)) {

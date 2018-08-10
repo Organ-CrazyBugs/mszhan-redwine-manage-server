@@ -678,11 +678,12 @@ public class OrderHeaderServiceImpl extends AbstractService<OrderHeader> impleme
             String createDate = data.get("createDate").toString();
             String orderId = data.get("orderId").toString();
             String sku = data.get("sku").toString();
+            String productName = data.get("productName").toString();
             String gift = data.get("gift").toString();
             String wineType = data.get("wineType") == null ? null : data.get("wineType").toString();
 
             if (!skuIndexMap.containsKey(sku)) {
-                titleIndexMap.put(cellIndex, sku);
+                titleIndexMap.put(cellIndex, productName);
                 skuIndexMap.put(sku, cellIndex);
                 cellIndex++;
             }
@@ -733,6 +734,7 @@ public class OrderHeaderServiceImpl extends AbstractService<OrderHeader> impleme
                     skuDataMap = (Map<String, Map<String, Object>>) clientDataMap.get("skuData");
                     dataMap = new LinkedHashMap<>();
                     dataMap.put("sku", sku);
+                    dataMap.put("productName", productName);
                     dataMap.put("wineType", wineType);
                     dataMap.put("unit", unit);
                     if (gift.equals("Y")) {
@@ -750,6 +752,7 @@ public class OrderHeaderServiceImpl extends AbstractService<OrderHeader> impleme
                 resultMap.put(key, clientDataMap);
                 Map<String, Object> dataMap = new HashMap<>();
                 dataMap.put("sku", sku);
+                dataMap.put("productName", productName);
                 if (gift.equals("Y")) {
                     dataMap.put("giftQty", qty);
                     dataMap.put("qty", 0);
@@ -877,7 +880,7 @@ public class OrderHeaderServiceImpl extends AbstractService<OrderHeader> impleme
             fi ++;
         }
         } catch(Exception ex){
-
+            ex.printStackTrace();
         }
         try {
             workbook.write(out);

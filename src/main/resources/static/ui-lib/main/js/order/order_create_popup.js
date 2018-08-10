@@ -21,11 +21,11 @@ $(function () {
         {4} placeholder
      */
     let editTempl = '<div>' +
-        '<div id="ocp_{1}_{2}" onclick="javascript: $(\'#ocp_{1}_{2}\').hide(); $(\'#ocp_edit_{1}_{2}\').show(); $(\'#ocp_val_{1}_{2}\').focus();">{3}</div>' +
-        '<div id="ocp_edit_{1}_{2}" class="input-group input-group-sm" style="display: none;">' +
-        '    <input id="ocp_val_{1}_{2}" type="text" value="{3}" class="form-control" placeholder="{4}" />' +
+        '<div id="ocp_{1}_{2}_{5}" onclick="javascript: $(\'#ocp_{1}_{2}_{5}\').hide(); $(\'#ocp_edit_{1}_{2}_{5}\').show(); $(\'#ocp_val_{1}_{2}_{5}\').focus();">{3}</div>' +
+        '<div id="ocp_edit_{1}_{2}_{5}" class="input-group input-group-sm" style="display: none;">' +
+        '    <input id="ocp_val_{1}_{2}_{5}" type="text" value="{3}" class="form-control" placeholder="{4}" />' +
         '    <div class="input-group-prepend">' +
-        '        <button onclick="createOrderProductListChange(\'{1}\', \'{4}\', \'{2}\', $(\'#ocp_val_{1}_{2}\'), $(\'#ocp_edit_{1}_{2}\'), $(\'#ocp_{1}_{2}\'))" class="btn btn-outline-secondary" type="button">确定</button>' +
+        '        <button onclick="createOrderProductListChange(\'{1}\', \'{4}\', \'{2}\',\'{5}\', $(\'#ocp_val_{1}_{2}_{5}\'), $(\'#ocp_edit_{1}_{2}_{5}\'), $(\'#ocp_{1}_{2}_{5}\'))" class="btn btn-outline-secondary" type="button">确定</button>' +
         '    </div>' +
         '</div>' +
     '</div>';
@@ -87,7 +87,7 @@ $(function () {
 
             }},
             {field: 'quantity', title: '数量', align: 'left', width: 100, formatter: function (val, record) {
-                return $.formatString(editTempl, 'quantity', record.productId, val, '数量');
+                return $.formatString(editTempl, 'quantity', record.productId, val, '数量', record.index);
             }},
             {field: 'unit', width: 80, title: '单位', formatter: function(val, record) {
                 if (!record['wine']) {
@@ -266,7 +266,7 @@ function createOrderProductRemoveItem(productId) {
     });
 }
 
-function createOrderProductListChange(field, fieldName, recordId, valueInput, editBox, displayBox) {
+function createOrderProductListChange(field, fieldName, recordId, productIndex, valueInput, editBox, displayBox) {
     let value;
     let newValue = valueInput.val();
     if ('quantity' === field) {
@@ -284,7 +284,7 @@ function createOrderProductListChange(field, fieldName, recordId, valueInput, ed
     }
 
     productList.forEach(function (item) {
-        if (item.productId == recordId) {
+        if (item.productId == recordId && item.index == productIndex) {
             item[field] = value;
             if (item.unit == 'UNIT_BOX') {
                 item.itemTotal = item.quantity * item.unitPrice * 6 + item.packagePrice;

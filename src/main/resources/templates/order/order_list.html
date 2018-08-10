@@ -158,6 +158,20 @@
                     </div>
                 </div>
             </div>
+            <div class="row">
+                <div class="col-md-3" >
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <div class="input-group-text query-form-label">仓库</div>
+                        </div>
+                        <select name="warehouseId" class="custom-select">
+                            <option selected="selected" value="">全部</option>
+                            <option th:each="ware,record:${warehouses}" th:value="${ware.getId()}" th:text="${ware.getName()}"></option>
+                        </select>
+                    </div>
+                </div>
+
+            </div>
 
             <div class="row">
                 <div class="col-md-6">

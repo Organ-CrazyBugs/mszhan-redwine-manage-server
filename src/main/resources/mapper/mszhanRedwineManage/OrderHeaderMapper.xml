@@ -54,7 +54,9 @@
       <if test="clientName != null and clientName != ''">
         AND oh.client_name = #{clientName}
       </if>
-
+      <if test="warehouseId != null">
+        AND oi.warehouse_id = #{warehouseId}
+      </if>
       <if test="createStartDate != null">
         <![CDATA[
         AND oh.create_date >= #{createStartDate}
@@ -180,6 +182,9 @@
       <if test="clientName != null and clientName != ''">
         AND h.client_name = #{clientName}
       </if>
+      <if test="warehouseId != null">
+        AND i.warehouse_id = #{warehouseId}
+      </if>
     </where>
       group by h.id
 
@@ -230,6 +235,9 @@
     <if test="deliveryEndDate != null and deliveryEndDate !=''">
       <![CDATA[  AND o.delivery_end_date <= #{deliveryEndDate}  ]]>
     </if>
+    <if test="warehouseId != null">
+      AND i.warehouse_id = #{warehouseId}
+    </if>
     group by CONCAT(DATE_FORMAT(o.delivery_date, "%Y年%m月%d"),'|', o.client_name, '|', i.SKU, '|', i.gift)
     order by o.delivery_date asc
   </select>
@@ -253,7 +261,8 @@
     o.shipping_fee as shipFee,
     o.order_id as orderId,
     p.wine_type as wineType,
-    p.unit
+    p.unit,
+    p.product_name as productName
     FROM order_header o
     JOIN order_item i ON (o.order_id = i.order_id)
     JOIN product p ON (i.sku = p.sku)
@@ -295,6 +304,9 @@
     <if test="clientName != null and clientName != ''">
       AND o.client_name = #{clientName}
     </if>
+      <if test="warehouseId != null">
+        AND i.warehouse_id = #{warehouseId}
+      </if>
     </where>
     order by o.create_date asc
   </select>

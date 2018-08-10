@@ -55,7 +55,7 @@ public class OrderPageController {
                 oh.setOrderItems(itemList);
 
                 oh.getOrderItems().forEach(oi -> {
-                    oi.setGift( "Y".equals(oi.getGift()) ? "是" : "否" );
+                    oi.setGift( "Y".equals(oi.getGift()) ? "（赠品）" : "" );
                     Condition proCon = new Condition(Product.class);
                     proCon.createCriteria().andEqualTo("sku", oi.getSku());
                     List<Product> products = this.productMapper.selectByCondition(proCon);
