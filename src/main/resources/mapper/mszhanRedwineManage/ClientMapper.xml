@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mszhan.redwine.manage.server.dao.mszhanRedwineManage.ClientMapper">
+  <resultMap id="BaseResultMap" type="com.mszhan.redwine.manage.server.model.mszhanRedwineManage.Client">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="phone_number" jdbcType="VARCHAR" property="phoneNumber" />
+    <result column="address" jdbcType="VARCHAR" property="address" />
+    <result column="postal_code" jdbcType="VARCHAR" property="postalCode" />
+    <result column="creator" jdbcType="INTEGER" property="creator" />
+    <result column="create_date" jdbcType="TIMESTAMP" property="createDate" />
+  </resultMap>
+  <select id="queryForPage" resultMap="BaseResultMap"  parameterType="com.mszhan.redwine.manage.server.model.mszhanRedwineManage.query.ClientQuery">
+    SELECT * FROM client
+    <where>
+      <if test = "nameList != null and nameList.size > 0">
+        and  name in
+        <foreach collection="nameList" index="index" item="item" open="("
+                 separator="," close=")">
+          #{item}
+        </foreach>
+      </if>
+      <if test = "phoneList != null and phoneList.size > 0">
+        and  phone_number in
+        <foreach collection="phoneList" index="index" item="item" open="("
+                 separator="," close=")">
+          #{item}
+        </foreach>
+      </if>
+    </where>
+    ORDER BY id DESC
+    <if test='offset != null and limit != null '>
+      limit #{offset},#{limit}
+    </if>
+  </select>
+
+
+  <select id="queryCount"  parameterType="com.mszhan.redwine.manage.server.model.mszhanRedwineManage.query.ClientQuery"  resultType="Integer">
+    SELECT COUNT(1) FROM client
+    <where>
+      <if test = "nameList != null and nameList.size > 0">
+        and  name in
+        <foreach collection="nameList" index="index" item="item" open="("
+                 separator="," close=")">
+          #{item}
+        </foreach>
+      </if>
+      <if test = "phoneList != null and phoneList.size > 0">
+        and  phone in
+        <foreach collection="phoneList" index="index" item="item" open="("
+                 separator="," close=")">
+          #{item}
+        </foreach>
+      </if>
+    </where>
+  </select>
+
+  <delete id="deleteClients">
+    delete from client where id in
+    <foreach collection="list" index="index" item="item" open="("
+             separator="," close=")">
+      #{item}
+    </foreach>
+  </delete>
+  <select id="checkName" resultMap="BaseResultMap">
+    select * from client
+    <where>
+      <if test="id != null">
+        id not in (#{id})
+      </if>
+    and name = #{name}
+    </where>
+  </select>
+
+  <select id="checkPhone" resultMap="BaseResultMap">
+    select * from client
+    <where>
+      <if test="id != null">
+        id not in (#{id})
+      </if>
+      and phone_number = #{phone}
+    </where>
+
+  </select>
+</mapper>

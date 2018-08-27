@@ -29,7 +29,9 @@
                     <li   th:classappend="${activeNav eq 'PRODUCT'} ? 'active'" class="nav-item">
                         <a class="nav-link" th:href="@{/page/product/index}">产品管理</a>
                     </li>
-
+                    <li   th:classappend="${activeNav eq 'CLIENT'} ? 'active'" class="nav-item">
+                        <a class="nav-link" th:href="@{/page/client/index}">客户管理</a>
+                    </li>
                     <li role:secRole="ADMIN,GENERAL_AGENT" th:classappend="${activeNav eq 'SYS_SETTING'} ? 'active'" class="nav-item">
                         <a class="nav-link" th:href="@{/page/sys_setting/login_account_list}">系统设置</a>
                     </li>

@@ -1,7 +1,7 @@
 $(function () {
     let $table = $('#select-product-popup-table');
     $table.bootstrapTable({
-        height: 360,
+        height: 450,
         url: '/api/product/selectPopupList',
         tableQueryForm: '#select-product-popup-query-form',
         columns: [

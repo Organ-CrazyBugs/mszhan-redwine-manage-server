@@ -1,11 +1,14 @@
 let productList = [];
+let selectClient = [];
 let productIndex = 1;
 
 let agentType;
 $(function () {
     let $createOrderProductTable = $('#create-order-product-table');
     let $selectProductPopupModal = $('#select-product-popup-modal');
+    let $selectClientPopupModal = $('#select-client-popup-modal');
     let $createOrderAddSkuBtn = $('#create-order-add-sku-btn');
+    let $createOrderAddClientBtn = $('#create-order-add-client-btn');
     let $createOrderSubmitBtn = $('#create-order-submit-btn');
     let $orderCreatePopupForm = $('#order-create-popup-form');
     let $warehouseTmplBox = $('#warehouse-tmpl-box');
@@ -121,10 +124,10 @@ $(function () {
                 return $warehouseTmplBox.html();
             }},
             {field: 'unitPrice', title: '单价(支)', align: 'left', width: 120, formatter: function (val, record) {
-                return $.formatString(editTempl, 'unitPrice', record.productId, val, '单价');
+                return $.formatString(editTempl, 'unitPrice', record.productId, val, '单价', record.index);
             }},
             {field: 'packagePrice', title: '包装费', align: 'left', width: 110, formatter: function (val, record) {
-                return $.formatString(editTempl, 'packagePrice', record.productId, val, '包装费');
+                return $.formatString(editTempl, 'packagePrice', record.productId, val, '包装费', record.index);
             }},
             {field: 'itemTotal', width: 150, title: '小计'},
             {field: 'productName', width: 200, title: '产品名称'},
@@ -137,6 +140,9 @@ $(function () {
 
     $createOrderAddSkuBtn.on('click', function () {
         $selectProductPopupModal.modal('show');
+    });
+    $createOrderAddClientBtn.on('click', function () {
+        $selectClientPopupModal.modal('show');
     });
 
     $('#order-create-popup-form').find('input[name="shipAmount"]').on('blur', function () {
@@ -224,6 +230,14 @@ $(function () {
     });
 });
 
+function refreshClientInfo(){
+    $("#customerName").val(selectClient[0].name);
+    $("#phoneNumber").val(selectClient[0].phoneNumber);
+    $("#postalCode").val(selectClient[0].postalCode);
+    $("#address").val(selectClient[0].address);
+}
+
+
 function refreshAmountTotalInfo() {
     // 刷新各种小计部分金额
     let productAmount = 0.0;
@@ -302,7 +316,6 @@ function createOrderProductListChange(field, fieldName, recordId, productIndex, 
 }
 
 function createOrderSelectProductCallback(products) {
-    console.log(3333);
 
     if (products) {
         var newObject = jQuery.extend(true, {}, products);
@@ -339,6 +352,17 @@ function createOrderSelectProductCallback(products) {
     }
     $('#create-order-product-table').bootstrapTable('load', productList);
     refreshAmountTotalInfo();
+}
+
+
+function createOrderSelectClientCallback(client) {
+
+    if (client) {
+        var newObject = jQuery.extend(true, {}, client);
+        selectClient = newObject;
+    }
+    $('#create-order-client-table').bootstrapTable('load', client);
+    refreshClientInfo();
 }
 
 function orderItemWarehouseOnChange(select) {

@@ -20,8 +20,8 @@ public class SumptuousManageCodeGenerator {
     //JDBC配置，请修改为你项目的实际配置
     private static final String JDBC_URL = "jdbc:mysql://localhost:3306/mszhan_redwine_manage";
     private static final String JDBC_USERNAME = "root";
-    private static final String JDBC_PASSWORD = "123456";
-    private static final String PROJECT_PATH = "E:\\workspace\\mszhan-redwine-manage-server";
+    private static final String JDBC_PASSWORD = "root";
+    private static final String PROJECT_PATH = "D:\\workspace\\idea-aukey-st\\aukey-cloud\\mszhan-redwine-manage-server";
     private static final String DATASOURCE_NAME = "mszhanRedwineManage";
 
     private static final String BASE_PACKAGE = "com.mszhan.redwine.manage.server";
@@ -42,7 +42,7 @@ public class SumptuousManageCodeGenerator {
 
     public static void main(String[] args) {
 //        System.out.println(System.getProperty("user.dir"));
-        genCode("user_login");
+        genCode("client");
     }
 
     public static void genCode(String... tableNames) {

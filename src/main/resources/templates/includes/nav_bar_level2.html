@@ -68,6 +68,12 @@
             </nav>
         </div>
 
+        <div th:if="${moduleCode} eq 'CLIENT'" class="nav-scroller bg-white box-shadow">
+            <nav class="nav nav-underline container">
+                <a th:classappend="${activeNav eq 'CLIENT_INDEX'} ? 'active'" class="nav-link" th:href="@{/page/client/index}">客户列表</a>
+            </nav>
+        </div>
+
         <!--/*  系统设置模块二级导航栏  */-->
         <div th:if="${moduleCode} eq 'SYS_SETTING'" class="nav-scroller bg-white box-shadow">
             <nav class="nav nav-underline container">

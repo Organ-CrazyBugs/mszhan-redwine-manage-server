@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+
+    <head th:include="includes/ui_libs::payload('代理管理')"></head>
+    <link href="/ui-lib/bootstrap-datetimepicker-3.0/css/bootstrap-datetimepicker.min.css" rel="stylesheet" media="screen" />
+    <script type="text/javascript" src="/ui-lib/main/js/client/client.js"></script>
+
+    <style>
+        /*.table tr td {*/
+        /*text-overflow: ellipsis; !* for IE *!*/
+        /*-moz-text-overflow: ellipsis; !* for Firefox,mozilla *!*/
+        /*overflow: hidden;*/
+        /*white-space: nowrap;*/
+        /*border: 1px solid;*/
+        /*text-align: left*/
+        /*}*/
+        .hiddenOverFlowCoverShow:hover
+        {
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            text-decoration:underline;
+            cursor:pointer;
+        }
+        .hiddenOverFlowCoverShow{
+            width: 150px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+    </style>
+    <body>
+        <!-- 一级导航菜单 -->
+        <div th:include="includes/nav_bar::payload('CLIENT')">
+        <!-- 二级导航菜单 --></div>
+
+        <div th:include="includes/nav_bar_level2::payload('CLIENT','CLIENT_INDEX')"></div>
+
+        <div th:include="client/client_create_popup::payload('新建客户', 'create-modal')"></div>
+        <div th:include="client/client_edit_popup::payload('修改客户', 'edit-modal')"></div>
+        <main class="container">
+            <div class="my-3 p-3 bg-white rounded box-shadow">
+                <!-- 页面内容在此处填充 -->
+                <form id="table-query-form" class="table-query-form" action="#">
+                    <div class="row">
+                        <div class="col-md-3">
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <div class="input-group-text query-form-label">客户名称</div>
+                                </div>
+                                <input type="text" class="form-control" name="names" placeholder="客户名称" />
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <div class="input-group-text query-form-label">电话号码</div>
+                                </div>
+                                <input type="text" class="form-control" name="phones" placeholder="电话号码" />
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="btn-group mr-2">
+                                <button  type="button" class="btn btn-outline-primary" data-toggle="modal" data-target="#create-modal">&nbsp;新建&nbsp;</button>
+                                <button  id="show-edit-btn" type="button" class="btn btn-outline-primary">&nbsp;修改&nbsp;</button>
+                                <button  id="delete-btn" type="button" class="btn btn-outline-primary">&nbsp;删除&nbsp;</button>
+                            </div>
+                        </div>
+                        <div class="col-md-6 text-right">
+                            <button type="submit" class="btn btn-outline-primary">&nbsp;查&nbsp;询&nbsp;</button>
+                        </div>
+                    </div>
+                </form>
+                <div class="row">
+                    <div class="col-md-12">
+                        <table id="table" style="table-layout: fixed; font-size:13px"></table>
+                    </div>
+                </div>
+            </div>
+
+        </main>
+    </body>
+</html>
