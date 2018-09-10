@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.List;
 
 @RestController
 public class InventoryRestController {
@@ -44,10 +45,31 @@ public class InventoryRestController {
         String skuLike = StringUtils.isBlank(sku) ? "" : String.format("%%%s%%", sku);
         String productNameLike = StringUtils.isBlank(productName) ? "" : String.format("%%%s%%", productName);
         String brandNameLike = StringUtils.isBlank(brandName) ? "" : String.format("%%%s%%", brandName);
-
         Page<FetchInventoryVO> page = PageHelper.offsetPage(offset, limit)
                 .doSelectPage(() -> this.inventoryMapper.fetchInventory(warehouseId, skuLike, productNameLike, brandNameLike));
-
+        List<FetchInventoryVO> voList = page.getResult();
+        for (FetchInventoryVO v : voList){
+            String qtt = "";
+            String wineType = v.getWineType();
+            Integer qty = v.getQuantity();
+            String unit = v.getUnit();
+            if (StringUtils.isNotBlank(wineType)) {
+                String des;
+                if (qty < 6) {
+                    des = "";
+                } else if (qty % 6 == 0) {
+                    des = String.format("（%s箱）", qty/6);
+                } else {
+                    des = String.format("（%s箱%s%s）", qty/6, qty%6, unit);
+                }
+                qtt = String.format("%s%s%s", qty, unit, des);
+            } else {
+                if (qty >= 0){
+                    qtt = String.format("%s%s", qty, unit);
+                }
+            }
+            v.setQuantityDes(qtt);
+        }
         return Responses.newInstance().succeed(PaginateResult.newInstance(page.getTotal(), page));
     }
 
@@ -72,6 +94,11 @@ public class InventoryRestController {
     @GetMapping(value = "/api/inventory/lead_out_inbound_excel")
     public void leadOutInboundExcel(HttpServletResponse res, InventoryQuery query){
         inventoryService.leadOutInboundDetail(query, res);
+    }
+
+    @GetMapping(value = "/api/inventory/lead_out_inventory_excel")
+    public void leadOutInventoryExcel(HttpServletResponse res, InventoryQuery query){
+        inventoryService.leadOutInventory(query, res);
     }
 
 }

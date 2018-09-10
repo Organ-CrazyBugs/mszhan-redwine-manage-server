@@ -12,6 +12,7 @@ import com.mszhan.redwine.manage.server.model.mszhanRedwineManage.Inventory;
 import com.mszhan.redwine.manage.server.model.mszhanRedwineManage.OutboundHistory;
 import com.mszhan.redwine.manage.server.model.mszhanRedwineManage.Product;
 import com.mszhan.redwine.manage.server.model.mszhanRedwineManage.query.InventoryQuery;
+import com.mszhan.redwine.manage.server.model.mszhanRedwineManage.vo.FetchInventoryVO;
 import com.mszhan.redwine.manage.server.model.mszhanRedwineManage.vo.InventoryInputVO;
 import com.mszhan.redwine.manage.server.model.mszhanRedwineManage.vo.InventoryOutputVO;
 import com.mszhan.redwine.manage.server.service.InventoryService;
@@ -350,6 +351,101 @@ public class InventoryServiceImpl extends AbstractService<Inventory> implements 
         }
     }
 
+    @Override
+    public void leadOutInventory(InventoryQuery query, HttpServletResponse response) {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        response.setContentType("application/vnd.ms-excel");
+        String fileName = "inventory_inbound";
+        try {
+            response.setHeader("content-disposition", "attachment;filename=" + java.net.URLEncoder.encode(fileName, "utf-8") + "-" + sdf.format(new Date()) + ".xlsx");
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+        }
+        OutputStream out = null;
+        try {
+            out = response.getOutputStream();
+        } catch (IOException e) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+        }
+        SXSSFWorkbook workbook = new SXSSFWorkbook(1000);
+        Sheet sheet = workbook.createSheet("sheet");
+        sheet.setDefaultColumnWidth(20);
+        CellStyle cellStyle = workbook.createCellStyle();
+        Font font = workbook.createFont();
+        font.setFontName("黑体");
+        cellStyle.setAlignment(HSSFCellStyle.ALIGN_CENTER);
+        font.setFontHeightInPoints((short)12);//设置字体大小
+        cellStyle.setFont(font);
+
+        CellStyle titleStyle = workbook.createCellStyle();
+        Font titleFont = workbook.createFont();
+        titleStyle.setAlignment(HSSFCellStyle.ALIGN_CENTER);
+        titleFont.setFontName("黑体");
+        titleFont.setFontHeightInPoints((short)13);//设置字体大小
+        titleStyle.setFont(titleFont);
+
+        int rowNum = 0;
+
+        Map<Integer, Object> titleMap = new LinkedHashMap<>();
+        titleMap.put(0, "产品名称");
+        titleMap.put(1, "所属仓库");
+        titleMap.put(2, "库存数量");
+        titleMap.put(3, "产品品牌");
+        titleMap.put(4, "产品条码");
+        titleMap.put(5, "最近更新时间");
+        Map<String, Integer> indexMap = new HashMap<>();
+        indexMap.put("productName", 0);
+        indexMap.put("warehouseName", 1);
+        indexMap.put("quantityDes", 2);
+        indexMap.put("brandName", 3);
+        indexMap.put("sku", 4);
+        indexMap.put("updateDate", 5);
+
+        genCompanySheetHead(sheet, titleStyle, rowNum ++, titleMap);
+
+        List<FetchInventoryVO> queryAll = inventoryMapper.queryForLeadOut(query);
+        Integer allTotal = 0;
+        for (FetchInventoryVO v : queryAll){
+            Row row = sheet.createRow(rowNum++);
+            String qtt = "";
+            String wineType = v.getWineType();
+            Integer qty = v.getQuantity();
+            String unit = v.getUnit();
+            allTotal = allTotal + qty;
+            if (StringUtils.isNotBlank(wineType)) {
+                String des;
+                if (qty < 6) {
+                    des = "";
+                } else if (qty % 6 == 0) {
+                    des = String.format("（%s箱）", qty/6);
+                } else {
+                    des = String.format("（%s箱%s%s）", qty/6, qty%6, unit);
+                }
+                qtt = String.format("%s%s%s", qty, unit, des);
+            } else {
+                if (qty >= 0){
+                    qtt = String.format("%s%s", qty, unit);
+                }
+            }
+            v.setQuantityDes(qtt);
+            createCell(cellStyle, row, indexMap.get("productName"), v.getProductName());
+            createCell(cellStyle, row, indexMap.get("warehouseName"), v.getWarehouseName());
+            createCell(cellStyle, row, indexMap.get("quantityDes"), v.getQuantityDes());
+            createCell(cellStyle, row, indexMap.get("brandName"), v.getBrandName());
+            createCell(cellStyle, row, indexMap.get("sku"), v.getSku());
+            createCell(cellStyle, row, indexMap.get("updateDate"), sdf.format(v.getUpdateDate()));
+        }
+        Row row = sheet.createRow(rowNum++);
+        createCell(cellStyle, row, 0, "合计");
+        createCell(cellStyle, row, indexMap.get("quantityDes"), allTotal);
+
+        try {
+            workbook.write(out);
+            out.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
 
     public  void genCompanySheetHead(Sheet sheet, CellStyle cellStyle,  int rowNum, Map<Integer, Object> values) {

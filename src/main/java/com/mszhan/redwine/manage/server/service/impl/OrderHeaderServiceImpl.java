@@ -154,7 +154,7 @@ public class OrderHeaderServiceImpl extends AbstractService<OrderHeader> impleme
             item.setUpdateDate(new Date());
             item.setUpdator(createAgentId);
             item.setGift("N");
-            if (!StringUtils.isEmpty(proItem.getGift())){
+            if (!StringUtils.isEmpty(proItem.getGift())) {
                 item.setGift(proItem.getGift());
             }
             item.setWarehouseId(warehouse.getId());
@@ -435,14 +435,14 @@ public class OrderHeaderServiceImpl extends AbstractService<OrderHeader> impleme
         Font font = workbook.createFont();
         font.setFontName("黑体");
         cellStyle.setAlignment(HSSFCellStyle.ALIGN_CENTER);
-        font.setFontHeightInPoints((short)12);//设置字体大小
+        font.setFontHeightInPoints((short) 12);//设置字体大小
         cellStyle.setFont(font);
 
         CellStyle titleStyle = workbook.createCellStyle();
         Font titleFont = workbook.createFont();
         titleStyle.setAlignment(HSSFCellStyle.ALIGN_CENTER);
         titleFont.setFontName("黑体");
-        titleFont.setFontHeightInPoints((short)13);//设置字体大小
+        titleFont.setFontHeightInPoints((short) 13);//设置字体大小
         titleStyle.setFont(titleFont);
         try {
 //            Map<String, Map<String, Object>> dataListMap = new HashMap<>();
@@ -497,7 +497,7 @@ public class OrderHeaderServiceImpl extends AbstractService<OrderHeader> impleme
                 BigDecimal unitPrice = (BigDecimal) data.get("unitPrice");
                 BigDecimal totalPrice = (BigDecimal) data.get("totalPrice");
                 String gift = data.get("gift").toString();
-                if (gift.equals("Y")){
+                if (gift.equals("Y")) {
                     unitPrice = new BigDecimal(0);
                     totalPrice = new BigDecimal(0);
                 }
@@ -516,20 +516,20 @@ public class OrderHeaderServiceImpl extends AbstractService<OrderHeader> impleme
                     proMap.put("productName", productName);
                     proMap.put("qty", qty);
                     proMap.put("cost", unitPrice);
-                    proMap.put("gift", gift.equals("Y")? "是" : "否");
+                    proMap.put("gift", gift.equals("Y") ? "是" : "否");
                     listMap.add(proMap);
                 } else {
                     Map<String, Object> dataMap = new HashMap<>();
                     dataMap.put("date", deliveryDate);
                     dataMap.put("client", clientName);
                     dataMap.put("total", totalPrice);
-                    dataMap.put("index", index ++);
+                    dataMap.put("index", index++);
                     List<Map<String, Object>> listMap = new ArrayList<>();
                     Map<String, Object> proMap = new HashMap<>();
                     proMap.put("productName", productName);
                     proMap.put("qty", qty);
                     proMap.put("cost", unitPrice);
-                    proMap.put("gift", gift.equals("Y")? "是" : "否");
+                    proMap.put("gift", gift.equals("Y") ? "是" : "否");
                     listMap.add(proMap);
                     dataMap.put("list", listMap);
                     resultMap.put(key, dataMap);
@@ -544,7 +544,7 @@ public class OrderHeaderServiceImpl extends AbstractService<OrderHeader> impleme
                 Row row = sheet.createRow(rowNum);
                 int k = 0;
                 int mergeSize = rowNum + listSize - 1;
-                if (rowNum != mergeSize){
+                if (rowNum != mergeSize) {
                     sheet.addMergedRegion(new CellRangeAddress(
                             rowNum, //first row (0-based)  from 行
                             mergeSize, //last row  (0-based)  to 行
@@ -555,7 +555,7 @@ public class OrderHeaderServiceImpl extends AbstractService<OrderHeader> impleme
                 createCell(cellStyle, row, k, resMap.get("index").toString());
                 k++;
                 createCell(cellStyle, row, k, resMap.get("date").toString());
-                if (rowNum != mergeSize){
+                if (rowNum != mergeSize) {
                     sheet.addMergedRegion(new CellRangeAddress(
                             rowNum, //first row (0-based)  from 行
                             mergeSize, //last row  (0-based)  to 行
@@ -565,7 +565,7 @@ public class OrderHeaderServiceImpl extends AbstractService<OrderHeader> impleme
                 }
                 k++;
                 createCell(cellStyle, row, k, resMap.get("client"));
-                if (rowNum != mergeSize){
+                if (rowNum != mergeSize) {
                     sheet.addMergedRegion(new CellRangeAddress(
                             rowNum, //first row (0-based)  from 行
                             mergeSize, //last row  (0-based)  to 行
@@ -575,7 +575,7 @@ public class OrderHeaderServiceImpl extends AbstractService<OrderHeader> impleme
                 }
                 k++;
                 createCell(cellStyle, row, k, new BigDecimal(resMap.get("total").toString()).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
-                if (rowNum != mergeSize){
+                if (rowNum != mergeSize) {
                     sheet.addMergedRegion(new CellRangeAddress(
                             rowNum, //first row (0-based)  from 行
                             mergeSize, //last row  (0-based)  to 行
@@ -600,7 +600,7 @@ public class OrderHeaderServiceImpl extends AbstractService<OrderHeader> impleme
 
                 rowNum = rowNum + listSize;
             }
-        } catch (Exception ex){
+        } catch (Exception ex) {
             ex.printStackTrace();
         }
         try {
@@ -609,7 +609,6 @@ public class OrderHeaderServiceImpl extends AbstractService<OrderHeader> impleme
         } catch (IOException e) {
             e.printStackTrace();
         }
-
 
 
     }
@@ -637,106 +636,122 @@ public class OrderHeaderServiceImpl extends AbstractService<OrderHeader> impleme
         Font font = workbook.createFont();
         font.setFontName("黑体");
         cellStyle.setAlignment(HSSFCellStyle.ALIGN_CENTER);
-        font.setFontHeightInPoints((short)12);//设置字体大小
+        font.setFontHeightInPoints((short) 12);//设置字体大小
         cellStyle.setFont(font);
 
         CellStyle titleStyle = workbook.createCellStyle();
         Font titleFont = workbook.createFont();
         titleStyle.setAlignment(HSSFCellStyle.ALIGN_CENTER);
         titleFont.setFontName("黑体");
-        titleFont.setFontHeightInPoints((short)13);//设置字体大小
+        titleFont.setFontHeightInPoints((short) 13);//设置字体大小
         titleStyle.setFont(titleFont);
         try {
 
 
-        List<Map<String, Object>> orderList = orderHeaderMapper.queryForSalesDetail(query);
-        Map<String, Map<String, Object>> resultMap = new LinkedHashMap<>();
-        List<String> orderIdList = new ArrayList<>();
-        Map<String, BigDecimal> shipFeeMap = new HashMap<>();
-        Map<Integer, Object> titleIndexMap = new LinkedHashMap<>();
-        Map<String, Integer> skuIndexMap = new LinkedHashMap<>();
-        int cellIndex = 0;
+            List<Map<String, Object>> orderList = orderHeaderMapper.queryForSalesDetail(query);
+            Map<String, Map<String, Object>> resultMap = new LinkedHashMap<>();
+            List<String> orderIdList = new ArrayList<>();
+            Map<String, BigDecimal> shipFeeMap = new LinkedHashMap<>();
+            Map<Integer, Object> titleIndexMap = new LinkedHashMap<>();
+            Map<String, Integer> skuIndexMap = new LinkedHashMap<>();
+            int cellIndex = 0;
 
-        titleIndexMap.put(cellIndex, "序号");
-        skuIndexMap.put("index", cellIndex ++);
-        titleIndexMap.put(cellIndex, "日期");
-        skuIndexMap.put("date", cellIndex ++);
-        titleIndexMap.put(cellIndex, "客户");
-        skuIndexMap.put("clientName", cellIndex ++);
-        List<String> shipFeeKeyList = new ArrayList<>();
-        for (Map<String, Object> data : orderList) {
-            Integer qty = Integer.parseInt(data.get("qty").toString());
-            String clientName = data.get("clientName").toString();
-            BigDecimal itemPriceTotal = new BigDecimal(data.get("itemPriceTotal").toString());
-            BigDecimal costTotal = new BigDecimal(data.get("costTotal").toString());
-            BigDecimal cost = new BigDecimal(data.get("cost").toString());
-            BigDecimal itemPrice = new BigDecimal(data.get("itemPrice").toString());
-            BigDecimal profitTotal = new BigDecimal(data.get("profitTotal").toString());
-            BigDecimal packagingFee = new BigDecimal(data.get("packagingFee").toString());
-            BigDecimal shipFee = new BigDecimal(data.get("shipFee").toString());
-            String unit = data.get("unit").toString();
-            String createDate = data.get("createDate").toString();
-            String orderId = data.get("orderId").toString();
-            String sku = data.get("sku").toString();
-            String productName = data.get("productName").toString();
-            String gift = data.get("gift").toString();
-            String wineType = data.get("wineType") == null ? null : data.get("wineType").toString();
+            titleIndexMap.put(cellIndex, "序号");
+            skuIndexMap.put("index", cellIndex++);
+            titleIndexMap.put(cellIndex, "日期");
+            skuIndexMap.put("date", cellIndex++);
+            titleIndexMap.put(cellIndex, "客户");
+            skuIndexMap.put("clientName", cellIndex++);
+            List<String> shipFeeKeyList = new ArrayList<>();
+            for (Map<String, Object> data : orderList) {
+                Integer qty = Integer.parseInt(data.get("qty").toString());
+                String clientName = data.get("clientName").toString();
+                BigDecimal itemPriceTotal = new BigDecimal(data.get("itemPriceTotal").toString());
+                BigDecimal costTotal = new BigDecimal(data.get("costTotal").toString());
+                BigDecimal cost = new BigDecimal(data.get("cost").toString());
+                BigDecimal itemPrice = new BigDecimal(data.get("itemPrice").toString());
+                BigDecimal profitTotal = new BigDecimal(data.get("profitTotal").toString());
+                BigDecimal packagingFee = new BigDecimal(data.get("packagingFee").toString());
+                BigDecimal shipFee = new BigDecimal(data.get("shipFee").toString());
+                String unit = data.get("unit").toString();
+                String createDate = data.get("createDate").toString();
+                String orderId = data.get("orderId").toString();
+                String sku = data.get("sku").toString();
+                String productName = data.get("productName").toString();
+                String gift = data.get("gift").toString();
+                String wineType = data.get("wineType") == null ? null : data.get("wineType").toString();
 
-            if (!skuIndexMap.containsKey(sku)) {
-                titleIndexMap.put(cellIndex, productName);
-                skuIndexMap.put(sku, cellIndex);
-                cellIndex++;
-            }
-            String key = String.format("%s|%s", createDate, clientName);
-            if (!orderIdList.contains(orderId)) {
-                orderIdList.add(orderId);
-                if (shipFeeMap.containsKey(key)) {
-                    BigDecimal allShipFee = shipFeeMap.get(key);
-                    allShipFee = allShipFee.add(shipFee);
-                    shipFeeMap.put(key, allShipFee);
-                } else {
-                    shipFeeMap.put(key, shipFee);
+                if (!skuIndexMap.containsKey(sku)) {
+                    titleIndexMap.put(cellIndex, productName);
+                    skuIndexMap.put(sku, cellIndex);
+                    cellIndex++;
                 }
-            }
+                String key = String.format("%s|%s", createDate, clientName);
+                if (!orderIdList.contains(orderId)) {
+                    orderIdList.add(orderId);
+                    if (shipFeeMap.containsKey(key)) {
+                        BigDecimal allShipFee = shipFeeMap.get(key);
+                        allShipFee = allShipFee.add(shipFee);
+                        shipFeeMap.put(key, allShipFee);
+                    } else {
+                        shipFeeMap.put(key, shipFee);
+                    }
+                }
 //            if (gift.equals("Y")) {
 //                itemPriceTotal = BigDecimal.ZERO;
 //                itemPrice = BigDecimal.ZERO;
 //                profitTotal = BigDecimal.ZERO;
 //            }
-            if (!shipFeeKeyList.contains(key)) {
-                shipFeeKeyList.add(key);
-            }
-            Map<String, Object> clientDataMap = null;
-            Map<String, Map<String, Object>> skuDataMap = null;
-            if (resultMap.containsKey(key)) {
-                clientDataMap = resultMap.get(key);
-                BigDecimal allItemPriceTotal = new BigDecimal(clientDataMap.get("allItemPriceTotal").toString());
-                BigDecimal allCostTotal = new BigDecimal(clientDataMap.get("allCostTotal").toString());
-                BigDecimal allProfitTotal = new BigDecimal(clientDataMap.get("allProfitTotal").toString());
-                BigDecimal allPackagingFeeTotal = new BigDecimal(clientDataMap.get("allPackagingFeeTotal").toString());
-                clientDataMap.put("allItemPriceTotal", allItemPriceTotal.add(itemPriceTotal));
-                clientDataMap.put("allCostTotal", allCostTotal.add(costTotal));
-                clientDataMap.put("allProfitTotal", allProfitTotal.add(profitTotal));
-                clientDataMap.put("allPackagingFeeTotal", allPackagingFeeTotal.add(packagingFee));
-                skuDataMap = (Map<String, Map<String, Object>>) clientDataMap.get("skuData");
-                Map<String, Object> dataMap = null;
-                if (skuDataMap.containsKey(sku)) {
-                    dataMap = skuDataMap.get(sku);
-                    Integer beGiftQty = Integer.parseInt(dataMap.get("giftQty").toString());
-                    Integer beQty = Integer.parseInt(dataMap.get("qty").toString());
-                    if (gift.equals("Y")) {
-                        beGiftQty = beGiftQty + qty;
-                        dataMap.put("giftQty", beGiftQty);
+                if (!shipFeeKeyList.contains(key)) {
+                    shipFeeKeyList.add(key);
+                }
+                Map<String, Object> clientDataMap = null;
+                Map<String, Map<String, Object>> skuDataMap = null;
+                if (resultMap.containsKey(key)) {
+                    clientDataMap = resultMap.get(key);
+                    BigDecimal allItemPriceTotal = new BigDecimal(clientDataMap.get("allItemPriceTotal").toString());
+                    BigDecimal allCostTotal = new BigDecimal(clientDataMap.get("allCostTotal").toString());
+                    BigDecimal allProfitTotal = new BigDecimal(clientDataMap.get("allProfitTotal").toString());
+                    BigDecimal allPackagingFeeTotal = new BigDecimal(clientDataMap.get("allPackagingFeeTotal").toString());
+                    clientDataMap.put("allItemPriceTotal", allItemPriceTotal.add(itemPriceTotal));
+                    clientDataMap.put("allCostTotal", allCostTotal.add(costTotal));
+                    clientDataMap.put("allProfitTotal", allProfitTotal.add(profitTotal));
+                    clientDataMap.put("allPackagingFeeTotal", allPackagingFeeTotal.add(packagingFee));
+                    skuDataMap = (Map<String, Map<String, Object>>) clientDataMap.get("skuData");
+                    Map<String, Object> dataMap = null;
+                    if (skuDataMap.containsKey(sku)) {
+                        dataMap = skuDataMap.get(sku);
+                        Integer beGiftQty = Integer.parseInt(dataMap.get("giftQty").toString());
+                        Integer beQty = Integer.parseInt(dataMap.get("qty").toString());
+                        if (gift.equals("Y")) {
+                            beGiftQty = beGiftQty + qty;
+                            dataMap.put("giftQty", beGiftQty);
+                        } else {
+                            dataMap.put("qty", beQty + qty);
+                        }
                     } else {
-                        dataMap.put("qty", beQty + qty);
+                        skuDataMap = (Map<String, Map<String, Object>>) clientDataMap.get("skuData");
+                        dataMap = new LinkedHashMap<>();
+                        dataMap.put("sku", sku);
+                        dataMap.put("productName", productName);
+                        dataMap.put("wineType", wineType);
+                        dataMap.put("unit", unit);
+                        if (gift.equals("Y")) {
+                            dataMap.put("giftQty", qty);
+                            dataMap.put("qty", 0);
+                        } else {
+                            dataMap.put("giftQty", 0);
+                            dataMap.put("qty", qty);
+                        }
+                        skuDataMap.put(sku, dataMap);
                     }
                 } else {
-                    skuDataMap = (Map<String, Map<String, Object>>) clientDataMap.get("skuData");
-                    dataMap = new LinkedHashMap<>();
+                    clientDataMap = new LinkedHashMap<>();
+                    skuDataMap = new LinkedHashMap<>();
+                    resultMap.put(key, clientDataMap);
+                    Map<String, Object> dataMap = new HashMap<>();
                     dataMap.put("sku", sku);
                     dataMap.put("productName", productName);
-                    dataMap.put("wineType", wineType);
-                    dataMap.put("unit", unit);
                     if (gift.equals("Y")) {
                         dataMap.put("giftQty", qty);
                         dataMap.put("qty", 0);
@@ -744,142 +759,231 @@ public class OrderHeaderServiceImpl extends AbstractService<OrderHeader> impleme
                         dataMap.put("giftQty", 0);
                         dataMap.put("qty", qty);
                     }
+                    dataMap.put("unit", unit);
+                    dataMap.put("wineType", wineType);
                     skuDataMap.put(sku, dataMap);
+                    clientDataMap.put("skuData", skuDataMap);
+                    clientDataMap.put("allItemPriceTotal", itemPriceTotal);
+                    clientDataMap.put("allCostTotal", costTotal);
+                    clientDataMap.put("allProfitTotal", profitTotal);
+                    clientDataMap.put("allPackagingFeeTotal", packagingFee);
                 }
-            } else {
-                clientDataMap = new LinkedHashMap<>();
-                skuDataMap = new LinkedHashMap<>();
-                resultMap.put(key, clientDataMap);
-                Map<String, Object> dataMap = new HashMap<>();
-                dataMap.put("sku", sku);
-                dataMap.put("productName", productName);
-                if (gift.equals("Y")) {
-                    dataMap.put("giftQty", qty);
-                    dataMap.put("qty", 0);
-                } else {
-                    dataMap.put("giftQty", 0);
-                    dataMap.put("qty", qty);
-                }
-                dataMap.put("unit", unit);
-                dataMap.put("wineType", wineType);
-                skuDataMap.put(sku, dataMap);
-                clientDataMap.put("skuData", skuDataMap);
-                clientDataMap.put("allItemPriceTotal", itemPriceTotal);
-                clientDataMap.put("allCostTotal", costTotal);
-                clientDataMap.put("allProfitTotal", profitTotal);
-                clientDataMap.put("allPackagingFeeTotal", packagingFee);
             }
-        }
 
 //            生成标题
-        Map<Integer, Object> firstTitles = new HashMap<>();
-        firstTitles.put(0, "深圳市汇纳酒业有限公司");
-        genCompanySheetHead(sheet, titleStyle, 0, firstTitles);
+            Map<Integer, Object> firstTitles = new HashMap<>();
+            firstTitles.put(0, "深圳市汇纳酒业有限公司");
+            genCompanySheetHead(sheet, titleStyle, 0, firstTitles);
 
-        Map<Integer, Object> twoTitles = new HashMap<>();
-        twoTitles.put(0, "销售明细表");
-        genCompanySheetHead(sheet, titleStyle,1, twoTitles);
-        sheet.addMergedRegion(new CellRangeAddress(
-                0, //first row (0-based)  from 行
-                0, //last row  (0-based)  to 行
-                0, //first column (0-based) from 列
-                8 //last column  (0-based)  to 列
-        ));
-        sheet.addMergedRegion(new CellRangeAddress(
-                1, //first row (0-based)  from 行
-                1, //last row  (0-based)  to 行
-                0, //first column (0-based) from 列
-                8 //last column  (0-based)  to 列
-        ));
-        titleIndexMap.put(cellIndex , "销售额");
-        skuIndexMap.put("allItemPriceTotal", cellIndex++);
-        titleIndexMap.put(cellIndex, "成本");
-        skuIndexMap.put("allCostTotal", cellIndex++);
-        titleIndexMap.put(cellIndex, "运费");
-        skuIndexMap.put("allShipFeeTotal", cellIndex++);
-        titleIndexMap.put(cellIndex, "包装费");
-        skuIndexMap.put("allPackagingFeeTotal", cellIndex++);
-        titleIndexMap.put(cellIndex, "利润");
-        skuIndexMap.put("allProfitTotal", cellIndex++);
+            Map<Integer, Object> twoTitles = new HashMap<>();
+            twoTitles.put(0, "销售明细表");
+            genCompanySheetHead(sheet, titleStyle, 1, twoTitles);
+            sheet.addMergedRegion(new CellRangeAddress(
+                    0, //first row (0-based)  from 行
+                    0, //last row  (0-based)  to 行
+                    0, //first column (0-based) from 列
+                    8 //last column  (0-based)  to 列
+            ));
+            sheet.addMergedRegion(new CellRangeAddress(
+                    1, //first row (0-based)  from 行
+                    1, //last row  (0-based)  to 行
+                    0, //first column (0-based) from 列
+                    8 //last column  (0-based)  to 列
+            ));
+            titleIndexMap.put(cellIndex, "销售额");
+            skuIndexMap.put("allItemPriceTotal", cellIndex++);
+            titleIndexMap.put(cellIndex, "成本");
+            skuIndexMap.put("allCostTotal", cellIndex++);
+            titleIndexMap.put(cellIndex, "运费");
+            skuIndexMap.put("allShipFeeTotal", cellIndex++);
+            titleIndexMap.put(cellIndex, "包装费");
+            skuIndexMap.put("allPackagingFeeTotal", cellIndex++);
+            titleIndexMap.put(cellIndex, "利润");
+            skuIndexMap.put("allProfitTotal", cellIndex++);
 
-        genCompanySheetHead(sheet, titleStyle, 2, titleIndexMap);
+            genCompanySheetHead(sheet, titleStyle, 2, titleIndexMap);
 
-        int rowNum = 3;
-        int fi = 1;
-        for (Map.Entry<String, Map<String, Object>> data : resultMap.entrySet()) {
-            String clientKey = data.getKey();
-            String[] splitKey = clientKey.split("\\|");
-            Map<String, Object> clientDataMap = data.getValue();
-            Map<String, Map<String, Object>> skuDataMap = (Map<String, Map<String, Object>>) clientDataMap.get("skuData");
-            if (shipFeeMap.containsKey(clientKey)) {
-                clientDataMap.put("allShipFeeTotal", shipFeeMap.get(clientKey));
-                BigDecimal allProfitTotal = (BigDecimal) clientDataMap.get("allProfitTotal");
-                clientDataMap.put("allProfitTotal", allProfitTotal.subtract(shipFeeMap.get(clientKey)));
-                shipFeeMap.remove(clientKey);
-            }
-            Row row = sheet.createRow(rowNum);
-            createCell(cellStyle, row, 0, String.valueOf(fi));
-            createCell(cellStyle, row, 1, splitKey[0]);
-            createCell(cellStyle, row, 2, splitKey[1]);
-            for (Map.Entry<String, Map<String, Object>> skuData : skuDataMap.entrySet()){
-                Map<String, Object> dataMap = skuData.getValue();
-                String sku = skuData.getKey();
-                String wineType = dataMap.get("wineType") == null ? null : dataMap.get("wineType").toString();
-                String unit = dataMap.get("unit").toString();
-                Integer qty = (Integer) dataMap.get("qty");
-                Integer giftQty = (Integer) dataMap.get("giftQty");
-                String qtt = "";
-                String gift = "";
-                if (StringUtils.isNotBlank(wineType)) {
-                    if (giftQty > 0){
-                        String des;
-                        if (giftQty < 6) {
-                            des = "";
-                        } else if (giftQty % 6 == 0) {
-                            des = String.format("（%s箱）", giftQty/6);
-                        } else {
-                            des = String.format("（%s箱%s%s）", giftQty/6, giftQty%6, unit);
+            int rowNum = 3;
+            int fi = 1;
+            Map<String, Map<String, Object>> resultSkuMap = new LinkedHashMap<>();
+            Map<String, BigDecimal> resultAmountMap = new LinkedHashMap<>();
+            resultAmountMap.put("resItemPriceTotal", BigDecimal.ZERO);
+            resultAmountMap.put("resCostTotal", BigDecimal.ZERO);
+            resultAmountMap.put("resShipFeeTotal", BigDecimal.ZERO);
+            resultAmountMap.put("resPackagingFeeTotal", BigDecimal.ZERO);
+            resultAmountMap.put("resProfitTotal", BigDecimal.ZERO);
+
+            for (Map.Entry<String, Map<String, Object>> data : resultMap.entrySet()) {
+                String clientKey = data.getKey();
+                String[] splitKey = clientKey.split("\\|");
+                Map<String, Object> clientDataMap = data.getValue();
+                Map<String, Map<String, Object>> skuDataMap = (Map<String, Map<String, Object>>) clientDataMap.get("skuData");
+                if (shipFeeMap.containsKey(clientKey)) {
+                    clientDataMap.put("allShipFeeTotal", shipFeeMap.get(clientKey));
+                    BigDecimal allProfitTotal = (BigDecimal) clientDataMap.get("allProfitTotal");
+                    clientDataMap.put("allProfitTotal", allProfitTotal.subtract(shipFeeMap.get(clientKey)));
+                    shipFeeMap.remove(clientKey);
+                }
+                Row row = sheet.createRow(rowNum);
+                createCell(cellStyle, row, 0, String.valueOf(fi));
+                createCell(cellStyle, row, 1, splitKey[0]);
+                createCell(cellStyle, row, 2, splitKey[1]);
+                List<String> resultTotalList = new ArrayList<>();
+                resultTotalList.add("合计");
+                resultTotalList.add("");
+                resultTotalList.add("");
+                for (Map.Entry<String, Map<String, Object>> skuData : skuDataMap.entrySet()) {
+                    Map<String, Object> dataMap = skuData.getValue();
+                    String sku = skuData.getKey();
+                    String wineType = dataMap.get("wineType") == null ? null : dataMap.get("wineType").toString();
+                    String unit = dataMap.get("unit").toString();
+                    Integer qty = (Integer) dataMap.get("qty");
+                    Integer giftQty = (Integer) dataMap.get("giftQty");
+                    String qtt = "";
+                    String gift = "";
+                    if (StringUtils.isNotBlank(wineType)) {
+                        if (giftQty > 0) {
+                            String des;
+                            if (giftQty < 6) {
+                                des = "";
+                            } else if (giftQty % 6 == 0) {
+                                des = String.format("（%s箱）", giftQty / 6);
+                            } else {
+                                des = String.format("（%s箱%s%s）", giftQty / 6, giftQty % 6, unit);
+                            }
+                            gift = String.format(" 送 %s%s%s", giftQty, unit, des);
                         }
-                        gift = String.format(" 送 %s%s%s", giftQty, unit, des);
-                    }
-                    String des;
-                    if (qty < 6) {
-                        des = "";
-                    } else if (qty % 6 == 0) {
-                        des = String.format("（%s箱）", qty/6);
+                        String des;
+                        if (qty < 6) {
+                            des = "";
+                        } else if (qty % 6 == 0) {
+                            des = String.format("（%s箱）", qty / 6);
+                        } else {
+                            des = String.format("（%s箱%s%s）", qty / 6, qty % 6, unit);
+                        }
+                        qtt = String.format("%s%s%s", qty, unit, des);
                     } else {
-                        des = String.format("（%s箱%s%s）", qty/6, qty%6, unit);
-                    }
-                    qtt = String.format("%s%s%s", qty, unit, des);
-                    } else {
-                        if (qty > 0){
+                        if (qty > 0) {
                             qtt = String.format("%s%s", qty, unit);
                         }
-                        if (giftQty > 0){
+                        if (giftQty > 0) {
                             gift = String.format(" 送 %s%s", giftQty, unit);
                         }
                     }
-                    if (!StringUtils.isEmpty(gift)){
+                    if (!StringUtils.isEmpty(gift)) {
                         qtt = qtt + gift;
                     }
-                createCell(cellStyle, row, skuIndexMap.get(sku), qtt);
+                    createCell(cellStyle, row, skuIndexMap.get(sku), qtt);
+                    if (resultSkuMap.containsKey(sku)) {
+                        Map<String, Object> resultSkuItemMap = resultSkuMap.get(sku);
+                        Integer giftBig = Integer.parseInt(resultSkuItemMap.get("gift").toString());
+                        Integer normalBig = Integer.parseInt(resultSkuItemMap.get("normal").toString());
+                        Integer totalBig = Integer.parseInt(resultSkuItemMap.get("total").toString());
+                        giftBig = giftBig + giftQty;
+                        normalBig = normalBig + qty;
+                        totalBig = giftBig + normalBig;
+                        String resSku = "";
+                        String giftRes = "";
+                        if (StringUtils.isNotBlank(wineType)) {
+                            if (giftBig > 0) {
+                                String des;
+                                if (giftBig < 6) {
+                                    des = "";
+                                } else if (giftBig % 6 == 0) {
+                                    des = String.format("（%s箱）", giftBig / 6);
+                                } else {
+                                    des = String.format("（%s箱%s%s）", giftBig / 6, giftBig % 6, unit);
+                                }
+                                giftRes = String.format(" 送 %s%s%s", giftBig, unit, des);
+                            }
+                            String des;
+                            if (normalBig < 6) {
+                                des = "";
+                            } else if (normalBig % 6 == 0) {
+                                des = String.format("（%s箱）", normalBig / 6);
+                            } else {
+                                des = String.format("（%s箱%s%s）", normalBig / 6, normalBig % 6, unit);
+                            }
+                            resSku = String.format("%s%s%s", normalBig, unit, des);
+                        } else {
+                            if (normalBig > 0) {
+                                resSku = String.format("%s%s", normalBig, unit);
+                            }
+                            if (giftBig > 0) {
+                                giftRes = String.format(" 送 %s%s", giftBig, unit);
+                            }
+                        }
+                        if (!StringUtils.isEmpty(giftRes)) {
+                            resSku = resSku + giftRes;
+                        }
+                        String des = "";
+                        if (StringUtils.isNotBlank(wineType)){
+                            if (totalBig < 6) {
+                                des = "";
+                            } else if (totalBig % 6 == 0) {
+                                des = String.format("（%s箱）", totalBig / 6);
+                            } else {
+                                des = String.format("（%s箱%s%s）", totalBig / 6, totalBig % 6, unit);
+                            }
+                        }
+                        des = String.format("%s%s%s", totalBig, unit, des);
+
+
+                        resSku = String.format("总共:%s详细:(%s)", des, resSku);
+                        resultSkuItemMap.put("gift", giftBig);
+                        resultSkuItemMap.put("normal", normalBig);
+                        resultSkuItemMap.put("total", totalBig);
+                        resultSkuItemMap.put("res", resSku);
+
+                    } else {
+                        Map<String, Object> resultSkuItemMap = new HashMap<>();
+                        resultSkuItemMap.put("gift", giftQty);
+                        resultSkuItemMap.put("normal", qty);
+                        resultSkuItemMap.put("total", giftQty + qty);
+                        resultSkuItemMap.put("res", String.format("总共:%s详细:(%s)", qtt, qtt));
+                        resultSkuMap.put(sku, resultSkuItemMap);
+                    }
+                }
+                BigDecimal allItemPriceTotal = (BigDecimal) clientDataMap.get("allItemPriceTotal");
+                BigDecimal allCostTotal = (BigDecimal) clientDataMap.get("allCostTotal");
+                BigDecimal allShipFeeTotal = (BigDecimal) clientDataMap.get("allShipFeeTotal");
+                BigDecimal allPackagingFeeTotal = (BigDecimal) clientDataMap.get("allPackagingFeeTotal");
+                BigDecimal allProfitTotal = (BigDecimal) clientDataMap.get("allProfitTotal");
+
+                resultAmountMap.put("resItemPriceTotal", resultAmountMap.get("resItemPriceTotal").add(allItemPriceTotal));
+                resultAmountMap.put("resCostTotal", resultAmountMap.get("resCostTotal").add(allCostTotal));
+                resultAmountMap.put("resShipFeeTotal", resultAmountMap.get("resShipFeeTotal").add(allShipFeeTotal));
+                resultAmountMap.put("resPackagingFeeTotal", resultAmountMap.get("resPackagingFeeTotal").add(allPackagingFeeTotal));
+                resultAmountMap.put("resProfitTotal", resultAmountMap.get("resProfitTotal").add(allProfitTotal));
+
+                createCell(cellStyle, row, skuIndexMap.get("allItemPriceTotal"), allItemPriceTotal.setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+                createCell(cellStyle, row, skuIndexMap.get("allCostTotal"), allCostTotal.setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+                createCell(cellStyle, row, skuIndexMap.get("allShipFeeTotal"), allShipFeeTotal.setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+                createCell(cellStyle, row, skuIndexMap.get("allPackagingFeeTotal"), allPackagingFeeTotal.setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+                createCell(cellStyle, row, skuIndexMap.get("allProfitTotal"), allProfitTotal.setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+
+
+                rowNum++;
+                fi++;
             }
-            BigDecimal allItemPriceTotal = (BigDecimal) clientDataMap.get("allItemPriceTotal");
-            BigDecimal allCostTotal = (BigDecimal) clientDataMap.get("allCostTotal");
-            BigDecimal allShipFeeTotal = (BigDecimal) clientDataMap.get("allShipFeeTotal");
-            BigDecimal allPackagingFeeTotal = (BigDecimal) clientDataMap.get("allPackagingFeeTotal");
-            BigDecimal allProfitTotal = (BigDecimal) clientDataMap.get("allProfitTotal");
-            createCell(cellStyle, row, skuIndexMap.get("allItemPriceTotal"), allItemPriceTotal.setScale(2, BigDecimal.ROUND_HALF_UP).toString());
-            createCell(cellStyle, row, skuIndexMap.get("allCostTotal"), allCostTotal.setScale(2, BigDecimal.ROUND_HALF_UP).toString());
-            createCell(cellStyle, row, skuIndexMap.get("allShipFeeTotal"), allShipFeeTotal.setScale(2, BigDecimal.ROUND_HALF_UP).toString());
-            createCell(cellStyle, row, skuIndexMap.get("allPackagingFeeTotal"), allPackagingFeeTotal.setScale(2, BigDecimal.ROUND_HALF_UP).toString());
-            createCell(cellStyle, row, skuIndexMap.get("allProfitTotal"), allProfitTotal.setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+            Row hejiRow = sheet.createRow(rowNum);
+            createCell(cellStyle, hejiRow, 0, "合计");
+            createCell(cellStyle, hejiRow, 1, "");
+            createCell(cellStyle, hejiRow, 2, "");
+            for (Map.Entry<String, Map<String, Object>> data : resultSkuMap.entrySet()){
+                String sku = data.getKey();
+                Map<String, Object> ss = data.getValue();
+                String res = ss.get("res").toString();
+                createCell(cellStyle, hejiRow, skuIndexMap.get(sku), res);
+            }
 
+            createCell(cellStyle, hejiRow, skuIndexMap.get("allItemPriceTotal"), resultAmountMap.get("resItemPriceTotal").setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+            createCell(cellStyle, hejiRow, skuIndexMap.get("allCostTotal"), resultAmountMap.get("resCostTotal").setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+            createCell(cellStyle, hejiRow, skuIndexMap.get("allShipFeeTotal"), resultAmountMap.get("resShipFeeTotal").setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+            createCell(cellStyle, hejiRow, skuIndexMap.get("allPackagingFeeTotal"), resultAmountMap.get("resPackagingFeeTotal").setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+            createCell(cellStyle, hejiRow, skuIndexMap.get("allProfitTotal"), resultAmountMap.get("resProfitTotal").setScale(2, BigDecimal.ROUND_HALF_UP).toString());
 
-            rowNum ++;
-            fi ++;
-        }
-        } catch(Exception ex){
+        } catch (Exception ex) {
             ex.printStackTrace();
         }
         try {
@@ -898,7 +1002,7 @@ public class OrderHeaderServiceImpl extends AbstractService<OrderHeader> impleme
      * @param values key:第几列的列号  value:值
      */
 
-    public  void genCompanySheetHead(Sheet sheet, CellStyle cellStyle,  int rowNum, Map<Integer, Object> values) {
+    public void genCompanySheetHead(Sheet sheet, CellStyle cellStyle, int rowNum, Map<Integer, Object> values) {
         Row row = sheet.createRow(rowNum);
         for (Integer cellNum : values.keySet()) {
             Cell cell = row.createCell(cellNum);
@@ -914,13 +1018,13 @@ public class OrderHeaderServiceImpl extends AbstractService<OrderHeader> impleme
      * @param cellNum 第几列的列号
      * @param value   值
      */
-    public  void createCell(CellStyle cellStyle, Row row, int cellNum, Object value) {
+    public void createCell(CellStyle cellStyle, Row row, int cellNum, Object value) {
         Cell cell = row.createCell(cellNum);
         cell.setCellStyle(cellStyle);
         generateValue(value, cell);
     }
 
-    private  void generateValue(Object value, Cell cell) {
+    private void generateValue(Object value, Cell cell) {
         if (value instanceof String) {
             cell.setCellValue((String) value);
         } else if (value instanceof Boolean) {
@@ -933,9 +1037,9 @@ public class OrderHeaderServiceImpl extends AbstractService<OrderHeader> impleme
             cell.setCellValue((Calendar) value);
         } else if (value instanceof RichTextString) {
             cell.setCellValue((RichTextString) value);
-        } else if (value instanceof BigDecimal){
+        } else if (value instanceof BigDecimal) {
             cell.setCellValue(value.toString());
-        } else if (value instanceof Integer){
+        } else if (value instanceof Integer) {
             cell.setCellValue(value.toString());
         }
     }

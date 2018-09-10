@@ -9,6 +9,8 @@ $(function(){
     let $warehouseOutputPopupModal = $('#warehouse-output-popup-modal');
     let $warehouseLeadOutOutputPopupModal = $('#warehouse-lead-out-output-popup-modal');
     let $warehouseLeadOutInputPopupModal = $('#warehouse-lead-out-input-popup-modal');
+    let $warehouseLeadOutInventoryBtn = $('#warehouse-lead-out-inventory-btn');
+
     function createFormByJson(formId, method, actionUrl, json) {
         //如果已经创建,移出节点
         var formCreated = $('#' + formId);
@@ -45,16 +47,7 @@ $(function(){
             {checkbox: true},
             {field: 'productName', title: '产品名称'},
             {field: 'warehouseName', title: '所属仓库'},
-            {field: 'quantity', title: '库存数量', formatter: function(val, record) {
-                if (record['wineType'] && val) {
-                    if (val%6 == 0){
-                        return val + ' (' + parseInt(val/6) + '箱)';
-                    } else {
-                        return val + ' (' + parseInt(val/6) + '箱' + val%6 + '支)';
-                    }
-                }
-                return val;
-            }},
+            {field: 'quantityDes', title: '库存数量'},
             {field: 'brandName', title: '产品品牌'},
             {field: 'sku', title: '产品条码'},
             {field: 'updateDate', title: '最近更新时间'}
@@ -126,7 +119,10 @@ $(function(){
         let params = $("#table-query-form").serializeObject();
         createFormByJson("leadOutOutboundExcel","get","/api/inventory/lead_out_outbound_excel", params);
     });
-
+    $warehouseLeadOutInventoryBtn.on('click', function(){
+        let params = $("#table-query-form").serializeObject();
+        createFormByJson("leadOutInventoryExcel","get","/api/inventory/lead_out_inventory_excel", params);
+    });
     $warehouseLeadOutInputPopupModal.on('click', function(){
         let params = $("#table-query-form").serializeObject();
         createFormByJson("leadOutInboundExcel","get","/api/inventory/lead_out_inbound_excel", params);

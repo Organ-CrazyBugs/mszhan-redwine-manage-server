@@ -22,4 +22,6 @@ public interface InventoryService extends Service<Inventory> {
     void leadOutOutboundDetail(InventoryQuery query, HttpServletResponse res);
 
     void leadOutInboundDetail(InventoryQuery query, HttpServletResponse res);
+
+    void leadOutInventory(InventoryQuery query, HttpServletResponse res);
 }

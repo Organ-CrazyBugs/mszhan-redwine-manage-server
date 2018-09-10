@@ -71,13 +71,10 @@
           #{item}
         </foreach>
       </if>
-      <if test = "productNameList != null and productNameList.size > 0">
-        and  product_name in
-        <foreach collection="productNameList" index="index" item="item" open="("
-                 separator="," close=")">
-          #{item}
-        </foreach>
+      <if test = "productNames != null and productNames != ''">
+        and  product_name like '%${productNames}%'
       </if>
+
       <if test = "brandNameList != null and brandNameList.size > 0">
         and  brand_name in
         <foreach collection="brandNameList" index="index" item="item" open="("

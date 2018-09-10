@@ -1,5 +1,6 @@
 package com.mszhan.redwine.manage.server.model.mszhanRedwineManage.vo;
 
+import javax.persistence.Transient;
 import java.util.Date;
 
 public class FetchInventoryVO {
@@ -11,6 +12,25 @@ public class FetchInventoryVO {
     private String wineType;
     private Date updateDate;
     private Integer quantity;
+    private String unit;
+    @Transient
+    private String quantityDes;
+
+    public String getQuantityDes() {
+        return quantityDes;
+    }
+
+    public void setQuantityDes(String quantityDes) {
+        this.quantityDes = quantityDes;
+    }
+
+    public String getUnit() {
+        return unit;
+    }
+
+    public void setUnit(String unit) {
+        this.unit = unit;
+    }
 
     public String getWineType() {
         return wineType;
